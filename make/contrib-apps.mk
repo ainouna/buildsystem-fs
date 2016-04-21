@@ -1205,7 +1205,7 @@ $(D)/xupnpd: $(D)/bootstrap
 	[ -d "$(ARCHIVE)/xupnpd.git" ] || \
 	git clone git://github.com/clark15b/xupnpd.git $(ARCHIVE)/xupnpd.git; \
 	cp -ra $(ARCHIVE)/xupnpd.git $(BUILD_TMP)/xupnpd; \
-	cd $(BUILD_TMP)/xupnpd && $(PATCH)/xupnpd.patch
+	set -e; cd $(BUILD_TMP)/xupnpd && $(PATCH)/xupnpd.patch
 	set -e; cd $(BUILD_TMP)/xupnpd/src; \
 		$(BUILDENV) \
 		$(MAKE) TARGET=$(TARGET) sh4; \
@@ -1223,7 +1223,7 @@ $(D)/dvbsnoop: $(D)/bootstrap
 	[ -d "$(ARCHIVE)/dvbsnoop.git" ] || \
 	git clone https://github.com/cotdp/dvbsnoop.git $(ARCHIVE)/dvbsnoop.git; \
 	cp -ra $(ARCHIVE)/dvbsnoop.git $(BUILD_TMP)/dvbsnoop;
-	cd $(BUILD_TMP)/dvbsnoop; \
+	set -e; cd $(BUILD_TMP)/dvbsnoop; \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \

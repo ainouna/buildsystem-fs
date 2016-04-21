@@ -308,7 +308,7 @@ $(D)/libbluray: $(D)/bootstrap $(ARCHIVE)/libbluray-$(LIBBLURAY_VER).tar.bz2
 #
 # lua
 #
-LUA_VER = 5.2.3
+LUA_VER = 5.2.4
 LUA_VER_SHORT = 5.2
 LUAPOSIX_VER = 31
 
@@ -858,8 +858,8 @@ $(D)/libsigc++_e2: $(D)/bootstrap $(ARCHIVE)/libsigc++-$(LIBSIGCPP_E2_VER).tar.g
 # libsigc++
 #
 LIBSIGCPP_MAJOR = 2
-LIBSIGCPP_MINOR = 3
-LIBSIGCPP_MICRO = 2
+LIBSIGCPP_MINOR = 4
+LIBSIGCPP_MICRO = 1
 LIBSIGCPP_VER=$(LIBSIGCPP_MAJOR).$(LIBSIGCPP_MINOR).$(LIBSIGCPP_MICRO)
 
 $(ARCHIVE)/libsigc++-$(LIBSIGCPP_VER).tar.xz:
@@ -1195,10 +1195,9 @@ endif
 
 ifeq ($(IMAGE), neutrino)
 FFMPEG_EXTRA = --disable-iconv
-LIBXML2 = $(D)/libroxml
 endif
 
-$(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/libass $(LIBXML2) $(LIBRTMPDUMP) $(ARCHIVE)/ffmpeg-$(FFMPEG_VER).tar.xz
+$(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/bzip2 $(D)/libass $(D)/libroxml $(LIBRTMPDUMP) $(ARCHIVE)/ffmpeg-$(FFMPEG_VER).tar.xz
 	$(REMOVE)/ffmpeg-$(FFMPEG_VER)
 	$(UNTAR)/ffmpeg-$(FFMPEG_VER).tar.xz
 	set -e; cd $(BUILD_TMP)/ffmpeg-$(FFMPEG_VER); \
@@ -1709,6 +1708,8 @@ $(D)/pugixml: $(D)/bootstrap $(ARCHIVE)/pugixml-$(PUGIXML_VER).tar.gz
 		-DCMAKE_BUILD_TYPE=Linux \
 		-DCMAKE_C_COMPILER=$(TARGET)-gcc \
 		-DCMAKE_CXX_COMPILER=$(TARGET)-g++ \
+		-DCMAKE_C_FLAGS="-pipe -Os" \
+		-DCMAKE_CXX_FLAGS="-pipe -Os" \
 		scripts; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
@@ -1856,7 +1857,7 @@ $(D)/libusbcompat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/libusb-compat-$(USBCOMP
 #
 # alsa-lib
 #
-ALSA_VER = 1.1.0
+ALSA_VER = 1.1.1
 
 $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2:
 	$(WGET) ftp://ftp.alsa-project.org/pub/lib/alsa-lib-$(ALSA_VER).tar.bz2

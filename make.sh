@@ -331,7 +331,7 @@ case "$IMAGE" in
 		echo "  make yaud-neutrino-test"
 		echo "  make yaud-neutrino-hd2";;
 		enigma2*)
-		echo "  make yaud-enigma2-pli-nightly";;
+		echo "  make yaud-enigma2";;
 		*)
 esac
 echo " "
