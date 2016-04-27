@@ -3,8 +3,8 @@
 ##############################################
 
 if [ "$1" == -h ] || [ "$1" == --help ]; then
-	echo "Parameter 1: target system (1-34)"
-	echo "Parameter 2: kernel (1-5)"
+	echo "Parameter 1: target system (1-36)"
+	echo "Parameter 2: kernel (1-2)"
 	echo "Parameter 3: debug (y/N)"
 	echo "Parameter 4: player (1-2)"
 	echo "Parameter 5: Media Framework (1-4)"
@@ -74,16 +74,18 @@ case $1 in
 		echo "   22) Atemio AM530"
 		echo "   23) Fortis HS7110"
 		echo "   24) Fortis HS7119"
-		echo "   25) Fortis HS7810A"
-		echo "   26) Fortis HS7819"
-		echo "   27) Edision Argus VIP1 v1 [ single tuner + 2 CI + 2 USB ]"
-		echo "   28) SpiderBox HL-101"
-		echo "   29) SPARK"
-		echo "   30) SPARK7162"
-		echo "   31) B4Team ADB 5800S"
-		echo "   32) Vitamin HD5000"
-		echo "   33) SagemCom 88 series"
-		echo "   34) Ferguson Ariva @Link 200"
+		echo "   25) Fortis HS7420"
+		echo "   26) Fortis HS7429"
+		echo "   27) Fortis HS7810A"
+		echo "   28) Fortis HS7819"
+		echo "   29) Edision Argus VIP1 v1 [ single tuner + 2 CI + 2 USB ]"
+		echo "   30) SpiderBox HL-101"
+		echo "   31) SPARK"
+		echo "   32) SPARK7162"
+		echo "   33) B4Team ADB 5800S"
+		echo "   34) Vitamin HD5000"
+		echo "   35) SagemCom 88 series"
+		echo "   36) Ferguson Ariva @Link 200"
 		read -p "Select target (1-34)? ";;
 esac
 
@@ -112,16 +114,18 @@ case "$REPLY" in
 	22) TARGET="atemio530";;
 	23) TARGET="hs7110";;
 	24) TARGET="hs7119";;
-	25) TARGET="hs7810a";;
-	26) TARGET="hs7819";;
-	27) TARGET="hl101";;
-	28) TARGET="hl101";;
-	29) TARGET="spark";;
-	30) TARGET="spark7162";;
-	31) TARGET="adb_box";;
-	32) TARGET="vitamin_hd5000";;
-	33) TARGET="sagemcom88";;
-	34) TARGET="arivalink200";;
+	25) TARGET="hs7420";;
+	26) TARGET="hs7429";;
+	27) TARGET="hs7810a";;
+	28) TARGET="hs7819";;
+	29) TARGET="hl101";;
+	30) TARGET="hl101";;
+	31) TARGET="spark";;
+	32) TARGET="spark7162";;
+	33) TARGET="adb_box";;
+	34) TARGET="vitamin_hd5000";;
+	35) TARGET="sagemcom88";;
+	36) TARGET="arivalink200";;
 	 *) TARGET="atevio7500";;
 esac
 echo "BOXTYPE=$TARGET" > config
@@ -129,22 +133,16 @@ echo "BOXTYPE=$TARGET" > config
 ##############################################
 
 case $2 in
-	[1-5]) REPLY=$2;;
+	[1-2]) REPLY=$2;;
 	*)	echo -e "\nKernel:"
 		echo "   1) STM 24 P0209"
-		echo "   2) STM 24 P0211"
-		echo "   3) STM 24 P0214"
-		echo "   4) STM 24 P0215"
-		echo "   5) STM 24 P0217 (recommended)"
-		read -p "Select kernel (1-5)? ";;
+		echo "   2) STM 24 P0217 (recommended)"
+		read -p "Select kernel (1-2)? ";;
 esac
 
 case "$REPLY" in
 	1)  KERNEL="p0209";;
-	2)  KERNEL="p0211";;
-	3)  KERNEL="p0214";;
-	4)  KERNEL="p0215";;
-	5)  KERNEL="p0217";;
+	2)  KERNEL="p0217";;
 	*)  KERNEL="p0217";;
 esac
 echo "KERNEL=$KERNEL" >> config
