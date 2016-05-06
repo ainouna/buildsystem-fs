@@ -247,7 +247,7 @@ $(D)/libreadline: $(D)/bootstrap $(ARCHIVE)/readline-$(READLINE_VER).tar.gz
 # openssl
 #
 OPENSSL_VER = 1.0.2
-OPENSSL_SUBVER = g
+OPENSSL_SUBVER = h
 
 $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz:
 	$(WGET) http://www.openssl.org/source/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
@@ -256,7 +256,11 @@ $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).
 	$(REMOVE)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER)
 	$(UNTAR)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER).tar.gz
 	set -e; cd $(BUILD_TMP)/openssl-$(OPENSSL_VER)$(OPENSSL_SUBVER); \
-		$(PATCH)/openssl-$(OPENSSL_VER).patch; \
+		$(PATCH)/openssl-$(OPENSSL_VER)-optimize-for-size.patch; \
+		$(PATCH)/openssl-$(OPENSSL_VER)-makefile-dirs.patch; \
+		$(PATCH)/openssl-$(OPENSSL_VER)-disable_doc_tests.patch; \
+		$(PATCH)/openssl-$(OPENSSL_VER)-remove_timestamp_check.patch; \
+		$(PATCH)/openssl-$(OPENSSL_VER)-parallel_build.patch; \
 		$(BUILDENV) \
 		./Configure -DL_ENDIAN shared no-hw linux-generic32 \
 			--prefix=/usr \
@@ -1681,6 +1685,7 @@ $(D)/libroxml: $(D)/bootstrap $(ARCHIVE)/libroxml-$(LIBROXML_VER).tar.gz
 			--prefix=/usr \
 			--enable-shared \
 			--disable-static \
+			--disable-roxml \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
@@ -1758,7 +1763,7 @@ $(D)/libdpf: $(D)/bootstrap
 #
 # lcd4linux
 #--with-python
-$(D)/lcd4_linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd2 $(D)/libusb
+$(D)/lcd4_linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd $(D)/libusb
 	$(REMOVE)/lcd4linux
 	[ -d "$(ARCHIVE)/lcd4linux.svn" ] && \
 	(cd $(ARCHIVE)/lcd4linux.svn; svn update;); \
@@ -1779,7 +1784,7 @@ $(D)/lcd4_linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd2 $(D)/libusb
 	$(REMOVE)/lcd4linux
 	touch $@
 
-$(D)/lcd4linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd2 $(D)/libusb
+$(D)/lcd4linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd $(D)/libusb
 	$(REMOVE)/lcd4linux
 	[ -d "$(ARCHIVE)/lcd4linux.git" ] && \
 	(cd $(ARCHIVE)/lcd4linux.git; git pull;); \
@@ -1800,14 +1805,14 @@ $(D)/lcd4linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd2 $(D)/libusb
 	touch $@
 
 #
-# libgd2
+# libgd
 #
 GD_VER = 2.1.1
 
 $(ARCHIVE)/libgd-$(GD_VER).tar.xz:
 	$(WGET) https://github.com/libgd/libgd/releases/download/gd-$(GD_VER)/libgd-$(GD_VER).tar.xz
 
-$(D)/libgd2: $(D)/bootstrap $(D)/libpng $(D)/libjpeg $(D)/libfreetype $(ARCHIVE)/libgd-$(GD_VER).tar.xz
+$(D)/libgd: $(D)/bootstrap $(D)/libpng $(D)/libjpeg $(D)/libfreetype $(ARCHIVE)/libgd-$(GD_VER).tar.xz
 	$(REMOVE)/libgd-$(GD_VER)
 	$(UNTAR)/libgd-$(GD_VER).tar.xz
 	set -e; cd $(BUILD_TMP)/libgd-$(GD_VER); \
