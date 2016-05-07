@@ -693,6 +693,7 @@ $(D)/libpng: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/libpng-$(PNG_VER).tar.xz
 	$(REMOVE)/libpng-$(PNG_VER)
 	$(UNTAR)/libpng-$(PNG_VER).tar.xz
 	set -e; cd $(BUILD_TMP)/libpng-$(PNG_VER); \
+		$(PATCH)/libpng-$(PNG_VER)-disable-tools.patch; \
 		$(CONFIGURE) \
 			--prefix=$(TARGETPREFIX)/usr \
 			--mandir=$(TARGETPREFIX)/.remove \
@@ -1888,11 +1889,12 @@ ALSA_VER = 1.1.1
 $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2:
 	$(WGET) ftp://ftp.alsa-project.org/pub/lib/alsa-lib-$(ALSA_VER).tar.bz2
 
-$(D)/libalsa: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
+$(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
 	$(REMOVE)/alsa-lib-$(ALSA_VER)
 	$(UNTAR)/alsa-lib-$(ALSA_VER).tar.bz2
 	set -e; cd $(BUILD_TMP)/alsa-lib-$(ALSA_VER); \
 		$(PATCH)/alsa-lib-$(ALSA_VER).patch; \
+		$(PATCH)/alsa-lib-$(ALSA_VER)-link_fix.patch; \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--with-plugindir=/usr/lib/alsa \
@@ -1907,6 +1909,8 @@ $(D)/libalsa: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+	for i in `cd $(TARGETPREFIX)/usr/lib/alsa/smixer; echo *.la`; do \
+		$(REWRITE_LIBTOOL)/alsa/smixer/$$i; done
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/alsa.pc
 	$(REWRITE_LIBTOOL)/libasound.la
 	$(REMOVE)/alsa-lib-$(ALSA_VER)
@@ -1918,7 +1922,7 @@ $(D)/libalsa: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_VER).tar.bz2
 $(ARCHIVE)/alsa-utils-$(ALSA_VER).tar.bz2:
 	$(WGET) ftp://ftp.alsa-project.org/pub/utils/alsa-utils-$(ALSA_VER).tar.bz2
 
-$(D)/alsautils: $(D)/bootstrap $(D)/libalsa $(ARCHIVE)/alsa-utils-$(ALSA_VER).tar.bz2
+$(D)/alsautils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_VER).tar.bz2
 	$(REMOVE)/alsa-utils-$(ALSA_VER)
 	$(UNTAR)/alsa-utils-$(ALSA_VER).tar.bz2
 	set -e; cd $(BUILD_TMP)/alsa-utils-$(ALSA_VER); \
@@ -2268,7 +2272,7 @@ LIBAO_VER = 1.1.0
 $(ARCHIVE)/libao-$(LIBAO_VER).tar.gz:
 	$(WGET) http://downloads.xiph.org/releases/ao/libao-$(LIBAO_VER).tar.gz
 
-$(D)/libao: $(D)/bootstrap $(D)/libalsa $(ARCHIVE)/libao-$(LIBAO_VER).tar.gz
+$(D)/libao: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/libao-$(LIBAO_VER).tar.gz
 	$(REMOVE)/libao-$(LIBAO_VER)
 	$(UNTAR)/libao-$(LIBAO_VER).tar.gz
 	set -e; cd $(BUILD_TMP)/libao-$(LIBAO_VER); \
