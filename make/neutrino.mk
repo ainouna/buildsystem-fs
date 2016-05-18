@@ -736,6 +736,10 @@ yaud-neutrino-alpha-plugins: yaud-none \
 		$(D)/neutrino-alpha $(D)/neutrino-mp-plugins $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
+yaud-neutrino-alpha-xupnpd: yaud-none \
+		$(D)/neutrino-alpha xupnpd $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
 FS_NEUTRINO_ALPHA_PATCHES =
 
 $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
@@ -836,6 +840,10 @@ yaud-neutrino-test: yaud-none \
 
 yaud-neutrino-test-plugins: yaud-none \
 		$(D)/neutrino-test $(D)/neutrino-mp-plugins $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-test-xupnpd: yaud-none \
+		$(D)/neutrino-test xupnpd $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 FS_NEUTRINO_TEST_PATCHES =
