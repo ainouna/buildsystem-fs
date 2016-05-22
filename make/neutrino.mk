@@ -855,7 +855,7 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	[ -d "$(ARCHIVE)/neutrino-test.git" ] && \
 	(cd $(ARCHIVE)/neutrino-test.git; git pull; cd "$(BUILD_TMP)";); \
 	[ -d "$(ARCHIVE)/neutrino-test.git" ] || \
-	git clone -b alpha https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-test.git; \
+	git clone -b test https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-test.git; \
 	cp -ra $(ARCHIVE)/neutrino-test.git $(SOURCE_DIR)/neutrino-test; \
 	cp -ra $(SOURCE_DIR)/neutrino-test $(SOURCE_DIR)/neutrino-test.org
 	for i in $(FS_NEUTRINO_TEST_PATCHES); do \
