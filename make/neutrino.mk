@@ -936,3 +936,109 @@ neutrino-test-clean:
 neutrino-test-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test*
+################################################################################
+#
+# fs-basis yaud-neutrino-ni
+#
+yaud-neutrino-ni: yaud-none \
+		neutrino-ni $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-ni-plugins: yaud-none \
+		$(D)/neutrino-ni $(D)/neutrino-mp-plugins $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-ni-xupnpd: yaud-none \
+		$(D)/neutrino-ni xupnpd $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+FS_NEUTRINO_NI_PATCHES =
+
+$(D)/neutrino-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+	rm -rf $(SOURCE_DIR)/neutrino-ni
+	rm -rf $(SOURCE_DIR)/neutrino-ni.org
+	rm -rf $(N_OBJDIR)
+	[ -d "$(ARCHIVE)/neutrino-ni.git" ] && \
+	(cd $(ARCHIVE)/neutrino-ni.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/neutrino-ni.git" ] || \
+	git clone -b ni https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-ni.git; \
+	cp -ra $(ARCHIVE)/neutrino-ni.git $(SOURCE_DIR)/neutrino-ni; \
+	cp -ra $(SOURCE_DIR)/neutrino-ni $(SOURCE_DIR)/neutrino-ni.org
+	for i in $(FS_NEUTRINO_NI_PATCHES); do \
+		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
+		set -e; cd $(SOURCE_DIR)/neutrino-ni && patch -p1 -i $$i; \
+	done;
+	touch $@
+
+$(D)/neutrino-ni.config.status:
+	rm -rf $(N_OBJDIR)
+	ni -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	cd $(N_OBJDIR); \
+		$(SOURCE_DIR)/neutrino-ni/autogen.sh; \
+		$(BUILDENV) \
+		$(SOURCE_DIR)/neutrino-ni/configure --enable-silent-rules \
+			--build=$(BUILD) \
+			--host=$(TARGET) \
+			$(N_CONFIG_OPTS) \
+			--with-boxtype=$(BOXTYPE) \
+			--disable-upnp \
+			--enable-ffmpegdec \
+			--enable-giflib \
+			--with-tremor \
+			--enable-lua \
+			--with-libdir=/usr/lib \
+			--with-datadir=/usr/share/tuxbox \
+			--with-fontdir=/usr/share/fonts \
+			--with-configdir=/var/tuxbox/config \
+			--with-gamesdir=/var/tuxbox/games \
+			--with-plugindir=/var/tuxbox/plugins \
+			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
+			--with-localedir=/usr/share/tuxbox/neutrino/locale \
+			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
+			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
+			--with-stb-hal-build=$(LH_OBJDIR) \
+			PKG_CONFIG=$(HOSTPREFIX)/bin/$(TARGET)-pkg-config \
+			PKG_CONFIG_PATH=$(TARGETPREFIX)/usr/lib/pkgconfig \
+			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+
+$(SOURCE_DIR)/neutrino-ni/src/gui/version.h:
+	@rm -f $@; \
+	echo '#define BUILT_DATE "'`date`'"' > $@
+	@if ni -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
+		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		pushd $(SOURCE_DIR)/neutrino-ni ; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		pushd $(CDK_DIR) ; \
+		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-neutrino-ni-rev'$$NMP_REV'"' >> $@ ; \
+	fi
+
+$(D)/neutrino-ni.do_compile: $(D)/neutrino-ni.config.status $(SOURCE_DIR)/neutrino-ni/src/gui/version.h
+	cd $(SOURCE_DIR)/neutrino-ni; \
+		$(MAKE) -C $(N_OBJDIR) all
+	touch $@
+
+$(D)/neutrino-ni: $(D)/neutrino-ni.do_prepare $(D)/neutrino-ni.do_compile
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGETPREFIX); \
+	rm -f $(TARGETPREFIX)/var/etc/.version
+	make $(TARGETPREFIX)/var/etc/.version
+	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
+	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
+	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
+	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
+	touch $@
+
+neutrino-ni-clean:
+	rm -f $(D)/neutrino-ni
+	rm -f $(SOURCE_DIR)/neutrino-ni/src/gui/version.h
+	cd $(N_OBJDIR); \
+		$(MAKE) -C $(N_OBJDIR) distclean
+
+neutrino-ni-distclean:
+	rm -rf $(N_OBJDIR)
+	rm -f $(D)/neutrino-ni*

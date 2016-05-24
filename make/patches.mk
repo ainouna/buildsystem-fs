@@ -8,6 +8,7 @@ neutrino-mp-cst-next-patch \
 neutrino-mp-cst-next-max-patch \
 neutrino-alpha-patch \
 neutrino-test-patch \
+neutrino-ni-patch \
 libstb-hal-next-patch \
 libstb-hal-cst-next-patch :
 	cd $(SOURCE_DIR) && diff -Nur --exclude-from=$(SCRIPTS_DIR)/diff-exclude $(subst -patch,,$@).org $(subst -patch,,$@) > $(BASE_DIR)/$(subst -patch,.patch,$@) ; [ $$? -eq 1 ]
@@ -42,3 +43,6 @@ FS_NEUTRINO_ALPHA_PATCHES +=
 
 # FS Neutrino Test
 FS_NEUTRINO_TEST_PATCHES +=
+
+# FS Neutrino NI
+FS_NEUTRINO_NI_PATCHES +=
