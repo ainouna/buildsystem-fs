@@ -84,6 +84,50 @@ $(D)/mtd_utils: $(D)/bootstrap $(D)/zlib $(D)/lzo $(D)/e2fsprogs $(ARCHIVE)/mtd-
 	touch $@
 
 #
+#
+#
+GDB_VER = 7.8
+
+$(ARCHIVE)/gdb-$(GDB_VER).tar.xz:
+	$(WGET) ftp://sourceware.org/pub/gdb/releases/gdb-$(GDB_VER).tar.xz
+
+# gdb-remote built for local-PC or target
+$(D)/gdb-remote: $(ARCHIVE)/gdb-$(GDB_VER).tar.xz | $(TARGETPREFIX)
+	$(UNTAR)/gdb-$(GDB_VER).tar.xz
+	set -e; cd $(BUILD_TMP)/gdb-$(GDB_VER); \
+		./configure \
+			--nfp --disable-werror \
+			--prefix=$(HOSTPREFIX) \
+			--build=$(BUILD) \
+			--host=$(BUILD) \
+			--target=$(TARGET) \
+		; \
+		$(MAKE) all-gdb; \
+		make install-gdb; \
+	$(REMOVE)/gdb-$(GDB_VER)
+	touch $@
+
+# gdb built for target or local-PC
+$(D)/gdb: $(D)/bootstrap $(D)/libncurses $(D)/zlib $(ARCHIVE)/gdb-$(GDB_VER).tar.xz
+	$(RM_PKGPREFIX)
+	$(UNTAR)/gdb-$(GDB_VER).tar.xz
+	set -e; cd $(BUILD_TMP)/gdb-$(GDB_VER); \
+		$(PATCH)/gdb-$(GDB_VER)-remove-builddate.patch; \
+		./configure \
+			--host=$(BUILD) \
+			--build=$(BUILD) \
+			--target=$(TARGET) \
+			--prefix=/usr \
+			--mandir=$(TARGETPREFIX)/.remove \
+			--infodir=$(TARGETPREFIX)/.remove \
+			--nfp --disable-werror \
+		; \
+		$(MAKE) all-gdb; \
+		$(MAKE) install-gdb prefix=$(TARGETPREFIX)
+	$(REMOVE)/gdb-$(GDB_VER)
+	touch $@
+
+#
 # opkg
 #
 OPKG_VER = 0.2.2
@@ -596,7 +640,7 @@ $(D)/hddtemp: $(D)/bootstrap $(ARCHIVE)/hddtemp-$(HDDTEMP_VER).tar.bz2
 HDPARM_VER = 9.48
 
 $(ARCHIVE)/hdparm-$(HDPARM_VER).tar.gz:
-	$(WGET) http://downloads.sourceforge.net/project/hdparm/hdparm/hdparm-$(HDPARM_VER).tar.gz
+	$(WGET) http://sourceforge.net/projects/hdparm/files/hdparm/hdparm-$(HDPARM_VER).tar.gz
 
 $(D)/hdparm: $(D)/bootstrap $(ARCHIVE)/hdparm-$(HDPARM_VER).tar.gz
 	$(REMOVE)/hdparm-$(HDPARM_VER)
@@ -614,7 +658,7 @@ $(D)/hdparm: $(D)/bootstrap $(ARCHIVE)/hdparm-$(HDPARM_VER).tar.gz
 HDIDLE_VER = 1.05
 
 $(ARCHIVE)/hd-idle-$(HDIDLE_VER).tgz:
-	$(WGET) http://downloads.sourceforge.net/project/hd-idle/hd-idle-$(HDIDLE_VER).tgz
+	$(WGET) http://sourceforge.net/projects/hd-idle/files/hd-idle-$(HDIDLE_VER).tgz
 
 $(D)/hd-idle: $(D)/bootstrap $(ARCHIVE)/hd-idle-$(HDIDLE_VER).tgz
 	$(REMOVE)/hd-idle
@@ -936,7 +980,7 @@ $(D)/smartmontools: $(D)/bootstrap $(ARCHIVE)/smartmontools-$(SMARTMONTOOLS_VER)
 NFSUTILS_VER = 1.3.3
 
 $(ARCHIVE)/nfs-utils-$(NFSUTILS_VER).tar.bz2:
-	$(WGET) http://downloads.sourceforge.net/project/nfs/nfs-utils/$(NFSUTILS_VER)/nfs-utils-$(NFSUTILS_VER).tar.bz2
+	$(WGET) http://sourceforge.net/projects/nfs/files/nfs-utils/(NFSUTILS_VER)/nfs-utils-$(NFSUTILS_VER).tar.bz2
 
 $(D)/nfs_utils: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/nfs-utils-$(NFSUTILS_VER).tar.bz2
 	$(REMOVE)/nfs-utils-$(NFSUTILS_VER)
