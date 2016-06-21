@@ -328,9 +328,8 @@ $(ARCHIVE)/lua-$(LUA_VER).tar.gz:
 
 $(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/lua-$(LUA_VER).tar.gz
 	$(REMOVE)/lua-$(LUA_VER)
-	set -e; if [ -d $(ARCHIVE)/luaposix.git ]; \
-		then cd $(ARCHIVE)/luaposix.git; git pull; \
-		else cd $(ARCHIVE); git clone -b release-v$(LUAPOSIX_VER) --single-branch --depth 1 git://github.com/luaposix/luaposix.git $(ARCHIVE)/luaposix.git; \
+	set -e; if [ ! -d $(ARCHIVE)/luaposix.git ]; \
+		then cd $(ARCHIVE); git clone -b release-v$(LUAPOSIX_VER) git://github.com/luaposix/luaposix.git luaposix.git; \
 		fi
 	mkdir -p $(TARGETPREFIX)/usr/share/lua/$(LUA_VER_SHORT)
 	$(UNTAR)/lua-$(LUA_VER).tar.gz
@@ -342,8 +341,9 @@ $(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/lua-$(LUA_VER).tar.gz
 		sed -i 's/<config.h>/"config.h"/' src/posix.c; \
 		sed -i '/^#define/d' src/lua52compat.h; \
 		sed -i 's|man/man1|/.remove|' Makefile; \
-		$(MAKE) linux CC=$(TARGET)-gcc LDFLAGS="-L$(TARGETPREFIX)/usr/lib" BUILDMODE=dynamic PKG_VERSION=$(LUA_VER); \
+		$(MAKE) linux CC=$(TARGET)-gcc CPPFLAGS="$(TARGET_CPPFLAGS)" LDFLAGS="-L$(TARGETPREFIX)/usr/lib" BUILDMODE=dynamic PKG_VERSION=$(LUA_VER); \
 		$(MAKE) install INSTALL_TOP=$(TARGETPREFIX)/usr INSTALL_MAN=$(TARGETPREFIX)/.remove
+	cd $(TARGETPREFIX)/usr && rm bin/lua bin/luac
 	$(REMOVE)/lua-$(LUA_VER)
 	touch $@
 
@@ -1751,49 +1751,8 @@ $(D)/graphlcd: $(D)/bootstrap $(D)/libfreetype $(D)/libusb
 	touch $@
 
 #
-# libdpfax
-#
-$(D)/libdpf: $(D)/bootstrap
-	$(REMOVE)/dpf-ax
-	[ -d "$(ARCHIVE)/dpf-ax.svn" ] && \
-	(cd $(ARCHIVE)/dpf-ax.svn; svn update;); \
-	[ -d "$(ARCHIVE)/dpf-ax.svn" ] || \
-	svn co https://svn.code.sf.net/p/dpf-ax/code/trunk $(ARCHIVE)/dpf-ax.svn; \
-	cp -ra $(ARCHIVE)/dpf-ax.svn $(BUILD_TMP)/dpf-ax; \
-	set -e; cd $(BUILD_TMP)/dpf-ax; \
-		$(PATCH)/libdpf-crossbuild.patch; \
-		cp include/spiflash.h $(TARGETPREFIX)/usr/include/; \
-		cp include/usbuser.h $(TARGETPREFIX)/usr/include/; \
-		$(BUILDENV) \
-		$(MAKE) default CFLAGS="$(TARGET_CFLAGS) " LDFLAGS="$(TARGET_LDFLAGS) -L."; \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	$(REMOVE)/dpf-ax
-	touch $@
-
-#
 # lcd4linux
-#--with-python
-$(D)/lcd4_linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd $(D)/libusb
-	$(REMOVE)/lcd4linux
-	[ -d "$(ARCHIVE)/lcd4linux.svn" ] && \
-	(cd $(ARCHIVE)/lcd4linux.svn; svn update;); \
-	[ -d "$(ARCHIVE)/lcd4linux.svn" ] || \
-	svn co https://ssl.bulix.org/svn/lcd4linux/trunk $(ARCHIVE)/lcd4linux.svn; \
-	cp -ra $(ARCHIVE)/lcd4linux.svn $(BUILD_TMP)/lcd4linux; \
-	set -e; cd $(BUILD_TMP)/lcd4linux; \
-		$(PATCH)/lcd4linux.patch; \
-		$(BUILDENV) ./bootstrap; \
-		$(BUILDENV) ./configure $(CONFIGURE_OPTS) \
-			--prefix=/usr \
-			--with-drivers='DPF,SamsungSPF' \
-			--with-plugins='all,!apm,!asterisk,!dbus,!dvb,!gps,!hddtemp,!huawei,!imon,!isdn,!kvv,!mpd,!mpris_dbus,!mysql,!pop3,!ppp,!python,!qnaplog,!raspi,!sample,!seti,!w1retap,!wireless,!xmms' \
-			--without-ncurses \
-		; \
-		$(MAKE) all; \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	$(REMOVE)/lcd4linux
-	touch $@
-
+#
 $(D)/lcd4linux: $(D)/bootstrap $(D)/libusbcompat $(D)/libgd $(D)/libusb
 	$(REMOVE)/lcd4linux
 	set -e; if [ -d $(ARCHIVE)/lcd4linux.git ]; \
@@ -2085,6 +2044,7 @@ $(D)/minidlna: $(D)/bootstrap $(D)/zlib $(D)/sqlite $(D)/libexif $(D)/libjpeg $(
 	$(UNTAR)/minidlna-$(MINIDLNA_VER).tar.gz
 	set -e; cd $(BUILD_TMP)/minidlna-$(MINIDLNA_VER); \
 		$(PATCH)/minidlna-$(MINIDLNA_VER).patch; \
+		autoreconf -fi; \
 		$(CONFIGURE) \
 			--prefix=/usr \
 		; \

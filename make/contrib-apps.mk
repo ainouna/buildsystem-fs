@@ -822,11 +822,11 @@ $(D)/imagemagick: $(D)/bootstrap $(ARCHIVE)/ImageMagick-$(IMAGEMAGICK_VER).tar.g
 #
 $(D)/shairport: $(D)/bootstrap $(D)/openssl $(D)/howl $(D)/alsa-lib
 	$(REMOVE)/shairport
-	[ -d "$(ARCHIVE)/shairport.git" ] && \
-	(cd $(ARCHIVE)/shairport.git; git pull; ); \
-	[ -d "$(ARCHIVE)/shairport.git" ] || \
-	git clone -b 1.0-dev git://github.com/abrasive/shairport.git $(ARCHIVE)/shairport.git; \
-	cp -ra $(ARCHIVE)/shairport.git $(BUILD_TMP)/shairport; \
+	set -e; if [ -d $(ARCHIVE)/shairport.git ]; \
+		then cd $(ARCHIVE)/shairport.git; git pull; \
+		else cd $(ARCHIVE); git clone -b 1.0-dev git://github.com/abrasive/shairport.git shairport.git; \
+		fi
+	cp -ra $(ARCHIVE)/shairport.git $(BUILD_TMP)/shairport
 	set -e; cd $(BUILD_TMP)/shairport; \
 		sed -i 's|pkg-config|$$PKG_CONFIG|g' configure; \
 		PKG_CONFIG=$(HOSTPREFIX)/bin/$(TARGET)-pkg-config \
@@ -1063,7 +1063,7 @@ $(D)/vsftpd: $(D)/bootstrap $(ARCHIVE)/vsftpd-$(VSFTPD_VER).tar.gz
 	set -e; cd $(BUILD_TMP)/vsftpd-$(VSFTPD_VER); \
 		$(PATCH)/vsftpd-$(VSFTPD_VER).patch; \
 		$(MAKE) clean; \
-		$(MAKE) $(MAKE_OPTS) CFLAGS="-pipe -Os -g0"; \
+		$(MAKE) $(BUILDENV); \
 		$(MAKE) install PREFIX=$(TARGETPREFIX)
 		cp $(CDK_DIR)/root/etc/vsftpd.conf $(TARGETPREFIX)/etc
 	install -m 755 $(SKEL_ROOT)/etc/init.d/vsftpd $(TARGETPREFIX)/etc/init.d/
@@ -1270,11 +1270,11 @@ $(D)/wpa_supplicant: $(D)/bootstrap $(D)/openssl $(D)/wireless_tools $(ARCHIVE)/
 #
 $(D)/xupnpd: $(D)/bootstrap
 	$(REMOVE)/xupnpd
-	[ -d "$(ARCHIVE)/xupnpd.git" ] && \
-	(cd $(ARCHIVE)/xupnpd.git; git pull; ); \
-	[ -d "$(ARCHIVE)/xupnpd.git" ] || \
-	git clone git://github.com/clark15b/xupnpd.git $(ARCHIVE)/xupnpd.git; \
-	cp -ra $(ARCHIVE)/xupnpd.git $(BUILD_TMP)/xupnpd; \
+	set -e; if [ -d $(ARCHIVE)/xupnpd.git ]; \
+		then cd $(ARCHIVE)/xupnpd.git; git pull; \
+		else cd $(ARCHIVE); git clone git://github.com/clark15b/xupnpd.git xupnpd.git; \
+		fi
+	cp -ra $(ARCHIVE)/xupnpd.git $(BUILD_TMP)/xupnpd
 	set -e; cd $(BUILD_TMP)/xupnpd && $(PATCH)/xupnpd.patch
 	set -e; cd $(BUILD_TMP)/xupnpd/src; \
 		$(BUILDENV) \
@@ -1289,11 +1289,11 @@ $(D)/xupnpd: $(D)/bootstrap
 #
 $(D)/dvbsnoop: $(D)/bootstrap
 	$(REMOVE)/dvbsnoop
-	[ -d "$(ARCHIVE)/dvbsnoop.git" ] && \
-	(cd $(ARCHIVE)/dvbsnoop.git; git pull; ); \
-	[ -d "$(ARCHIVE)/dvbsnoop.git" ] || \
-	git clone https://github.com/cotdp/dvbsnoop.git $(ARCHIVE)/dvbsnoop.git; \
-	cp -ra $(ARCHIVE)/dvbsnoop.git $(BUILD_TMP)/dvbsnoop;
+	set -e; if [ -d $(ARCHIVE)/dvbsnoop.git ]; \
+		then cd $(ARCHIVE)/dvbsnoop.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/cotdp/dvbsnoop.git dvbsnoop.git; \
+		fi
+	cp -ra $(ARCHIVE)/dvbsnoop.git $(BUILD_TMP)/dvbsnoop
 	set -e; cd $(BUILD_TMP)/dvbsnoop; \
 		$(CONFIGURE) \
 			--prefix=/usr \
