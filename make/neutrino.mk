@@ -791,8 +791,8 @@ $(D)/neutrino-alpha.config.status:
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(HOSTPREFIX)/bin/$(TARGET)-pkg-config \
-			PKG_CONFIG_PATH=$(TARGETPREFIX)/usr/lib/pkgconfig \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 
 $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
@@ -897,8 +897,8 @@ $(D)/neutrino-test.config.status:
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(HOSTPREFIX)/bin/$(TARGET)-pkg-config \
-			PKG_CONFIG_PATH=$(TARGETPREFIX)/usr/lib/pkgconfig \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 
 $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
@@ -1003,8 +1003,8 @@ $(D)/neutrino-ni.config.status:
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(HOSTPREFIX)/bin/$(TARGET)-pkg-config \
-			PKG_CONFIG_PATH=$(TARGETPREFIX)/usr/lib/pkgconfig \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 
 $(SOURCE_DIR)/neutrino-ni/src/gui/version.h:
