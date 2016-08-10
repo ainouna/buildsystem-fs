@@ -922,7 +922,7 @@ $(D)/neutrino-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 
 $(D)/neutrino-ni.config.status:
 	rm -rf $(N_OBJDIR)
-	ni -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-ni/autogen.sh; \
 		$(BUILDENV) \
@@ -955,7 +955,7 @@ $(D)/neutrino-ni.config.status:
 $(SOURCE_DIR)/neutrino-ni/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if ni -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
+	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
 		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
