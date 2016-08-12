@@ -270,7 +270,7 @@ case "$IMAGE" in
 		echo "  make yaud-neutrino-mp-cst-next"
 		echo "  make yaud-neutrino-alpha"
 		echo "  make yaud-neutrino-test"
-		echo "  make yaud.neutrino-ni
+		echo "  make yaud.neutrino-ni"
 		echo "  make yaud-neutrino-mp-cst-next-ni"
 		echo "  make yaud-neutrino-hd2";;
 		enigma2*)
