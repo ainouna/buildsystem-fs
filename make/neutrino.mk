@@ -279,6 +279,7 @@ yaud-neutrino-mp-cst-next-plugins: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 NEUTRINO_MP_CST_NEXT_PATCHES =
+NEUTRINO_MP_CST_NEXT_PATCHES_DIR =
 
 $(D)/neutrino-mp-cst-next.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	rm -rf $(SOURCE_DIR)/neutrino-mp-cst-next
@@ -290,6 +291,12 @@ $(D)/neutrino-mp-cst-next.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-nex
 	git clone https://github.com/Duckbox-Developers/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-mp-cst-next.git; \
 	cp -ra $(ARCHIVE)/neutrino-mp-cst-next.git $(SOURCE_DIR)/neutrino-mp-cst-next; \
 	cp -ra $(SOURCE_DIR)/neutrino-mp-cst-next $(SOURCE_DIR)/neutrino-mp-cst-next.org
+	for i in $(NEUTRINO_MP_CST_NEXT_PATCHES_DIR); do \
+		for p in $$i/*; do \
+		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		set -e; cd $(SOURCE_DIR)/neutrino-cst-next && patch -p1 -i "$$p"; \
+		done; \
+	done; \
 	for i in $(NEUTRINO_MP_CST_NEXT_PATCHES); do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next && patch -p1 -i $$i; \
@@ -382,6 +389,7 @@ yaud-neutrino-mp-cst-next-ni-plugins: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 NEUTRINO_MP_CST_NEXT_NI_PATCHES =
+NEUTRINO_MP_CST_NEXT_NI_PATCHES_DIR =
 
 $(D)/neutrino-mp-cst-next-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	rm -rf $(SOURCE_DIR)/neutrino-mp-cst-next-ni
@@ -393,6 +401,12 @@ $(D)/neutrino-mp-cst-next-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-
 	git clone -b ni https://github.com/Duckbox-Developers/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-mp-cst-next-ni.git; \
 	cp -ra $(ARCHIVE)/neutrino-mp-cst-next-ni.git $(SOURCE_DIR)/neutrino-mp-cst-next-ni; \
 	cp -ra $(SOURCE_DIR)/neutrino-mp-cst-next-ni $(SOURCE_DIR)/neutrino-mp-cst-next-ni.org
+	for i in $(NEUTRINO_MP_CST_NEXT_NI_PATCHES_DIR); do \
+		for p in $$i/*; do \
+		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next-ni && patch -p1 -i "$$p"; \
+		done; \
+	done; \
 	for i in $(NEUTRINO_MP_CST_NEXT_NI_PATCHES); do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next-ni && patch -p1 -i $$i; \
@@ -691,6 +705,7 @@ yaud-neutrino-alpha-xupnpd: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 FS_NEUTRINO_ALPHA_PATCHES =
+FS_NEUTRINO_ALPHA_PATCHES_DIR =
 
 $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	rm -rf $(SOURCE_DIR)/neutrino-alpha
@@ -702,6 +717,12 @@ $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	git clone -b alpha https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-alpha.git; \
 	cp -ra $(ARCHIVE)/neutrino-alpha.git $(SOURCE_DIR)/neutrino-alpha; \
 	cp -ra $(SOURCE_DIR)/neutrino-alpha $(SOURCE_DIR)/neutrino-alpha.org
+	for i in $(FS_NEUTRINO_ALPHA_PATCHES_DIR); do \
+		for p in $$i/*; do \
+		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		set -e; cd $(SOURCE_DIR)/neutrino-alpha && patch -p1 -i "$$p"; \
+		done; \
+	done; \
 	for i in $(FS_NEUTRINO_ALPHA_PATCHES); do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-alpha && patch -p1 -i $$i; \
@@ -797,6 +818,7 @@ yaud-neutrino-test-xupnpd: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 FS_NEUTRINO_TEST_PATCHES =
+FS_NEUTRINO_TEST_PATCHES_DIR =
 
 $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	rm -rf $(SOURCE_DIR)/neutrino-test
@@ -808,6 +830,12 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	git clone -b test https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-test.git; \
 	cp -ra $(ARCHIVE)/neutrino-test.git $(SOURCE_DIR)/neutrino-test; \
 	cp -ra $(SOURCE_DIR)/neutrino-test $(SOURCE_DIR)/neutrino-test.org
+	for i in $(FS_NEUTRINO_TEST_PATCHES_DIR); do \
+		for p in $$i/*; do \
+		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		set -e; cd $(SOURCE_DIR)/neutrino-test && patch -p1 -i "$$p"; \
+		done; \
+	done; \
 	for i in $(FS_NEUTRINO_TEST_PATCHES); do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-test && patch -p1 -i $$i; \
@@ -903,6 +931,7 @@ yaud-neutrino-ni-xupnpd: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 FS_NEUTRINO_NI_PATCHES =
+FS_NEUTRINO_NI_PATCHES_DIR =
 
 $(D)/neutrino-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	rm -rf $(SOURCE_DIR)/neutrino-ni
@@ -914,6 +943,12 @@ $(D)/neutrino-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	git clone -b ni https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-ni.git; \
 	cp -ra $(ARCHIVE)/neutrino-ni.git $(SOURCE_DIR)/neutrino-ni; \
 	cp -ra $(SOURCE_DIR)/neutrino-ni $(SOURCE_DIR)/neutrino-ni.org
+	for i in $(FS_NEUTRINO_NI_PATCHES_DIR); do \
+		for p in $$i/*; do \
+		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		set -e; cd $(SOURCE_DIR)/neutrino-ni && patch -p1 -i "$$p"; \
+		done; \
+	done; \
 	for i in $(FS_NEUTRINO_NI_PATCHES); do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-ni && patch -p1 -i $$i; \
