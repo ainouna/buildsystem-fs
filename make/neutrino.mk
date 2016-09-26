@@ -294,7 +294,7 @@ $(D)/neutrino-mp-cst-next.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-nex
 	for i in $(NEUTRINO_MP_CST_NEXT_PATCHES_DIR); do \
 		for p in $$i/*; do \
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
-		set -e; cd $(SOURCE_DIR)/neutrino-cst-next && patch -p1 -i "$$p"; \
+		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next && patch -p1 -i "$$p"; \
 		done; \
 	done; \
 	for i in $(NEUTRINO_MP_CST_NEXT_PATCHES); do \
