@@ -306,7 +306,7 @@ $(D)/neutrino-mp-cst-next.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-nex
 	cp -ra $(SOURCE_DIR)/neutrino-mp-cst-next $(SOURCE_DIR)/neutrino-mp-cst-next.org
 	for i in $(NEUTRINO_MP_CST_NEXT_PATCHES_DIR); do \
 		for p in $$i/*; do \
-		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$p)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next && patch -p1 -i "$$p"; \
 		done; \
 	done; \
@@ -420,7 +420,7 @@ $(D)/neutrino-mp-cst-next-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-
 	cp -ra $(SOURCE_DIR)/neutrino-mp-cst-next-ni $(SOURCE_DIR)/neutrino-mp-cst-next-ni.org
 	for i in $(NEUTRINO_MP_CST_NEXT_NI_PATCHES_DIR); do \
 		for p in $$i/*; do \
-		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$p)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next-ni && patch -p1 -i "$$p"; \
 		done; \
 	done; \
@@ -737,6 +737,7 @@ FS_NEUTRINO_ALPHA_PATCHES =
 FS_NEUTRINO_ALPHA_PATCHES_DIR =
 
 $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-alpha
 	rm -rf $(SOURCE_DIR)/neutrino-alpha.org
 	rm -rf $(N_OBJDIR)
@@ -748,17 +749,18 @@ $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	cp -ra $(SOURCE_DIR)/neutrino-alpha $(SOURCE_DIR)/neutrino-alpha.org
 	for i in $(FS_NEUTRINO_ALPHA_PATCHES_DIR); do \
 		for p in $$i/*; do \
-		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$p)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-alpha && patch -p1 -i "$$p"; \
 		done; \
 	done; \
 	for i in $(FS_NEUTRINO_ALPHA_PATCHES); do \
-		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
+		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-alpha && patch -p1 -i $$i; \
 	done;
-	touch $@
+	$(TOUCH)
 
 $(D)/neutrino-alpha.config.status:
+	$(START_BUILD)
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
@@ -807,11 +809,13 @@ $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 	fi
 
 $(D)/neutrino-alpha.do_compile: $(D)/neutrino-alpha.config.status $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
-	cd $(SOURCE_DIR)/neutrino-alpha; \
+	$(START_BUILD)	
+cd $(SOURCE_DIR)/neutrino-alpha; \
 		$(MAKE) -C $(N_OBJDIR) all
-	touch $@
+	$(TOUCH)
 
 $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compile
+	$(START_BUILD)
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGETPREFIX); \
 	rm -f $(TARGETPREFIX)/var/etc/.version
 	make $(TARGETPREFIX)/var/etc/.version
@@ -819,7 +823,7 @@ $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compi
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
-	touch $@
+	$(TOUCH)
 
 neutrino-alpha-clean:
 	rm -f $(D)/neutrino-alpha
@@ -830,6 +834,7 @@ neutrino-alpha-clean:
 neutrino-alpha-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-alpha*
+
 ################################################################################
 #
 # fs-basis yaud-neutrino-test
@@ -861,7 +866,7 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	cp -ra $(SOURCE_DIR)/neutrino-test $(SOURCE_DIR)/neutrino-test.org
 	for i in $(FS_NEUTRINO_TEST_PATCHES_DIR); do \
 		for p in $$i/*; do \
-		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$p)"; \
+		echo -e "==> \033[31mApplying Patch:\033[0m $(subst $(PATCHES)/,'',$$p)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-test && patch -p1 -i "$$p"; \
 		done; \
 	done; \
@@ -869,9 +874,10 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-test && patch -p1 -i $$i; \
 	done;
-	touch $@
+	$(TOUCH)
 
 $(D)/neutrino-test.config.status:
+	$(START_BUILD)
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
@@ -920,11 +926,13 @@ $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 	fi
 
 $(D)/neutrino-test.do_compile: $(D)/neutrino-test.config.status $(SOURCE_DIR)/neutrino-test/src/gui/version.h
+	$(START_BUILD)		
 	cd $(SOURCE_DIR)/neutrino-test; \
 		$(MAKE) -C $(N_OBJDIR) all
-	touch $@
+	$(TOUCH)
 
 $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
+	$(START_BUILD)
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGETPREFIX); \
 	rm -f $(TARGETPREFIX)/var/etc/.version
 	make $(TARGETPREFIX)/var/etc/.version
@@ -932,7 +940,7 @@ $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
-	touch $@
+	$(TOUCH)
 
 neutrino-test-clean:
 	rm -f $(D)/neutrino-test
@@ -943,6 +951,7 @@ neutrino-test-clean:
 neutrino-test-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test*
+
 ################################################################################
 #
 # fs-basis yaud-neutrino-ni
@@ -963,6 +972,7 @@ FS_NEUTRINO_NI_PATCHES =
 FS_NEUTRINO_NI_PATCHES_DIR =
 
 $(D)/neutrino-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-ni
 	rm -rf $(SOURCE_DIR)/neutrino-ni.org
 	rm -rf $(N_OBJDIR)
@@ -982,9 +992,10 @@ $(D)/neutrino-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 		echo "==> Applying Patch: $(subst $(PATCHES)/,'',$$i)"; \
 		set -e; cd $(SOURCE_DIR)/neutrino-ni && patch -p1 -i $$i; \
 	done;
-	touch $@
+	$(TOUCH)
 
 $(D)/neutrino-ni.config.status:
+	$(START_BUILD)
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
@@ -1033,11 +1044,13 @@ $(SOURCE_DIR)/neutrino-ni/src/gui/version.h:
 	fi
 
 $(D)/neutrino-ni.do_compile: $(D)/neutrino-ni.config.status $(SOURCE_DIR)/neutrino-ni/src/gui/version.h
+	$(START_BUILD)		
 	cd $(SOURCE_DIR)/neutrino-ni; \
 		$(MAKE) -C $(N_OBJDIR) all
-	touch $@
+	$(TOUCH)
 
 $(D)/neutrino-ni: $(D)/neutrino-ni.do_prepare $(D)/neutrino-ni.do_compile
+	$(START_BUILD)
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGETPREFIX); \
 	rm -f $(TARGETPREFIX)/var/etc/.version
 	make $(TARGETPREFIX)/var/etc/.version
@@ -1045,7 +1058,7 @@ $(D)/neutrino-ni: $(D)/neutrino-ni.do_prepare $(D)/neutrino-ni.do_compile
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
-	touch $@
+	$(TOUCH)
 
 neutrino-ni-clean:
 	rm -f $(D)/neutrino-ni
@@ -1056,3 +1069,4 @@ neutrino-ni-clean:
 neutrino-ni-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-ni*
+
