@@ -717,6 +717,7 @@ neutrino-mp-tangos-clean:
 neutrino-mp-tangos-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-mp-tangos*
+
 ################################################################################
 #
 # fs-basis yaud-neutrino-alpha
@@ -810,7 +811,7 @@ $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 
 $(D)/neutrino-alpha.do_compile: $(D)/neutrino-alpha.config.status $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
 	$(START_BUILD)	
-cd $(SOURCE_DIR)/neutrino-alpha; \
+	cd $(SOURCE_DIR)/neutrino-alpha; \
 		$(MAKE) -C $(N_OBJDIR) all
 	$(TOUCH)
 
@@ -1069,4 +1070,3 @@ neutrino-ni-clean:
 neutrino-ni-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-ni*
-
