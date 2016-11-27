@@ -110,13 +110,13 @@ define post_patch
        fi; \
       done; \
      else \
-      if [ $${i:0:1 == "/" ]; then \
+      if [ $${i:0:1} == "/" ]; then \
        echo -e "==> \033[31mApplying Patch:\033[0m $$i"; $(APATCH) $$i; \
       else \
        echo -e "==> \033[31mApplying Patch:\033[0m $$i"; $(PATCH)/$$i; \
       fi; \
      fi; \
-    done;
+    done
 endef
 
 #
