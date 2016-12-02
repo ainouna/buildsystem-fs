@@ -42,6 +42,7 @@ N_CONFIG_OPTS += --enable-freesatepg
 N_CONFIG_OPTS += --enable-lua
 N_CONFIG_OPTS += --enable-giflib
 N_CONFIG_OPTS += --enable-ffmpegdec
+N_CONFIG_OPTS += --disable-upnp
 #N_CONFIG_OPTS += --enable-pip
 N_CONFIG_OPTS += --enable-pugixml
 
@@ -159,7 +160,6 @@ $(D)/neutrino-mp-cst-next-max.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--enable-upnp \
 			--with-tremor \
 			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
@@ -313,9 +313,6 @@ $(D)/neutrino-mp-cst-next.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--enable-upnp \
-			--enable-ffmpegdec \
-			--enable-giflib \
 			--with-tremor \
 			--enable-lua \
 			--with-libdir=/usr/lib \
@@ -418,9 +415,6 @@ $(D)/neutrino-mp-cst-next-ni.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--enable-upnp \
-			--enable-ffmpegdec \
-			--enable-giflib \
 			--with-tremor \
 			--enable-lua \
 			--with-libdir=/usr/lib \
@@ -627,7 +621,6 @@ $(D)/neutrino-mp-tangos.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--disable-upnp \
 			--with-boxtype=$(BOXTYPE) \
 			--with-tremor \
 			--with-libdir=/usr/lib \
@@ -735,11 +728,7 @@ $(D)/neutrino-alpha.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--disable-upnp \
-			--enable-ffmpegdec \
-			--enable-giflib \
 			--with-tremor \
-			--enable-lua \
 			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
 			--with-fontdir=/usr/share/fonts \
@@ -843,11 +832,7 @@ $(D)/neutrino-test.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--disable-upnp \
-			--enable-ffmpegdec \
-			--enable-giflib \
 			--with-tremor \
-			--enable-lua \
 			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
 			--with-fontdir=/usr/share/fonts \
