@@ -314,7 +314,6 @@ $(D)/neutrino-mp-cst-next.config.status:
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
 			--with-tremor \
-			--enable-lua \
 			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
 			--with-fontdir=/usr/share/fonts \
@@ -416,7 +415,6 @@ $(D)/neutrino-mp-cst-next-ni.config.status:
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
 			--with-tremor \
-			--enable-lua \
 			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
 			--with-fontdir=/usr/share/fonts \
