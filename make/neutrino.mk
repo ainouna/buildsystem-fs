@@ -710,7 +710,7 @@ $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	git clone -b alpha https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-alpha.git; \
 	cp -ra $(ARCHIVE)/neutrino-alpha.git $(SOURCE_DIR)/neutrino-alpha; \
 	cp -ra $(SOURCE_DIR)/neutrino-alpha $(SOURCE_DIR)/neutrino-alpha.org
-	@set -e; cd $(SOURCE_DIR)/neutrino-alpha; \
+	set -e; cd $(SOURCE_DIR)/neutrino-alpha; \
 		$(call post_patch,$(FS_NEUTRINO_ALPHA_PATCHES))
 	$(TOUCH)
 
@@ -814,7 +814,7 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	git clone -b test https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-test.git; \
 	cp -ra $(ARCHIVE)/neutrino-test.git $(SOURCE_DIR)/neutrino-test; \
 	cp -ra $(SOURCE_DIR)/neutrino-test $(SOURCE_DIR)/neutrino-test.org
-	@set -e; cd $(SOURCE_DIR)/neutrino-test; \
+	set -e; cd $(SOURCE_DIR)/neutrino-test; \
 		$(call post_patch,$(FS_NEUTRINO_TEST_PATCHES))
 	$(TOUCH)
 
