@@ -152,7 +152,7 @@ check:
 	@if test -d $(FLASH_DIR); then \
 		cd $(FLASH_DIR)/; \
 		echo '=============================================================='; \
-		echo '      check $(GIT_NAME_FLASH)-flash git repo               '; \
+		echo '      check $(GIT_NAME_FLASH)-flash git repo                  '; \
 		echo '=============================================================='; \
 		echo; \
 		$(GIT_CHECK); fi
