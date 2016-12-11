@@ -124,6 +124,40 @@ update:
 		$(GIT_PULL); fi
 		@echo;
 
+check:
+	@if test -d $(BASE_DIR); then \
+		cd $(BASE_DIR)/; \
+		echo '=============================================================='; \
+		echo '      check $(GIT_NAME)-cdk git repo                          '; \
+		echo '=============================================================='; \
+		echo; \
+		$(GIT_CHECK); fi
+		@echo;
+	@if test -d $(DRIVER_DIR); then \
+		cd $(DRIVER_DIR)/; \
+		echo '=============================================================='; \
+		echo '      check $(GIT_NAME_DRIVER)-driver git repo                '; \
+		echo '=============================================================='; \
+		echo; \
+		$(GIT_CHECK); fi
+		@echo;
+	@if test -d $(APPS_DIR); then \
+		cd $(APPS_DIR)/; \
+		echo '=============================================================='; \
+		echo '      check $(GIT_NAME_APPS)-apps git repo                    '; \
+		echo '=============================================================='; \
+		echo; \
+		$(GIT_CHECK); fi
+		@echo;
+	@if test -d $(FLASH_DIR); then \
+		cd $(FLASH_DIR)/; \
+		echo '=============================================================='; \
+		echo '      check $(GIT_NAME_FLASH)-flash git repo               '; \
+		echo '=============================================================='; \
+		echo; \
+		$(GIT_CHECK); fi
+		@echo;
+
 all:
 	@echo "'make all' is not a valid target. Please read the documentation."
 

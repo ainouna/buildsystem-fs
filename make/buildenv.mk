@@ -39,6 +39,7 @@ GIT_NAME_APPS        ?= Duckbox-Developers
 GIT_NAME_FLASH       ?= Duckbox-Developers
 
 ifneq ($(GIT_STASH_PULL), stashpull)
+GIT_CHECK             = git checkout -f
 GIT_PULL              = git pull
 else
 GIT_PULL              = git stash && git stash show -p stash@{0} > ./pull-stash.patch || true && git pull && git stash pop || true
