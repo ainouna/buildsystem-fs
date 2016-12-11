@@ -7,4 +7,9 @@ LOCAL_ENIGMA2_BUILD_OPTIONS =
 LOCAL_ENIGMA2_CPPFLAGS      =
 LOCAL_ENIGMA2_DEPS          =
 
-VERBOSE = 1
+VERBOSE = 0
+
+GIT_NAME        = fs-basis
+GIT_NAME_DRIVER = fs-basis
+GIT_NAME_APPS   = fs-basis
+GIT_NAME_FLASH  = fs-basis
