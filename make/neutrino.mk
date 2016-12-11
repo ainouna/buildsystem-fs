@@ -778,14 +778,14 @@ $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 		pushd $(SOURCE_DIR)/neutrino-alpha ; \
 		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
-		pushd $(CDK_DIR) ; \
+		pushd $(BASE_DIR) ; \
 		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-alpha-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
 $(D)/neutrino-alpha.do_compile: $(D)/neutrino-alpha.config.status $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
-	$(START_BUILD)	
+	$(START_BUILD)
 	cd $(SOURCE_DIR)/neutrino-alpha; \
 		$(MAKE) -C $(N_OBJDIR) all
 	$(TOUCH)
@@ -887,14 +887,14 @@ $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 		pushd $(SOURCE_DIR)/neutrino-test ; \
 		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
-		pushd $(CDK_DIR) ; \
+		pushd $(BASE_DIR) ; \
 		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-neutrino-test-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
 $(D)/neutrino-test.do_compile: $(D)/neutrino-test.config.status $(SOURCE_DIR)/neutrino-test/src/gui/version.h
-	$(START_BUILD)		
+	$(START_BUILD)
 	cd $(SOURCE_DIR)/neutrino-test; \
 		$(MAKE) -C $(N_OBJDIR) all
 	$(TOUCH)
