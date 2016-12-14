@@ -65,6 +65,7 @@ $(D)/gmp: $(D)/bootstrap $(ARCHIVE)/gmp-$(GMP_VER).tar.xz
 	set -e; cd $(BUILD_TMP)/gmp-$(GMP_MAJOR); \
 		$(CONFIGURE) \
 			--prefix=/usr \
+			--infodir=/.remove \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
@@ -166,11 +167,12 @@ $(D)/glib2: $(D)/bootstrap $(D)/host_glib2_genmarshal $(D)/zlib $(D)/libffi $(AR
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
+			--datarootdir=/.remove \
+			--with-html-dir=/.remove \
 			--cache-file=config.cache \
 			--disable-gtk-doc \
 			--disable-gtk-doc-html \
 			--with-threads="posix" \
-			--with-html-dir=/.remove \
 			--enable-static \
 		; \
 		$(MAKE) all; \
@@ -1615,8 +1617,12 @@ $(D)/libsoup: $(D)/bootstrap $(D)/sqlite $(D)/libxml2_e2 $(D)/glib2 $(ARCHIVE)/l
 	set -e; cd $(BUILD_TMP)/libsoup-$(LIBSOUP_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
+			--datarootdir=/.remove \
 			--disable-more-warnings \
 			--without-gnome \
+			--disable-gtk-doc \
+			--disable-gtk-doc-html \
+			--disable-gtk-doc-pdf \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
@@ -1671,7 +1677,6 @@ $(D)/libflac: $(D)/bootstrap $(ARCHIVE)/flac-$(FLAC_VER).tar.xz
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
-			--docdir=/.remove \
 			--disable-sse \
 			--disable-asm-optimizations \
 			--disable-doxygen-docs \
@@ -1686,7 +1691,7 @@ $(D)/libflac: $(D)/bootstrap $(ARCHIVE)/flac-$(FLAC_VER).tar.xz
 			--disable-altivec \
 		; \
 		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGETPREFIX)
+		$(MAKE) install DESTDIR=$(TARGETPREFIX) docdir=/.remove
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/flac.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/flac++.pc
 	$(REWRITE_LIBTOOL)/libFLAC.la
@@ -2487,6 +2492,7 @@ $(D)/gnutls: $(D)/bootstrap $(D)/nettle $(ARCHIVE)/gnutls-$(GNUTLS_VER).tar.xz
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
+			--infodir=/.remove \
 			--disable-rpath \
 			--with-included-libtasn1 \
 			--enable-local-libopts \
