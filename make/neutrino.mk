@@ -48,7 +48,6 @@ N_CONFIG_OPTS += --enable-lua
 N_CONFIG_OPTS += --enable-pugixml
 #N_CONFIG_OPTS += --enable-viasatepg
 
-
 ifeq ($(EXTERNAL_LCD), externallcd)
 N_CONFIG_OPTS += --enable-graphlcd
 NEUTRINO_DEPS += $(D)/graphlcd
