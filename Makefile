@@ -42,6 +42,7 @@ printenv:
 	@echo "PLAYER_VERSION   : $(PLAYER_VER)"
 	@echo "MEDIAFW          : $(MEDIAFW)"
 	@echo "EXTERNAL_LCD     : $(EXTERNAL_LCD)"
+	@echo "CPU_CORES        : $(NR_CPU)"
 	@echo "IMAGE            : $(IMAGE)"
 	@echo '================================================================================'
 ifeq ($(IMAGE), $(filter $(IMAGE), neutrino neutrino-wlandriver))
@@ -110,6 +111,7 @@ update-self:
 	git pull
 
 update:
+	make distclean
 	@if test -d $(BASE_DIR); then \
 		cd $(BASE_DIR)/; \
 		echo '=============================================================='; \
