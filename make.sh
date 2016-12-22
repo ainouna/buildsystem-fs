@@ -248,7 +248,7 @@ case $7 in
 		echo "   1)  Enigma2"
 		echo "   2)  Enigma2 (includes WLAN drivers)"
 		echo "   3)  Neutrino"
-		echo "   4)  Neutrino (includes WLAN drivers)"
+		echo "   4)  Neutrino (includes WLAN drivers , not used!!!)"
 		read -p "Select Image to build (1-4)? ";;
 esac
 
