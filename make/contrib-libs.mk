@@ -1332,7 +1332,7 @@ $(D)/libdreamdvd: $(D)/bootstrap $(D)/libdvdnav
 #
 # ffmpeg
 #
-FFMPEG_VERSION = 2.8.6
+FFMPEG_VERSION = 2.8.10
 FFMPEG_PATCH  = ffmpeg-buffer-size-$(FFMPEG_VERSION).patch
 FFMPEG_PATCH += ffmpeg-hds-libroxml-$(FFMPEG_VERSION).patch
 FFMPEG_PATCH += ffmpeg-aac-$(FFMPEG_VERSION).patch
@@ -1542,6 +1542,9 @@ $(D)/ffmpeg: $(D)/bootstrap $(D)/openssl $(D)/bzip2 $(D)/libass $(D)/libroxml $(
 			--target-os=linux \
 			--arch=sh4 \
 			--prefix=/usr \
+			--mandir=/.remove \
+			--datadir=/.remove \
+			--docdir=/.remove \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
@@ -1588,10 +1591,10 @@ $(D)/libass: $(D)/bootstrap $(D)/libfreetype $(D)/libfribidi $(ARCHIVE)/libass-$
 #
 # sqlite
 #
-SQLITE_VERSION = 3110000
+SQLITE_VERSION = 3160100
 
 $(ARCHIVE)/sqlite-autoconf-$(SQLITE_VERSION).tar.gz:
-	$(WGET) http://www.sqlite.org/2016/sqlite-autoconf-$(SQLITE_VERSION).tar.gz
+	$(WGET) http://www.sqlite.org/2017/sqlite-autoconf-$(SQLITE_VERSION).tar.gz
 
 $(D)/sqlite: $(D)/bootstrap $(ARCHIVE)/sqlite-autoconf-$(SQLITE_VERSION).tar.gz
 	$(START_BUILD)
@@ -1686,26 +1689,25 @@ $(D)/libflac: $(D)/bootstrap $(ARCHIVE)/flac-$(FLAC_VERSION).tar.xz
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
-			--disable-sse \
-			--disable-asm-optimizations \
-			--disable-doxygen-docs \
-			--disable-exhaustive-tests \
-			--disable-thorough-tests \
+			--disable-cpplibs \
 			--disable-debug \
-			--disable-valgrind-testing \
-			--disable-dependency-tracking \
-			--disable-ogg \
-			--disable-xmms-plugin \
-			--disable-thorough-tests \
+			--disable-asm-optimizations \
+			--disable-sse \
+			--disable-3dnow \
 			--disable-altivec \
+			--disable-doxygen-docs \
+			--disable-thorough-tests \
+			--disable-exhaustive-tests \
+			--disable-valgrind-testing \
+			--disable-ogg \
+			--disable-oggtest \
+			--disable-local-xmms-plugin \
+			--disable-xmms-plugin \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX) docdir=/.remove
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/flac.pc
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/flac++.pc
 	$(REWRITE_LIBTOOL)/libFLAC.la
-	$(REWRITE_LIBTOOL)/libFLAC++.la
-	$(REWRITE_LIBTOOLDEP)/libFLAC++.la
 	$(REMOVE)/flac-$(FLAC_VERSION)
 	$(TOUCH)
 
@@ -2080,6 +2082,7 @@ $(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/alsa-utils-$(ALSA_UTILS
 			--disable-alsaloop \
 			--disable-alsamixer \
 			--disable-xmlto \
+			--disable-rst2man \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
@@ -2102,7 +2105,7 @@ $(ARCHIVE)/OpenThreads-$(LIBOPENTHREADS_VERSION).zip:
 $(D)/libopenthreads: $(D)/bootstrap $(ARCHIVE)/OpenThreads-$(LIBOPENTHREADS_VERSION).zip
 	$(START_BUILD)
 	$(REMOVE)/OpenThreads-$(LIBOPENTHREADS_VERSION)
-	unzip -qq $(ARCHIVE)/OpenThreads-$(LIBOPENTHREADS_VERSION).zip -d $(BUILD_TMP)
+	unzip -q $(ARCHIVE)/OpenThreads-$(LIBOPENTHREADS_VERSION).zip -d $(BUILD_TMP)
 	set -e; cd $(BUILD_TMP)/OpenThreads-$(LIBOPENTHREADS_VERSION); \
 		$(call post_patch,$(LIBOPENTHREADS_PATCH)); \
 		echo "# dummy file to prevent warning message" > examples/CMakeLists.txt; \
