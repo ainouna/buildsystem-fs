@@ -157,7 +157,7 @@ LIBXMLCCWRAP_VERSION = 0.0.12
 $(ARCHIVE)/libxmlccwrap-$(LIBXMLCCWRAP_VERSION).tar.gz:
 	$(WGET) http://www.ant.uni-bremen.de/whomes/rinas/libxmlccwrap/download/libxmlccwrap-$(PYTHON_IMAGING_VERSION).tar.gz
 
-$(D)/libxmlccwrap: $(D)/bootstrap $(D)/libxml2_e2 $(D)/libxslt $(ARCHIVE)/libxmlccwrap-$(LIBXMLCCWRAP_VERSION).tar.gz
+$(D)/libxmlccwrap: $(D)/bootstrap $(D)/libxml2 $(D)/libxslt $(ARCHIVE)/libxmlccwrap-$(LIBXMLCCWRAP_VERSION).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/libxmlccwrap-$(LIBXMLCCWRAP_VERSION)
 	$(UNTAR)/libxmlccwrap-$(LIBXMLCCWRAP_VERSION).tar.gz
@@ -220,7 +220,7 @@ PYTHON_IMAGING_PATCH = python-imaging-$(PYTHON_IMAGING_VERSION).patch
 $(ARCHIVE)/Imaging-$(PYTHON_IMAGING_VERSION).tar.gz:
 	$(WGET) http://effbot.org/downloads/Imaging-$(PYTHON_IMAGING_VERSION).tar.gz
 
-$(D)/python_imaging: $(D)/bootstrap $(D)/libjpeg $(D)/libfreetype $(D)/python $(D)/python_setuptools $(ARCHIVE)/Imaging-$(PYTHON_IMAGING_VERSION).tar.gz
+$(D)/python_imaging: $(D)/bootstrap $(D)/libjpeg $(D)/freetype $(D)/python $(D)/python_setuptools $(ARCHIVE)/Imaging-$(PYTHON_IMAGING_VERSION).tar.gz
 	$(START_BUILD)
 	$(REMOVE)/Imaging-$(PYTHON_IMAGING_VERSION)
 	$(UNTAR)/Imaging-$(PYTHON_IMAGING_VERSION).tar.gz
