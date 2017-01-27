@@ -2013,7 +2013,7 @@ $(D)/alsa-lib: $(D)/bootstrap $(ARCHIVE)/alsa-lib-$(ALSA_LIB_VERSION).tar.bz2
 	$(UNTAR)/alsa-lib-$(ALSA_LIB_VERSION).tar.bz2
 	set -e; cd $(BUILD_TMP)/alsa-lib-$(ALSA_LIB_VERSION); \
 		$(call post_patch,$(ALSA_LIB_PATCH)); \
-		$(CONFIGURE) \
+		$(CONFIGURE_ALSA) \
 			--prefix=/usr \
 			--with-alsa-devdir=/dev/snd/ \
 			--with-plugindir=/usr/lib/alsa \
