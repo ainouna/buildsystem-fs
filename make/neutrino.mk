@@ -890,6 +890,7 @@ yaud-neutrino-test-xupnpd: yaud-none \
 FS_NEUTRINO_TEST_PATCHES =
 
 $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-test
 	rm -rf $(SOURCE_DIR)/neutrino-test.org
 	rm -rf $(N_OBJDIR)
@@ -979,3 +980,113 @@ neutrino-test-clean:
 neutrino-test-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test*
+
+################################################################################
+#
+# fs-basis yaud-neutrino-msgbox
+#
+yaud-neutrino-msgbox: yaud-none \
+		neutrino-msgbox $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-msgbox-plugins: yaud-none \
+		$(D)/neutrino-msgbox $(D)/neutrino-mp-plugins $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-msgbox-xupnpd: yaud-none \
+		$(D)/neutrino-msgbox xupnpd $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+FS_NEUTRINO_MSGBOX_PATCHES =
+
+$(D)/neutrino-msgbox.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+	$(START_BUILD)
+	rm -rf $(SOURCE_DIR)/neutrino-msgbox
+	rm -rf $(SOURCE_DIR)/neutrino-msgbox.org
+	rm -rf $(N_OBJDIR)
+	[ -d "$(ARCHIVE)/neutrino-msgbox.git" ] && \
+	(cd $(ARCHIVE)/neutrino-msgbox.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/neutrino-msgbox.git" ] || \
+	git clone -b msgbox https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-msgbox.git; \
+	cp -ra $(ARCHIVE)/neutrino-msgbox.git $(SOURCE_DIR)/neutrino-msgbox; \
+	cp -ra $(SOURCE_DIR)/neutrino-msgbox $(SOURCE_DIR)/neutrino-msgbox.org
+	set -e; cd $(SOURCE_DIR)/neutrino-msgbox; \
+		$(call post_patch,$(FS_NEUTRINO_MSGBOX_PATCHES))
+	$(TOUCH)
+
+$(D)/neutrino-msgbox.config.status:
+	$(START_BUILD)
+	rm -rf $(N_OBJDIR)
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	cd $(N_OBJDIR); \
+		$(SOURCE_DIR)/neutrino-msgbox/autogen.sh; \
+		$(BUILDENV) \
+		$(SOURCE_DIR)/neutrino-msgbox/configure --enable-silent-rules \
+			--build=$(BUILD) \
+			--host=$(TARGET) \
+			$(N_CONFIG_OPTS) \
+			--with-boxtype=$(BOXTYPE) \
+			--with-tremor \
+			--with-libdir=/usr/lib \
+			--with-datadir=/usr/share/tuxbox \
+			--with-fontdir=/usr/share/fonts \
+			--with-configdir=/var/tuxbox/config \
+			--with-gamesdir=/var/tuxbox/games \
+			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
+			--with-iconsdir_var=/var/tuxbox/icons \
+			--with-luaplugindir=/var/tuxbox/plugins \
+			--with-localedir=/usr/share/tuxbox/neutrino/locale \
+			--with-localedir_var=/var/tuxbox/locale \
+			--with-plugindir=/var/tuxbox/plugins \
+			--with-plugindir_var=/var/tuxbox/plugins \
+			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
+			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
+			--with-themesdir_var=/var/tuxbox/themes \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
+			--with-stb-hal-build=$(LH_OBJDIR) \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
+			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+
+$(SOURCE_DIR)/neutrino-msgbox/src/gui/version.h:
+	@rm -f $@; \
+	echo '#define BUILT_DATE "'`date`'"' > $@
+	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
+		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		pushd $(SOURCE_DIR)/neutrino-msgbox ; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		pushd $(BASE_DIR) ; \
+		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-neutrino-msgbox-rev'$$NMP_REV'"' >> $@ ; \
+	fi
+
+$(D)/neutrino-msgbox.do_compile: $(D)/neutrino-msgbox.config.status $(SOURCE_DIR)/neutrino-msgbox/src/gui/version.h
+	$(START_BUILD)
+	cd $(SOURCE_DIR)/neutrino-msgbox; \
+		$(MAKE) -C $(N_OBJDIR) all
+	$(TOUCH)
+
+$(D)/neutrino-msgbox: $(D)/neutrino-msgbox.do_prepare $(D)/neutrino-msgbox.do_compile
+	$(START_BUILD)
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGETPREFIX); \
+	rm -f $(TARGETPREFIX)/var/etc/.version
+	make $(TARGETPREFIX)/var/etc/.version
+	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
+	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
+	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
+	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
+	$(TOUCH)
+
+neutrino-msgbox-clean:
+	rm -f $(D)/neutrino-msgbox
+	rm -f $(SOURCE_DIR)/neutrino-msgbox/src/gui/version.h
+	cd $(N_OBJDIR); \
+		$(MAKE) -C $(N_OBJDIR) distclean
+
+neutrino-msgbox-distclean:
+	rm -rf $(N_OBJDIR)
+	rm -f $(D)/neutrino-msgbox*
