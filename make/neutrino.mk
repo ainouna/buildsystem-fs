@@ -372,7 +372,6 @@ $(D)/neutrino-mp-cst-next: $(D)/neutrino-mp-cst-next.do_prepare $(D)/neutrino-mp
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
-	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
 	$(TOUCH)
 
 neutrino-mp-cst-next-clean:
@@ -478,7 +477,6 @@ $(D)/neutrino-mp-cst-next-ni: $(D)/neutrino-mp-cst-next-ni.do_prepare $(D)/neutr
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
-	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
 	$(TOUCH)
 
 neutrino-mp-cst-next-ni-clean:
@@ -748,7 +746,6 @@ $(D)/neutrino-mp-tangos: $(D)/neutrino-mp-tangos.do_prepare $(D)/neutrino-mp-tan
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
-	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
 	$(TOUCH)
 
 neutrino-mp-tangos-clean:
@@ -858,7 +855,6 @@ $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compi
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
-	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
 	$(TOUCH)
 
 neutrino-alpha-clean:
@@ -968,7 +964,6 @@ $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
-	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
 	$(TOUCH)
 
 neutrino-test-clean:
@@ -1078,7 +1073,6 @@ $(D)/neutrino-msgbox: $(D)/neutrino-msgbox.do_prepare $(D)/neutrino-msgbox.do_co
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/neutrino
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/pzapit
 	$(TARGET)-strip $(TARGETPREFIX)/usr/local/bin/sectionsdcontrol
-	$(TARGET)-strip $(TARGETPREFIX)/usr/local/sbin/udpstreampes
 	$(TOUCH)
 
 neutrino-msgbox-clean:
