@@ -748,6 +748,64 @@ neutrino-mp-tangos-distclean:
 
 ################################################################################
 #
+# fs-basis libstb-hal
+#
+LIBSTB_HAL_PATCHES =
+
+$(D)/libstb-hal.do_prepare:
+	$(START_BUILD)
+	rm -rf $(SOURCE_DIR)/libstb-hal
+	rm -rf $(SOURCE_DIR)/libstb-hal.org
+	rm -rf $(LH_OBJDIR)
+	[ -d "$(ARCHIVE)/libstb-hal.git" ] && \
+	(cd $(ARCHIVE)/libstb-hal.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/libstb-hal.git" ] || \
+	git clone https://github.com/fs-basis/libstb-hal.git $(ARCHIVE)/libstb-hal.git; \
+	cp -ra $(ARCHIVE)/libstb-hal.git $(SOURCE_DIR)/libstb-hal;\
+	cp -ra $(SOURCE_DIR)/libstb-hal $(SOURCE_DIR)/libstb-hal.org
+	set -e; cd $(SOURCE_DIR)/libstb-hal; \
+		$(call post_patch,$(LIBSTB_HAL_PATCHES))
+	$(TOUCH)
+
+$(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
+	$(START_BUILD)
+	rm -rf $(LH_OBJDIR); \
+	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
+	cd $(LH_OBJDIR); \
+		$(SOURCE_DIR)/libstb-hal/autogen.sh; \
+		$(BUILDENV) \
+		$(SOURCE_DIR)/libstb-hal/configure --enable-silent-rules \
+			--host=$(TARGET) \
+			--build=$(BUILD) \
+			--prefix= \
+			--with-target=cdk \
+			--with-boxtype=$(BOXTYPE) \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
+			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+
+$(D)/libstb-hal.do_compile: $(D)/libstb-hal.config.status
+	$(START_BUILD)
+	cd $(SOURCE_DIR)/libstb-hal; \
+		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGETPREFIX)
+	$(TOUCH)
+
+$(D)/libstb-hal: $(D)/libstb-hal.do_prepare $(D)/libstb-hal.do_compile
+	$(START_BUILD)
+	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(TARGETPREFIX)
+	$(TOUCH)
+
+libstb-hal-clean:
+	rm -f $(D)/libstb-hal
+	cd $(LH_OBJDIR); \
+		$(MAKE) -C $(LH_OBJDIR) distclean
+
+libstb-hal-distclean:
+	rm -rf $(LH_OBJDIR)
+	rm -f $(D)/libstb-hal*
+
+################################################################################
+#
 # fs-basis yaud-neutrino-alpha
 #
 yaud-neutrino-alpha: yaud-none \
@@ -764,7 +822,7 @@ yaud-neutrino-alpha-xupnpd: yaud-none \
 
 FS_NEUTRINO_ALPHA_PATCHES =
 
-$(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+$(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-alpha
 	rm -rf $(SOURCE_DIR)/neutrino-alpha.org
@@ -807,7 +865,7 @@ $(D)/neutrino-alpha.config.status:
 			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-themesdir_var=/var/tuxbox/themes \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
@@ -816,8 +874,8 @@ $(D)/neutrino-alpha.config.status:
 $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
+		pushd $(SOURCE_DIR)/libstb-hal ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		pushd $(SOURCE_DIR)/neutrino-alpha ; \
@@ -854,7 +912,7 @@ neutrino-alpha-distclean:
 
 ################################################################################
 #
-# fs-basis yaud-neutrino-test
+# fs-basis yaud-neutrino-test (master)
 #
 yaud-neutrino-test: yaud-none \
 		neutrino-test $(D)/release_neutrino
@@ -870,7 +928,7 @@ yaud-neutrino-test-xupnpd: yaud-none \
 
 FS_NEUTRINO_TEST_PATCHES =
 
-$(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+$(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-test
 	rm -rf $(SOURCE_DIR)/neutrino-test.org
@@ -913,7 +971,7 @@ $(D)/neutrino-test.config.status:
 			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-themesdir_var=/var/tuxbox/themes \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
@@ -922,8 +980,8 @@ $(D)/neutrino-test.config.status:
 $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
+		pushd $(SOURCE_DIR)/libstb-hal ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		pushd $(SOURCE_DIR)/neutrino-test ; \
@@ -976,7 +1034,7 @@ yaud-neutrino-msgbox-xupnpd: yaud-none \
 
 FS_NEUTRINO_MSGBOX_PATCHES =
 
-$(D)/neutrino-msgbox.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+$(D)/neutrino-msgbox.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-msgbox
 	rm -rf $(SOURCE_DIR)/neutrino-msgbox.org
@@ -1019,7 +1077,7 @@ $(D)/neutrino-msgbox.config.status:
 			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-themesdir_var=/var/tuxbox/themes \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
@@ -1028,8 +1086,8 @@ $(D)/neutrino-msgbox.config.status:
 $(SOURCE_DIR)/neutrino-msgbox/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
+		pushd $(SOURCE_DIR)/libstb-hal ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		pushd $(SOURCE_DIR)/neutrino-msgbox ; \
