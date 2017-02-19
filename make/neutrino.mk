@@ -235,7 +235,7 @@ $(D)/libstb-hal-cst-next.do_prepare:
 	[ -d "$(ARCHIVE)/libstb-hal-cst-next.git" ] && \
 	(cd $(ARCHIVE)/libstb-hal-cst-next.git; git pull; cd "$(BUILD_TMP)";); \
 	[ -d "$(ARCHIVE)/libstb-hal-cst-next.git" ] || \
-	git clone https://github.com/fs-basis/libstb-hal-cst-next.git $(ARCHIVE)/libstb-hal-cst-next.git; \
+	git clone https://github.com/Duckbox-Developers/libstb-hal-cst-next.git $(ARCHIVE)/libstb-hal-cst-next.git; \
 	cp -ra $(ARCHIVE)/libstb-hal-cst-next.git $(SOURCE_DIR)/libstb-hal-cst-next;\
 	cp -ra $(SOURCE_DIR)/libstb-hal-cst-next $(SOURCE_DIR)/libstb-hal-cst-next.org
 	set -e; cd $(SOURCE_DIR)/libstb-hal-cst-next; \
