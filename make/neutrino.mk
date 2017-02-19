@@ -772,7 +772,7 @@ $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	[ -d "$(ARCHIVE)/neutrino-alpha.git" ] && \
 	(cd $(ARCHIVE)/neutrino-alpha.git; git pull; cd "$(BUILD_TMP)";); \
 	[ -d "$(ARCHIVE)/neutrino-alpha.git" ] || \
-	git clone -b alpha https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-alpha.git; \
+	git clone -b alpha https://github.com/fs-basis/neutrino-gui.git $(ARCHIVE)/neutrino-alpha.git; \
 	cp -ra $(ARCHIVE)/neutrino-alpha.git $(SOURCE_DIR)/neutrino-alpha; \
 	cp -ra $(SOURCE_DIR)/neutrino-alpha $(SOURCE_DIR)/neutrino-alpha.org
 	set -e; cd $(SOURCE_DIR)/neutrino-alpha; \
@@ -878,7 +878,7 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	[ -d "$(ARCHIVE)/neutrino-test.git" ] && \
 	(cd $(ARCHIVE)/neutrino-test.git; git pull; cd "$(BUILD_TMP)";); \
 	[ -d "$(ARCHIVE)/neutrino-test.git" ] || \
-	git clone https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-test.git; \
+	git clone https://github.com/fs-basis/neutrino-gui.git $(ARCHIVE)/neutrino-test.git; \
 	cp -ra $(ARCHIVE)/neutrino-test.git $(SOURCE_DIR)/neutrino-test; \
 	cp -ra $(SOURCE_DIR)/neutrino-test $(SOURCE_DIR)/neutrino-test.org
 	set -e; cd $(SOURCE_DIR)/neutrino-test; \
@@ -984,7 +984,7 @@ $(D)/neutrino-msgbox.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	[ -d "$(ARCHIVE)/neutrino-msgbox.git" ] && \
 	(cd $(ARCHIVE)/neutrino-msgbox.git; git pull; cd "$(BUILD_TMP)";); \
 	[ -d "$(ARCHIVE)/neutrino-msgbox.git" ] || \
-	git clone -b msgbox https://github.com/fs-basis/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-msgbox.git; \
+	git clone -b msgbox https://github.com/fs-basis/neutrino-gui.git $(ARCHIVE)/neutrino-msgbox.git; \
 	cp -ra $(ARCHIVE)/neutrino-msgbox.git $(SOURCE_DIR)/neutrino-msgbox; \
 	cp -ra $(SOURCE_DIR)/neutrino-msgbox $(SOURCE_DIR)/neutrino-msgbox.org
 	set -e; cd $(SOURCE_DIR)/neutrino-msgbox; \
