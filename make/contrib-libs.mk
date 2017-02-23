@@ -890,7 +890,7 @@ $(D)/libgif: $(D)/bootstrap $(ARCHIVE)/giflib-$(GIFLIB_VERSION).tar.bz2
 #
 # libcurl
 #
-CURL_VERSION = 7.52.1
+CURL_VERSION = 7.53.0
 CURL_PATCH = libcurl-$(CURL_VERSION).patch
 
 $(ARCHIVE)/curl-$(CURL_VERSION).tar.bz2:
@@ -1730,6 +1730,7 @@ $(ARCHIVE)/libxml2-$(LIBXML2_VERSION).tar.gz:
 
 ifeq ($(IMAGE), enigma2)
 LIBXML2_CONF_OPTS  = --with-python=$(HOSTPREFIX)
+LIBXML2_CONF_OPTS += --with-python-install-dir=$(PYTHON_DIR)/site-packages
 endif
 
 ifeq ($(IMAGE), neutrino)
