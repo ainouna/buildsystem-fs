@@ -10,7 +10,7 @@ neutrino-mp-cst-next-ni-patch \
 neutrino-mp-cst-next-max-patch \
 neutrino-alpha-patch \
 neutrino-test-patch \
-neutrino-msgbox.patch \
+neutrino-msgbox-patch \
 libstb-hal-next-patch \
 libstb-hal-cst-next-patch :
 	cd $(SOURCE_DIR) && diff -Nur --exclude-from=$(SCRIPTS_DIR)/diff-exclude $(subst -patch,,$@).org $(subst -patch,,$@) > $(BASE_DIR)/$(subst -patch,.patch,$@) ; [ $$? -eq 1 ]
