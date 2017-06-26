@@ -356,6 +356,8 @@ $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/$(OPENSSL_SOURCE)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libcrypto.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libssl.pc
 	cd $(TARGETPREFIX) && rm -rf etc/ssl/man usr/bin/openssl
+	ln -sf libcrypto.so.1.0.0 $(TARGETPREFIX)/usr/lib/libcrypto.so.0.9.8
+	ln -sf libssl.so.1.0.0 $(TARGETPREFIX)/usr/lib/libssl.so.0.9.8
 	$(REMOVE)/openssl-$(OPENSSL_VERSION)
 	$(TOUCH)
 
@@ -402,25 +404,28 @@ $(D)/libbluray: $(D)/bootstrap $(ARCHIVE)/$(LIBBLURAY_SOURCE)
 LUA_VERSION = 5.2.4
 LUA_VERSION_SHORT = 5.2
 LUA_SOURCE = lua-$(LUA_VERSION).tar.gz
-LUAPOSIX_VERSION = 31
-LUAPOSIX_PATCH = lua-$(LUA_VERSION)-luaposix-$(LUAPOSIX_VERSION).patch
+
+LUA_POSIX_VERSION = 31
+LUA_POSIX_SOURCE = luaposix-$(LUA_POSIX_VERSION).tar.bz2
+LUA_POSIX_URL = git://github.com/luaposix/luaposix.git
+LUA_POSIX_PATCH = lua-$(LUA_VERSION)-luaposix-$(LUA_POSIX_VERSION).patch
 
 $(ARCHIVE)/$(LUA_SOURCE):
 	$(WGET) http://www.lua.org/ftp/$(LUA_SOURCE)
 
-$(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/$(LUA_SOURCE)
+$(ARCHIVE)/$(LUA_POSIX_SOURCE):
+	get-git-archive.sh $(LUA_POSIX_URL) release-v$(LUA_POSIX_VERSION) $(notdir $@) $(ARCHIVE)
+
+$(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/$(LUA_POSIX_SOURCE) $(ARCHIVE)/$(LUA_SOURCE)
 	$(START_BUILD)
 	$(REMOVE)/lua-$(LUA_VERSION)
-	set -e; if [ ! -d $(ARCHIVE)/luaposix.git ]; \
-		then cd $(ARCHIVE); git clone -b release-v$(LUAPOSIX_VERSION) git://github.com/luaposix/luaposix.git luaposix.git; \
-		fi
 	mkdir -p $(TARGETPREFIX)/usr/share/lua/$(LUA_VERSION_SHORT)
 	$(UNTAR)/$(LUA_SOURCE)
 	set -e; cd $(BUILD_TMP)/lua-$(LUA_VERSION); \
-		$(call post_patch,$(LUAPOSIX_PATCH)); \
-		cp -r $(ARCHIVE)/luaposix.git .; \
-		cd luaposix.git/ext; cp posix/posix.c include/lua52compat.h ../../src/; cd ../..; \
-		cd luaposix.git/lib; cp *.lua $(TARGETPREFIX)/usr/share/lua/$(LUA_VERSION_SHORT); cd ../..; \
+		$(call post_patch,$(LUA_POSIX_PATCH)); \
+		tar xf $(ARCHIVE)/$(LUA_POSIX_SOURCE); \
+		cd luaposix-$(LUA_POSIX_VERSION)/ext; cp posix/posix.c include/lua52compat.h ../../src/; cd ../..; \
+		cd luaposix-$(LUA_POSIX_VERSION)/lib; cp *.lua $(TARGETPREFIX)/usr/share/lua/$(LUA_VERSION_SHORT); cd ../..; \
 		sed -i 's/<config.h>/"config.h"/' src/posix.c; \
 		sed -i '/^#define/d' src/lua52compat.h; \
 		sed -i 's|man/man1|/.remove|' Makefile; \
@@ -433,96 +438,105 @@ $(D)/lua: $(D)/bootstrap $(D)/libncurses $(ARCHIVE)/$(LUA_SOURCE)
 #
 # luacurl
 #
-$(D)/luacurl: $(D)/bootstrap $(D)/libcurl $(D)/lua
+LUA_CURL_VERSION = 9ac72c7
+LUA_CURL_SOURCE = luacurl-$(LUA_CURL_VERSION).tar.bz2
+LUA_CURL_URL = git://github.com/Lua-cURL/Lua-cURLv3.git
+
+$(ARCHIVE)/$(LUA_CURL_SOURCE):
+	get-git-archive.sh $(LUA_CURL_URL) $(LUA_CURL_VERSION) $(notdir $@) $(ARCHIVE)
+
+$(D)/luacurl: $(D)/bootstrap $(D)/libcurl $(D)/lua $(ARCHIVE)/$(LUA_CURL_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/luacurl
-	set -e; if [ -d $(ARCHIVE)/luacurl.git ]; \
-		then cd $(ARCHIVE)/luacurl.git; git pull; \
-		else cd $(ARCHIVE); git clone git://github.com/Lua-cURL/Lua-cURLv3.git luacurl.git; \
-		fi
-	cp -ra $(ARCHIVE)/luacurl.git $(BUILD_TMP)/luacurl
-	set -e; cd $(BUILD_TMP)/luacurl; \
+	$(REMOVE)/luacurl-$(LUA_CURL_VERSION)
+	$(UNTAR)/$(LUA_CURL_SOURCE)
+	set -e; cd $(BUILD_TMP)/luacurl-$(LUA_CURL_VERSION); \
 		$(MAKE) CC=$(TARGET)-gcc LDFLAGS="-L$(TARGETPREFIX)/usr/lib" \
 			LIBDIR=$(TARGETPREFIX)/usr/lib \
 			LUA_INC=$(TARGETPREFIX)/usr/include; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX) LUA_CMOD=/usr/lib/lua/$(LUA_VERSION_SHORT) LUA_LMOD=/usr/share/lua/$(LUA_VERSION_SHORT)
-	$(REMOVE)/luacurl
+	$(REMOVE)/luacurl-$(LUA_CURL_VERSION)
 	$(TOUCH)
 
 #
 # luaexpat
 #
-LUAEXPAT_VERSION = 1.3.0
-LUAEXPAT_SOURCE = luaexpat-$(LUAEXPAT_VERSION).tar.gz
-LUAEXPAT_PATCH = luaexpat-$(LUAEXPAT_VERSION).patch
+LUA_EXPAT_VERSION = 1.3.0
+LUA_EXPAT_SOURCE = luaexpat-$(LUA_EXPAT_VERSION).tar.gz
+LUA_EXPAT_PATCH = luaexpat-$(LUA_EXPAT_VERSION).patch
 
-$(ARCHIVE)/$(LUAEXPAT_SOURCE):
-	$(WGET) http://matthewwild.co.uk/projects/luaexpat/$(LUAEXPAT_SOURCE)
+$(ARCHIVE)/$(LUA_EXPAT_SOURCE):
+	$(WGET) http://matthewwild.co.uk/projects/luaexpat/$(LUA_EXPAT_SOURCE)
 
-$(D)/luaexpat: $(D)/bootstrap $(D)/lua $(D)/libexpat $(ARCHIVE)/$(LUAEXPAT_SOURCE)
+$(D)/luaexpat: $(D)/bootstrap $(D)/lua $(D)/libexpat $(ARCHIVE)/$(LUA_EXPAT_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/luaexpat-$(LUAEXPAT_VERSION)
-	$(UNTAR)/$(LUAEXPAT_SOURCE)
-	set -e; cd $(BUILD_TMP)/luaexpat-$(LUAEXPAT_VERSION); \
-		$(call post_patch,$(LUAEXPAT_PATCH)); \
+	$(REMOVE)/luaexpat-$(LUA_EXPAT_VERSION)
+	$(UNTAR)/$(LUA_EXPAT_SOURCE)
+	set -e; cd $(BUILD_TMP)/luaexpat-$(LUA_EXPAT_VERSION); \
+		$(call post_patch,$(LUA_EXPAT_PATCH)); \
 		$(MAKE) CC=$(TARGET)-gcc LDFLAGS="-L$(TARGETPREFIX)/usr/lib" PREFIX=$(TARGETPREFIX)/usr; \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)/usr
-	$(REMOVE)/luaexpat-$(LUAEXPAT_VERSION)
+	$(REMOVE)/luaexpat-$(LUA_EXPAT_VERSION)
 	$(TOUCH)
 
 #
 # luasocket
 #
-$(D)/luasocket: $(D)/bootstrap $(D)/lua
+LUA_SOCKET_VERSION = 5a17f79
+LUA_SOCKET_SOURCE = luasocket-$(LUA_SOCKET_VERSION).tar.bz2
+LUA_SOCKET_URL = git://github.com/diegonehab/luasocket.git
+
+$(ARCHIVE)/$(LUA_SOCKET_SOURCE):
+	get-git-archive.sh $(LUA_SOCKET_URL) $(LUA_SOCKET_VERSION) $(notdir $@) $(ARCHIVE)
+
+$(D)/luasocket: $(D)/bootstrap $(D)/lua $(ARCHIVE)/$(LUA_SOCKET_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/luasocket
-	set -e; if [ -d $(ARCHIVE)/luasocket.git ]; \
-		then cd $(ARCHIVE)/luasocket.git; git pull; \
-		else cd $(ARCHIVE); git clone git://github.com/diegonehab/luasocket.git luasocket.git; \
-		fi
-	cp -ra $(ARCHIVE)/luasocket.git $(BUILD_TMP)/luasocket
-	set -e; cd $(BUILD_TMP)/luasocket; \
+	$(REMOVE)/luasocket-$(LUA_SOCKET_VERSION)
+	$(UNTAR)/$(LUA_SOCKET_SOURCE)
+	set -e; cd $(BUILD_TMP)/luasocket-$(LUA_SOCKET_VERSION); \
 		sed -i -e "s@LD_linux=gcc@LD_LINUX=$(TARGET)-gcc@" -e "s@CC_linux=gcc@CC_LINUX=$(TARGET)-gcc -L$(TARGETPREFIX)/usr/lib@" -e "s@DESTDIR?=@DESTDIR?=$(TARGETPREFIX)/usr@" src/makefile; \
 		$(MAKE) CC=$(TARGET)-gcc LD=$(TARGET)-gcc LUAV=$(LUA_VERSION_SHORT) PLAT=linux COMPAT=COMPAT LUAINC_linux=$(TARGETPREFIX)/usr/include LUAPREFIX_linux=; \
 		$(MAKE) install LUAPREFIX_linux= LUAV=$(LUA_VERSION_SHORT)
-	$(REMOVE)/luasocket
+	$(REMOVE)/luasocket-$(LUA_SOCKET_VERSION)
 	$(TOUCH)
 
 #
-# lua-feedparser
+# luafeedparser
 #
-$(D)/lua-feedparser: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat
+LUA_FEEDPARSER_VERSION = 9b284bc
+LUA_FEEDPARSER_SOURCE = luafeedparser-$(LUA_FEEDPARSER_VERSION).tar.bz2
+LUA_FEEDPARSER_URL = git://github.com/slact/lua-feedparser.git
+
+$(ARCHIVE)/$(LUA_FEEDPARSER_SOURCE):
+	get-git-archive.sh $(LUA_FEEDPARSER_URL) $(LUA_FEEDPARSER_VERSION) $(notdir $@) $(ARCHIVE)
+
+$(D)/luafeedparser: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat $(ARCHIVE)/$(LUA_FEEDPARSER_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/lua-feedparser
-	set -e; if [ -d $(ARCHIVE)/lua-feedparser.git ]; \
-		then cd $(ARCHIVE)/lua-feedparser.git; git pull; \
-		else cd $(ARCHIVE); git clone git://github.com/slact/lua-feedparser.git lua-feedparser.git; \
-		fi
-	cp -ra $(ARCHIVE)/lua-feedparser.git $(BUILD_TMP)/lua-feedparser
-	set -e; cd $(BUILD_TMP)/lua-feedparser; \
+	$(REMOVE)/luafeedparser-$(LUA_FEEDPARSER_VERSION)
+	$(UNTAR)/$(LUA_FEEDPARSER_SOURCE)
+	set -e; cd $(BUILD_TMP)/luafeedparser-$(LUA_FEEDPARSER_VERSION); \
 		sed -i -e "s/^PREFIX.*//" -e "s/^LUA_DIR.*//" Makefile ; \
 		$(BUILDENV) $(MAKE) install  LUA_DIR=$(TARGETPREFIX)/usr/share/lua/$(LUA_VERSION_SHORT)
-	$(REMOVE)/lua-feedparser
+	$(REMOVE)/luafeedparser-$(LUA_FEEDPARSER_VERSION)
 	$(TOUCH)
 
 #
 # luasoap
 #
-LUASOAP_VERSION = 3.0
-LUASOAP_SOURCE = luasoap-$(LUASOAP_VERSION).tar.gz
-LUASOAP_PATCH = luasoap-$(LUASOAP_VERSION).patch
+LUA_SOAP_VERSION = 3.0
+LUA_SOAP_SOURCE = luasoap-$(LUA_SOAP_VERSION).tar.gz
+LUA_SOAP_PATCH = luasoap-$(LUA_SOAP_VERSION).patch
 
-$(ARCHIVE)/$(LUASOAP_SOURCE):
-	$(WGET) https://github.com/downloads/tomasguisasola/luasoap/$(LUASOAP_SOURCE)
+$(ARCHIVE)/$(LUA_SOAP_SOURCE):
+	$(WGET) https://github.com/downloads/tomasguisasola/luasoap/$(LUA_SOAP_SOURCE)
 
-$(D)/luasoap: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat $(ARCHIVE)/$(LUASOAP_SOURCE)
+$(D)/luasoap: $(D)/bootstrap $(D)/lua $(D)/luasocket $(D)/luaexpat $(ARCHIVE)/$(LUA_SOAP_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/luasoap-$(LUASOAP_VERSION)
-	$(UNTAR)/$(LUASOAP_SOURCE)
-	set -e; cd $(BUILD_TMP)/luasoap-$(LUASOAP_VERSION); \
+	$(REMOVE)/luasoap-$(LUA_SOAP_VERSION)
+	$(UNTAR)/$(LUA_SOAP_SOURCE)
+	set -e; cd $(BUILD_TMP)/luasoap-$(LUA_SOAP_VERSION); \
 		$(call post_patch,$(LUASOAP_PATCH)); \
 		$(MAKE) install LUA_DIR=$(TARGETPREFIX)/usr/share/lua/$(LUA_VERSION_SHORT)
-	$(REMOVE)/luasoap-$(LUASOAP_VERSION)
+	$(REMOVE)/luasoap-$(LUA_SOAP_VERSION)
 	$(TOUCH)
 
 #
@@ -1920,23 +1934,26 @@ $(D)/pugixml: $(D)/bootstrap $(ARCHIVE)/$(PUGIXML_SOURCE)
 #
 # graphlcd
 #
+GRAPHLCD_VERSION = 7958e1b
+GRAPHLCD_SOURCE = graphlcd-$(GRAPHLCD_VERSION).tar.bz2
+GRAPHLCD_URL = git://projects.vdr-developer.org/graphlcd-base.git
+GRAPHLCD_SOURCE_GIT = $(ARCHIVE)/graphlcd-base.git
 GRAPHLCD_PATCH = graphlcd-base-touchcol.patch
 
-$(D)/graphlcd: $(D)/bootstrap $(D)/freetype $(D)/libusb
+$(ARCHIVE)/$(GRAPHLCD_SOURCE):
+	get-git-archive.sh $(GRAPHLCD_URL) $(GRAPHLCD_VERSION) $(notdir $@) $(ARCHIVE)
+
+$(D)/graphlcd: $(D)/bootstrap $(D)/freetype $(D)/libusb $(ARCHIVE)/$(GRAPHLCD_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/graphlcd
-	set -e; if [ -d $(ARCHIVE)/graphlcd-base-touchcol.git ]; \
-		then cd $(ARCHIVE)/graphlcd-base-touchcol.git; git pull; \
-		else cd $(ARCHIVE); git clone -b touchcol git://projects.vdr-developer.org/graphlcd-base.git graphlcd-base-touchcol.git; \
-		fi
-	cp -ra $(ARCHIVE)/graphlcd-base-touchcol.git $(BUILD_TMP)/graphlcd
-	set -e; cd $(BUILD_TMP)/graphlcd; \
+	$(REMOVE)/graphlcd-$(GRAPHLCD_VERSION)
+	$(UNTAR)/$(GRAPHLCD_SOURCE)
+	set -e; cd $(BUILD_TMP)/graphlcd-$(GRAPHLCD_VERSION); \
 		$(call post_patch,$(GRAPHLCD_PATCH)); \
 		export TARGET=$(TARGET)-; \
 		$(BUILDENV) \
 		$(MAKE) DESTDIR=$(TARGETPREFIX); \
 		$(MAKE) install DESTDIR=$(TARGETPREFIX)
-	$(REMOVE)/graphlcd
+	$(REMOVE)/graphlcd-$(GRAPHLCD_VERSION)
 	$(TOUCH)
 
 #
@@ -2163,46 +2180,50 @@ $(D)/libopenthreads: $(D)/bootstrap $(ARCHIVE)/$(LIBOPENTHREADS_SOURCE)
 #
 # librtmpdump
 #
+LIBRTMPDUMP_VERSION = ad70c64
+LIBRTMPDUMP_SOURCE = librtmpdump-$(LIBRTMPDUMP_VERSION).tar.bz2
+LIBRTMPDUMP_URL = git://github.com/oe-alliance/rtmpdump.git
 LIBRTMPDUMP_PATCH = rtmpdump-2.4.patch
 
-$(D)/librtmpdump: $(D)/bootstrap $(D)/zlib $(D)/openssl
+$(ARCHIVE)/$(LIBRTMPDUMP_SOURCE):
+	get-git-archive.sh $(LIBRTMPDUMP_URL) $(LIBRTMPDUMP_VERSION) $(notdir $@) $(ARCHIVE)
+
+$(D)/librtmpdump: $(D)/bootstrap $(D)/zlib $(D)/openssl $(ARCHIVE)/$(LIBRTMPDUMP_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/librtmpdump
-	set -e; if [ -d $(ARCHIVE)/rtmpdump.git ]; \
-		then cd $(ARCHIVE)/rtmpdump.git; git pull; \
-		else cd $(ARCHIVE); git clone git://github.com/oe-alliance/rtmpdump.git rtmpdump.git; \
-		fi
-	cp -ra $(ARCHIVE)/rtmpdump.git $(BUILD_TMP)/librtmpdump
-	set -e; cd $(BUILD_TMP)/librtmpdump; \
+	$(REMOVE)/librtmpdump-$(LIBRTMPDUMP_VERSION)
+	$(UNTAR)/$(LIBRTMPDUMP_SOURCE)
+	set -e; cd $(BUILD_TMP)/librtmpdump-$(LIBRTMPDUMP_VERSION); \
 		$(call post_patch,$(LIBRTMPDUMP_PATCH)); \
 		$(BUILDENV) \
 		$(MAKE) CROSS_COMPILE=$(TARGET)- ; \
 		$(MAKE) install prefix=/usr DESTDIR=$(TARGETPREFIX) MANDIR=$(TARGETPREFIX)/.remove
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/librtmp.pc
-	$(REMOVE)/librtmpdump
+	$(REMOVE)/librtmpdump-$(LIBRTMPDUMP_VERSION)
 	$(TOUCH)
 
 #
 # libdvbsi++
 #
+LIBDVBSI++_VERSION = ff57e58
+LIBDVBSI++_SOURCE = libdvbsi++-$(LIBDVBSI++_VERSION).tar.bz2
+LIBDVBSI++_URL = git://git.opendreambox.org/git/obi/libdvbsi++.git
 LIBDVBSI++_PATCH = libdvbsi++-git.patch
 
-$(D)/libdvbsi++: $(D)/bootstrap
+$(ARCHIVE)/$(LIBDVBSI++_SOURCE):
+	get-git-archive.sh $(LIBDVBSI++_URL) $(LIBDVBSI++_VERSION) $(notdir $@) $(ARCHIVE)
+
+$(D)/libdvbsi++: $(D)/bootstrap $(ARCHIVE)/$(LIBDVBSI++_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/libdvbsi++
-	set -e; if [ -d $(ARCHIVE)/libdvbsi++.git ]; \
-		then cd $(ARCHIVE)/libdvbsi++.git; git pull; \
-		else cd $(ARCHIVE); git clone git://git.opendreambox.org/git/obi/libdvbsi++.git libdvbsi++.git; \
-		fi
-	cp -ra $(ARCHIVE)/libdvbsi++.git $(BUILD_TMP)/libdvbsi++
-	set -e; cd $(BUILD_TMP)/libdvbsi++; \
+	$(REMOVE)/libdvbsi++-$(LIBDVBSI++_VERSION)
+	$(UNTAR)/$(LIBDVBSI++_SOURCE)
+	set -e; cd $(BUILD_TMP)/libdvbsi++-$(LIBDVBSI++_VERSION); \
 		$(call post_patch,$(LIBDVBSI++_PATCH)); \
 		$(CONFIGURE) \
 			--prefix=$(TARGETPREFIX)/usr \
 		; \
 		$(MAKE); \
 		$(MAKE) install
-	$(REMOVE)/libdvbsi++
+	$(REMOVE)/libdvbsi++-$(LIBDVBSI++_VERSION)
 	$(TOUCH)
 
 #
