@@ -542,10 +542,10 @@ BUILDENV_ALSA = \
    OBJCOPY=$(TARGET)-objcopy \
    OBJDUMP=$(TARGET)-objdump \
    LN_S="ln -s" \
-   CFLAGS="-pipe -Os -I$(TARGETPREFIX)/usr/include" \
-   CPPFLAGS="-pipe -Os -I$(TARGETPREFIX)/usr/include" \
-   CXXFLAGS="-pipe -Os -I$(TARGETPREFIX)/usr/include" \
-   LDFLAGS="-Wl,-rpath -Wl,/usr/lib -Wl,-rpath-link -Wl,$(TARGETPREFIX)/usr/lib -L$(TARGETPREFIX)/usr/lib -L$(TARGETPREFIX)/lib" \
+   CFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
+   CPPFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
+   CXXFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
+   LDFLAGS="-Wl,-rpath -Wl,/usr/lib -Wl,-rpath-link -Wl,$(TARGET_DIR)/usr/lib -L$(TARGET_DIR)/usr/lib -L$(TARGET_DIR)/lib" \
    PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)"
 
 CONFIGURE_ALSA = \
