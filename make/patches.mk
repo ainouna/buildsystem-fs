@@ -11,7 +11,9 @@ neutrino-mp-cst-next-max-patch \
 neutrino-alpha-patch \
 neutrino-test-patch \
 neutrino-msgbox-patch \
-libstb-hal-next-patch \
+neutrino-fhd-menue-patch \
+libstb-hal-patch \
+libstb-hal-new-patch \
 libstb-hal-cst-next-patch :
 	cd $(SOURCE_DIR) && diff -Nur --exclude-from=$(SCRIPTS_DIR)/diff-exclude $(subst -patch,,$@).org $(subst -patch,,$@) > $(BASE_DIR)/$(subst -patch,.patch,$@) ; [ $$? -eq 1 ]
 
@@ -49,3 +51,9 @@ FS_NEUTRINO_TEST_PATCHES +=
 
 # FS Neutrino Msgbox
 FS_NEUTRINO_MSGBOX_PATCHES +=
+
+# FS Libstb Hal New
+LIBSTB_HAL_NEW_PATCHES +=
+
+# FS Neutrino-Fhd-Menue
+FS_NEUTRINO_FHD_MENUE_PATCHES +=

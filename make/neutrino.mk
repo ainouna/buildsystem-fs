@@ -1122,3 +1122,168 @@ neutrino-msgbox-clean:
 neutrino-msgbox-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-msgbox*
+
+################################################################################
+#
+# fs-basis libstb-hal-new
+#
+LIBSTB_HAL_NEW_PATCHES =
+
+$(D)/libstb-hal-new.do_prepare:
+	$(START_BUILD)
+	rm -rf $(SOURCE_DIR)/libstb-hal-new
+	rm -rf $(SOURCE_DIR)/libstb-hal-new.org
+	rm -rf $(LH_OBJDIR)
+	[ -d "$(ARCHIVE)/libstb-hal-new.git" ] && \
+	(cd $(ARCHIVE)/libstb-hal-new.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/libstb-hal-new.git" ] || \
+	git clone -b libstb-hal-new https://github.com/fs-basis/libstb-hal.git $(ARCHIVE)/libstb-hal-new.git; \
+	cp -ra $(ARCHIVE)/libstb-hal-new.git $(SOURCE_DIR)/libstb-hal-new;\
+	cp -ra $(SOURCE_DIR)/libstb-hal-new $(SOURCE_DIR)/libstb-hal-new.org
+	set -e; cd $(SOURCE_DIR)/libstb-hal-new; \
+		$(call post_patch,$(LIBSTB_HAL_NEW_PATCHES))
+	$(TOUCH)
+
+$(D)/libstb-hal-new.config.status: | $(NEUTRINO_DEPS)
+	$(START_BUILD)
+	rm -rf $(LH_OBJDIR); \
+	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
+	cd $(LH_OBJDIR); \
+		$(SOURCE_DIR)/libstb-hal-new/autogen.sh; \
+		$(BUILDENV) \
+		$(SOURCE_DIR)/libstb-hal-new/configure --enable-silent-rules \
+			--host=$(TARGET) \
+			--build=$(BUILD) \
+			--prefix= \
+			--with-target=cdk \
+			--with-boxtype=$(BOXTYPE) \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
+			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+
+$(D)/libstb-hal-new.do_compile: $(D)/libstb-hal-new.config.status
+	$(START_BUILD)
+	cd $(SOURCE_DIR)/libstb-hal-new; \
+		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
+	$(TOUCH)
+
+$(D)/libstb-hal-new: $(D)/libstb-hal-new.do_prepare $(D)/libstb-hal-new.do_compile
+	$(START_BUILD)
+	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(TARGET_DIR)
+	$(TOUCH)
+
+libstb-hal-new-clean:
+	rm -f $(D)/libstb-hal-new
+	cd $(LH_OBJDIR); \
+		$(MAKE) -C $(LH_OBJDIR) distclean
+
+libstb-hal-new-distclean:
+	rm -rf $(LH_OBJDIR)
+	rm -f $(D)/libstb-hal-new*
+
+
+################################################################################
+#
+# fs-basis yaud-neutrino-fhd-menue
+#
+yaud-neutrino-fhd-menue: yaud-none \
+		neutrino-fhd-menue $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-fhd-menue-plugins: yaud-none \
+		$(D)/neutrino-fhd-menue $(D)/neutrino-mp-plugins $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-fhd-menue-xupnpd: yaud-none \
+		$(D)/neutrino-fhd-menue xupnpd $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+FS_NEUTRINO_FHD_MENUE_PATCHES =
+
+$(D)/neutrino-fhd-menue.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-new
+	$(START_BUILD)
+	rm -rf $(SOURCE_DIR)/neutrino-fhd-menue
+	rm -rf $(SOURCE_DIR)/neutrino-fhd-menue.org
+	rm -rf $(N_OBJDIR)
+	[ -d "$(ARCHIVE)/neutrino-fhd-menue.git" ] && \
+	(cd $(ARCHIVE)/neutrino-fhd-menue.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/neutrino-fhd-menue.git" ] || \
+	git clone -b fhd-menue https://github.com/fs-basis/neutrino-gui.git $(ARCHIVE)/neutrino-fhd-menue.git; \
+	cp -ra $(ARCHIVE)/neutrino-fhd-menue.git $(SOURCE_DIR)/neutrino-fhd-menue; \
+	cp -ra $(SOURCE_DIR)/neutrino-fhd-menue $(SOURCE_DIR)/neutrino-fhd-menue.org
+	set -e; cd $(SOURCE_DIR)/neutrino-fhd-menue; \
+		$(call post_patch,$(FS_NEUTRINO_FHD_MENUE_PATCHES))
+	$(TOUCH)
+
+$(D)/neutrino-fhd-menue.config.status:
+	$(START_BUILD)
+	rm -rf $(N_OBJDIR)
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	cd $(N_OBJDIR); \
+		$(SOURCE_DIR)/neutrino-fhd-menue/autogen.sh; \
+		$(BUILDENV) \
+		$(SOURCE_DIR)/neutrino-fhd-menue/configure --enable-silent-rules \
+			--build=$(BUILD) \
+			--host=$(TARGET) \
+			$(N_CONFIG_OPTS) \
+			--with-boxtype=$(BOXTYPE) \
+			--with-tremor \
+			--with-libdir=/usr/lib \
+			--with-datadir=/usr/share/tuxbox \
+			--with-fontdir=/usr/share/fonts \
+			--with-configdir=/var/tuxbox/config \
+			--with-gamesdir=/var/tuxbox/games \
+			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
+			--with-iconsdir_var=/var/tuxbox/icons \
+			--with-luaplugindir=/var/tuxbox/plugins \
+			--with-localedir=/usr/share/tuxbox/neutrino/locale \
+			--with-localedir_var=/var/tuxbox/locale \
+			--with-plugindir=/var/tuxbox/plugins \
+			--with-plugindir_var=/var/tuxbox/plugins \
+			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
+			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
+			--with-themesdir_var=/var/tuxbox/themes \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-new/include \
+			--with-stb-hal-build=$(LH_OBJDIR) \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
+			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+
+$(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h:
+	@rm -f $@; \
+	echo '#define BUILT_DATE "'`date`'"' > $@
+	@if test -d $(SOURCE_DIR)/libstb-hal-new ; then \
+		pushd $(SOURCE_DIR)/libstb-hal-new ; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		pushd $(SOURCE_DIR)/neutrino-fhd-menue ; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		pushd $(BASE_DIR) ; \
+		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-neutrino-fhd-menue-rev'$$NMP_REV'"' >> $@ ; \
+	fi
+
+$(D)/neutrino-fhd-menue.do_compile: $(D)/neutrino-fhd-menue.config.status $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h
+	$(START_BUILD)
+	cd $(SOURCE_DIR)/neutrino-fhd-menue; \
+		$(MAKE) -C $(N_OBJDIR) all
+	$(TOUCH)
+
+$(D)/neutrino-fhd-menue: $(D)/neutrino-fhd-menue.do_prepare $(D)/neutrino-fhd-menue.do_compile
+	$(START_BUILD)
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
+	rm -f $(TARGET_DIR)/var/etc/.version
+	make $(TARGET_DIR)/var/etc/.version
+	$(TOUCH)
+
+neutrino-fhd-menue-clean:
+	rm -f $(D)/neutrino-fhd-menue
+	rm -f $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h
+	cd $(N_OBJDIR); \
+		$(MAKE) -C $(N_OBJDIR) distclean
+
+neutrino-fhd-menue-distclean:
+	rm -rf $(N_OBJDIR)
+	rm -f $(D)/neutrino-fhd-menue*
