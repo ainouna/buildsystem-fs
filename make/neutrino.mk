@@ -40,13 +40,13 @@ endif
 
 N_CONFIG_OPTS  = $(LOCAL_NEUTRINO_BUILD_OPTIONS)
 N_CONFIG_OPTS += --disable-upnp
-#N_CONFIG_OPTS += --disable-webif
 N_CONFIG_OPTS += --enable-ffmpegdec
-N_CONFIG_OPTS += --enable-freesatepg
+N_CONFIG_OPTS += --disable-freesatepg
 N_CONFIG_OPTS += --enable-giflib
 N_CONFIG_OPTS += --enable-lua
-#N_CONFIG_OPTS += --enable-pip
 N_CONFIG_OPTS += --enable-pugixml
+#N_CONFIG_OPTS += --disable-webif
+#N_CONFIG_OPTS += --enable-pip
 #N_CONFIG_OPTS += --enable-viasatepg
 
 ifeq ($(EXTERNAL_LCD), externallcd)
