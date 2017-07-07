@@ -770,12 +770,12 @@ $(D)/libjpeg_old: $(D)/bootstrap $(ARCHIVE)/$(JPEG_SOURCE)
 		$(call post_patch,$(JPEG_PATCH)); \
 		$(CONFIGURE) \
 			--prefix=/usr \
-			--bindir=/.remove \
 			--mandir=/.remove \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REWRITE_LIBTOOL)/libjpeg.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,cjpeg djpeg jpegtran rdjpgcom wrjpgcom)
 	$(REMOVE)/jpeg-$(JPEG_VERSION)
 	$(TOUCH)
 
@@ -968,7 +968,7 @@ $(D)/libcurl: $(D)/bootstrap $(D)/openssl $(D)/zlib $(ARCHIVE)/$(CURL_SOURCE)
 		rm -f $(TARGET_DIR)/usr/bin/curl-config
 	$(REWRITE_LIBTOOL)/libcurl.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libcurl.pc
-	cd $(TARGET_DIR) && rm usr/bin/curl
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,curl)
 	$(REMOVE)/curl-$(CURL_VERSION)
 	$(TOUCH)
 
@@ -977,6 +977,7 @@ $(D)/libcurl: $(D)/bootstrap $(D)/openssl $(D)/zlib $(ARCHIVE)/$(CURL_SOURCE)
 #
 FRIBIDI_VERSION = 0.19.7
 FRIBIDI_SOURCE = fribidi-$(FRIBIDI_VERSION).tar.bz2
+FRIBIDI_PATCH = fribidi-$(FRIBIDI_VERSION).patch
 
 $(ARCHIVE)/$(FRIBIDI_SOURCE):
 	$(WGET) https://fribidi.org/download/$(FRIBIDI_SOURCE)
@@ -986,6 +987,7 @@ $(D)/libfribidi: $(D)/bootstrap $(ARCHIVE)/$(FRIBIDI_SOURCE)
 	$(REMOVE)/fribidi-$(FRIBIDI_VERSION)
 	$(UNTAR)/$(FRIBIDI_SOURCE)
 	set -e; cd $(BUILD_TMP)/fribidi-$(FRIBIDI_VERSION); \
+		$(call post_patch,$(FRIBIDI_PATCH)); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
@@ -1952,6 +1954,7 @@ $(D)/graphlcd: $(D)/bootstrap $(D)/freetype $(D)/libusb $(ARCHIVE)/$(GRAPHLCD_SO
 		$(BUILDENV) \
 		$(MAKE) DESTDIR=$(TARGET_DIR); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,convpic crtfont genfont showpic showtext lcdtestpattern skintest)
 	$(REMOVE)/graphlcd-$(GRAPHLCD_VERSION)
 	$(TOUCH)
 
@@ -2347,7 +2350,7 @@ $(D)/djmount: $(D)/bootstrap $(D)/fuse $(ARCHIVE)/$(DJMOUNT_SOURCE)
 #
 # libupnp
 #
-LIBUPNP_VERSION = 1.6.19
+LIBUPNP_VERSION = 1.6.22
 LIBUPNP_SOURCE = libupnp-$(LIBUPNP_VERSION).tar.bz2
 
 $(ARCHIVE)/$(LIBUPNP_SOURCE):
@@ -2399,23 +2402,24 @@ $(D)/rarfs: $(D)/bootstrap $(D)/fuse $(ARCHIVE)/$(RARFS_SOURCE)
 #
 # sshfs
 #
-SSHFS_VERSION = 2.5
-SSHFS_SOURCE = sshfs-fuse-$(SSHFS_VERSION).tar.gz
+SSHFS_VERSION = 2.9
+SSHFS_SOURCE = sshfs-$(SSHFS_VERSION).tar.gz
 
 $(ARCHIVE)/$(SSHFS_SOURCE):
-	$(WGET) https://fossies.org/linux/misc/$(SSHFS_SOURCE)
+	$(WGET) https://github.com/libfuse/sshfs/releases/download/sshfs-$(SSHFS_VERSION)/$(SSHFS_SOURCE)
 
 $(D)/sshfs: $(D)/bootstrap $(D)/libglib2 $(D)/fuse $(ARCHIVE)/$(SSHFS_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/sshfs-fuse-$(SSHFS_VERSION)
+	$(REMOVE)/sshfs-$(SSHFS_VERSION)
 	$(UNTAR)/$(SSHFS_SOURCE)
-	set -e; cd $(BUILD_TMP)/sshfs-fuse-$(SSHFS_VERSION); \
+	set -e; cd $(BUILD_TMP)/sshfs-$(SSHFS_VERSION); \
 		$(CONFIGURE) \
 			--prefix=/usr \
+			--mandir=/.remove \
 		; \
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	$(REMOVE)/sshfs-fuse-$(SSHFS_VERSION)
+	$(REMOVE)/sshfs-$(SSHFS_VERSION)
 	$(TOUCH)
 
 #
