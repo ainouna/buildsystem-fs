@@ -355,7 +355,7 @@ $(D)/openssl: $(D)/bootstrap $(ARCHIVE)/$(OPENSSL_SOURCE)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/openssl.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libcrypto.pc
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libssl.pc
-	cd $(TARGET_DIR) && rm -rf etc/ssl/man usr/bin/openssl
+	cd $(TARGET_DIR) && rm -rf etc/ssl/man usr/bin/openssl usr/lib/engines
 	ln -sf libcrypto.so.1.0.0 $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.8
 	ln -sf libssl.so.1.0.0 $(TARGET_DIR)/usr/lib/libssl.so.0.9.8
 	$(REMOVE)/openssl-$(OPENSSL_VERSION)
@@ -706,9 +706,12 @@ $(D)/freetype: $(D)/bootstrap $(D)/zlib $(D)/libpng $(ARCHIVE)/$(FREETYPE_SOURCE
 #
 # lirc
 #
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE),adb_box arivalink200 ipbox55 ipbox99 ipbox9900 cuberevo cuberevo_mini cuberevo_mini2 cuberevo_250hd cuberevo_2000hd cuberevo_3000hd hl101 sagemcom88 spark spark7162 ufs910 vitamin_hd5000))
+
 LIRC_VERSION = 0.9.0
 LIRC_SOURCE = lirc-$(LIRC_VERSION).tar.bz2
 LIRC_PATCH = lirc-$(LIRC_VERSION).patch
+LIRC = $(D)/lirc
 
 $(ARCHIVE)/$(LIRC_SOURCE):
 	$(WGET) https://sourceforge.net/projects/lirc/files/LIRC/$(LIRC_VERSION)/$(LIRC_SOURCE)
@@ -735,6 +738,7 @@ $(D)/lirc: $(D)/bootstrap $(ARCHIVE)/$(LIRC_SOURCE)
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			--prefix=/usr \
+			--sbindir=/usr/bin \
 			--mandir=/.remove \
 			--with-kerneldir=$(KERNEL_DIR) \
 			--without-x \
@@ -749,8 +753,10 @@ $(D)/lirc: $(D)/bootstrap $(ARCHIVE)/$(LIRC_SOURCE)
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REWRITE_LIBTOOL)/liblirc_client.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,lircmd ircat irpty irrecord irsend irw lircrcd mode2 pronto2lirc)
 	$(REMOVE)/lirc-$(LIRC_VERSION)
 	$(TOUCH)
+endif
 
 #
 # libjpeg
@@ -807,7 +813,6 @@ $(D)/libjpeg_turbo: $(D)/bootstrap $(ARCHIVE)/$(JPEG_TURBO_SOURCE)
 			--enable-shared \
 			--mandir=/.remove \
 			--docdir=/.remove \
-			--bindir=/.remove \
 			--includedir=/.remove \
 			--with-jpeg8 \
 			--disable-static \
@@ -820,12 +825,12 @@ $(D)/libjpeg_turbo: $(D)/bootstrap $(ARCHIVE)/$(JPEG_TURBO_SOURCE)
 			--enable-shared \
 			--mandir=/.remove \
 			--docdir=/.remove \
-			--bindir=/.remove \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REWRITE_LIBTOOL)/libjpeg.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libjpeg.pc
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,cjpeg djpeg jpegtran rdjpgcom wrjpgcom tjbench)
 	rm -f $(TARGET_DIR)/usr/lib/libturbojpeg* $(TARGET_DIR)/usr/include/turbojpeg.h $(PKG_CONFIG_PATH)/libturbojpeg.pc
 	$(REMOVE)/libjpeg-turbo-$(JPEG_TURBO_VERSION)
 	$(TOUCH)
@@ -876,32 +881,7 @@ $(D)/png++: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/$(PNGPP_SOURCE)
 	$(TOUCH)
 
 #
-# libungif
-#
-UNGIF_VERSION = 4.1.4
-UNGIF_SOURCE = libungif-$(UNGIF_VERSION).tar.bz2
-
-$(ARCHIVE)/$(UNGIF_SOURCE):
-	$(WGET) https://sourceforge.net/projects/giflib/files/libungif-4.x/libungif-$(UNGIF_VERSION)/$(UNGIF_SOURCE)
-
-$(D)/libungif: $(D)/bootstrap $(ARCHIVE)/$(UNGIF_SOURCE)
-	$(START_BUILD)
-	$(REMOVE)/libungif-$(UNGIF_VERSION)
-	$(UNTAR)/$(UNGIF_SOURCE)
-	set -e; cd $(BUILD_TMP)/libungif-$(UNGIF_VERSION); \
-		$(CONFIGURE) \
-			--prefix=/usr \
-			--bindir=/.remove \
-			--without-x \
-		; \
-		$(MAKE) all; \
-		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	$(REWRITE_LIBTOOL)/libungif.la
-	$(REMOVE)/libungif-$(UNGIF_VERSION)
-	$(TOUCH)
-
-#
-# libgif
+# giflib
 #
 GIFLIB_VERSION = 5.1.4
 GIFLIB_SOURCE = giflib-$(GIFLIB_VERSION).tar.bz2
@@ -909,7 +889,7 @@ GIFLIB_SOURCE = giflib-$(GIFLIB_VERSION).tar.bz2
 $(ARCHIVE)/$(GIFLIB_SOURCE):
 	$(WGET) https://sourceforge.net/projects/giflib/files/$(GIFLIB_SOURCE)
 
-$(D)/libgif: $(D)/bootstrap $(ARCHIVE)/$(GIFLIB_SOURCE)
+$(D)/giflib: $(D)/bootstrap $(ARCHIVE)/$(GIFLIB_SOURCE)
 	$(START_BUILD)
 	$(REMOVE)/giflib-$(GIFLIB_VERSION)
 	$(UNTAR)/$(GIFLIB_SOURCE)
@@ -917,11 +897,11 @@ $(D)/libgif: $(D)/bootstrap $(ARCHIVE)/$(GIFLIB_SOURCE)
 		export ac_cv_prog_have_xmlto=no; \
 		$(CONFIGURE) \
 			--prefix=/usr \
-			--bindir=/.remove \
 		; \
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REWRITE_LIBTOOL)/libgif.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,gif2rgb gifbuild gifclrmp gifecho giffix gifinto giftext giftool)
 	$(REMOVE)/giflib-$(GIFLIB_VERSION)
 	$(TOUCH)
 
@@ -2144,7 +2124,8 @@ $(D)/alsa-utils: $(D)/bootstrap $(D)/alsa-lib $(ARCHIVE)/$(ALSA_UTILS_SOURCE)
 	install -m 755 $(SKEL_ROOT)/etc/init.d/amixer $(TARGET_DIR)/etc/init.d/amixer
 	install -m 644 $(SKEL_ROOT)/etc/amixer.conf $(TARGET_DIR)/etc/amixer.conf
 	install -m 644 $(SKEL_ROOT)/etc/asound.conf $(TARGET_DIR)/etc/asound.conf
-	cd $(TARGET_DIR) && rm -f usr/bin/aserver
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,aserver)
+	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,alsa-info.sh)
 	$(TOUCH)
 
 #
