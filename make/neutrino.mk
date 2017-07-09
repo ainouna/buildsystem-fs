@@ -810,7 +810,7 @@ libstb-hal-distclean:
 # fs-basis yaud-neutrino-alpha
 #
 yaud-neutrino-alpha: yaud-none \
-		neutrino-alpha $(D)/release_neutrino
+		$(D)/neutrino-alpha $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-alpha-plugins: yaud-none \
@@ -818,7 +818,7 @@ yaud-neutrino-alpha-plugins: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-alpha-xupnpd: yaud-none \
-		$(D)/neutrino-alpha xupnpd $(D)/release_neutrino
+		$(D)/neutrino-alpha $(D)/xupnpd $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 FS_NEUTRINO_ALPHA_PATCHES =
@@ -896,6 +896,7 @@ $(D)/neutrino-alpha.do_compile: $(D)/neutrino-alpha.config.status $(SOURCE_DIR)/
 
 $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compile
 	$(START_BUILD)
+	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
@@ -916,7 +917,7 @@ neutrino-alpha-distclean:
 # fs-basis yaud-neutrino-test (master)
 #
 yaud-neutrino-test: yaud-none \
-		neutrino-test $(D)/release_neutrino
+		$(D)/neutrino-test $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-test-plugins: yaud-none \
@@ -924,7 +925,7 @@ yaud-neutrino-test-plugins: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-test-xupnpd: yaud-none \
-		$(D)/neutrino-test xupnpd $(D)/release_neutrino
+		$(D)/neutrino-test $(D)/xupnpd $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 FS_NEUTRINO_TEST_PATCHES =
@@ -1002,6 +1003,7 @@ $(D)/neutrino-test.do_compile: $(D)/neutrino-test.config.status $(SOURCE_DIR)/ne
 
 $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	$(START_BUILD)
+	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
@@ -1022,7 +1024,7 @@ neutrino-test-distclean:
 # fs-basis yaud-neutrino-msgbox
 #
 yaud-neutrino-msgbox: yaud-none \
-		neutrino-msgbox $(D)/release_neutrino
+		$(D)/neutrino-msgbox $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-msgbox-plugins: yaud-none \
@@ -1030,7 +1032,7 @@ yaud-neutrino-msgbox-plugins: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-msgbox-xupnpd: yaud-none \
-		$(D)/neutrino-msgbox xupnpd $(D)/release_neutrino
+		$(D)/neutrino-msgbox $(D)/xupnpd $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 FS_NEUTRINO_MSGBOX_PATCHES =
@@ -1108,6 +1110,7 @@ $(D)/neutrino-msgbox.do_compile: $(D)/neutrino-msgbox.config.status $(SOURCE_DIR
 
 $(D)/neutrino-msgbox: $(D)/neutrino-msgbox.do_prepare $(D)/neutrino-msgbox.do_compile
 	$(START_BUILD)
+	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
@@ -1187,7 +1190,7 @@ libstb-hal-new-distclean:
 # fs-basis yaud-neutrino-fhd-menue
 #
 yaud-neutrino-fhd-menue: yaud-none \
-		neutrino-fhd-menue $(D)/release_neutrino
+		$(D)/neutrino-fhd-menue $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-fhd-menue-plugins: yaud-none \
@@ -1195,7 +1198,7 @@ yaud-neutrino-fhd-menue-plugins: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-fhd-menue-xupnpd: yaud-none \
-		$(D)/neutrino-fhd-menue xupnpd $(D)/release_neutrino
+		$(D)/neutrino-fhd-menue $(D)/xupnpd $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 FS_NEUTRINO_FHD_MENUE_PATCHES =
@@ -1273,6 +1276,7 @@ $(D)/neutrino-fhd-menue.do_compile: $(D)/neutrino-fhd-menue.config.status $(SOUR
 
 $(D)/neutrino-fhd-menue: $(D)/neutrino-fhd-menue.do_prepare $(D)/neutrino-fhd-menue.do_compile
 	$(START_BUILD)
+	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
