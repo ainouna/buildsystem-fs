@@ -1202,7 +1202,7 @@ $(D)/libiconv: $(D)/bootstrap $(ARCHIVE)/$(ICONV_SOURCE)
 #
 # libexpat
 #
-EXPAT_VERSION = 2.1.1
+EXPAT_VERSION = 2.2.0
 EXPAT_SOURCE = expat-$(EXPAT_VERSION).tar.bz2
 
 $(ARCHIVE)/$(EXPAT_SOURCE):
@@ -1810,6 +1810,7 @@ $(D)/libxml2: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/$(LIBXML2_SOURCE)
 	sed -e "/^XML2_LIBDIR/ s,/usr/lib,$(TARGET_DIR)/usr/lib,g" -i $(TARGET_DIR)/usr/lib/xml2Conf.sh; \
 	sed -e "/^XML2_INCLUDEDIR/ s,/usr/include,$(TARGET_DIR)/usr/include,g" -i $(TARGET_DIR)/usr/lib/xml2Conf.sh
 	$(REWRITE_LIBTOOL)/libxml2.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,xmlcatalog xmllint)
 	$(REMOVE)/libxml2-$(LIBXML2_VERSION)
 	$(TOUCH)
 
@@ -1854,6 +1855,7 @@ $(D)/libxslt: $(D)/bootstrap $(D)/libxml2 $(ARCHIVE)/$(LIBXSLT_SOURCE)
 	$(REWRITE_LIBTOOL)/libexslt.la
 	$(REWRITE_LIBTOOL)/libxslt.la
 	$(REWRITE_LIBTOOLDEP)/libexslt.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,xsltproc xslt-config)
 	$(REMOVE)/libxslt-$(LIBXSLT_VERSION)
 	$(TOUCH)
 
@@ -2181,6 +2183,7 @@ $(D)/librtmpdump: $(D)/bootstrap $(D)/zlib $(D)/openssl $(ARCHIVE)/$(LIBRTMPDUMP
 		$(MAKE) CROSS_COMPILE=$(TARGET)- ; \
 		$(MAKE) install prefix=/usr DESTDIR=$(TARGET_DIR) MANDIR=$(TARGET_DIR)/.remove
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/librtmp.pc
+	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,rtmpgw rtmpsrv rtmpsuck)
 	$(REMOVE)/librtmpdump-$(LIBRTMPDUMP_VERSION)
 	$(TOUCH)
 
