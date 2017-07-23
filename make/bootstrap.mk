@@ -54,6 +54,10 @@ SYSTEM_TOOLS += $(D)/vsftpd
 SYSTEM_TOOLS += $(D)/autofs
 SYSTEM_TOOLS += $(D)/driver
 
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), ufs913))
+SYSTEM_TOOLS += $(D)/dvbsnoop
+endif
+
 $(D)/system-tools: $(SYSTEM_TOOLS) $(TOOLS)
 	$(TOUCH)
 
