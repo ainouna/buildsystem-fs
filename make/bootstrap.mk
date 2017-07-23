@@ -56,6 +56,7 @@ SYSTEM_TOOLS += $(D)/driver
 
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), ufs913))
 SYSTEM_TOOLS += $(D)/dvbsnoop
+SYSTEM_TOOLS += $(D)/ntfs-3g
 endif
 
 $(D)/system-tools: $(SYSTEM_TOOLS) $(TOOLS)
