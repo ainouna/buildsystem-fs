@@ -2,13 +2,13 @@
 # Makefile to build NEUTRINO
 #
 $(TARGET_DIR)/var/etc/.version:
-	echo "imagename=Neutrino MP" > $@
-	echo "homepage=https://github.com/Duckbox-Developers" >> $@
+	echo "imagename=Neutrino HD" > $@
+	echo "homepage=https://github.com/fs-basis" >> $@
 	echo "creator=`id -un`" >> $@
-	echo "docs=https://github.com/Duckbox-Developers" >> $@
-	echo "forum=https://github.com/Duckbox-Developers/neutrino-mp-cst-next" >> $@
+	echo "docs=https://github.com/fs-basis" >> $@
+	echo "forum=https://github.com/fs-basis/neutrino-gui" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
-	echo "git=`git describe`" >> $@
+	echo "git=`git describe --all`" >> $@
 
 NEUTRINO_DEPS  = $(D)/bootstrap $(D)/libncurses $(LIRC) $(D)/libcurl
 NEUTRINO_DEPS += $(D)/libpng $(D)/libjpeg $(D)/giflib $(D)/freetype
@@ -1291,3 +1291,111 @@ neutrino-fhd-menue-clean:
 neutrino-fhd-menue-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-fhd-menue*
+################################################################################
+#
+#  yaud-neutrino-matze
+#
+yaud-neutrino-matze: yaud-none \
+		neutrino-matze $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-matze-plugins: yaud-none \
+		$(D)/neutrino-matze $(D)/neutrino-mp-plugins $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+yaud-neutrino-matze-xupnpd: yaud-none \
+		$(D)/neutrino-matze xupnpd $(D)/release_neutrino
+	$(TUXBOX_YAUD_CUSTOMIZE)
+
+NEUTRINO_MATZE_PATCHES = 
+
+$(D)/neutrino-matze.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+	$(START_BUILD)
+	rm -rf $(SOURCE_DIR)/neutrino-matze
+	rm -rf $(SOURCE_DIR)/neutrino-matze.org
+	rm -rf $(N_OBJDIR)
+	[ -d "$(ARCHIVE)/neutrino-matze.git" ] && \
+	(cd $(ARCHIVE)/neutrino-matze.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/neutrino-matze.git" ] || \
+	git clone https://github.com/Frankenstone/udog.git $(ARCHIVE)/neutrino-matze.git; \
+	cp -ra $(ARCHIVE)/neutrino-matze.git $(SOURCE_DIR)/neutrino-matze; \
+	cp -ra $(SOURCE_DIR)/neutrino-matze $(SOURCE_DIR)/neutrino-matze.org
+	set -e; cd $(SOURCE_DIR)/neutrino-matze; \
+		$(call post_patch,$(NEUTRINO_MATZE_PATCHES))
+	$(TOUCH)
+
+$(D)/neutrino-matze.config.status:
+	$(START_BUILD)
+	rm -rf $(N_OBJDIR)
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	cd $(N_OBJDIR); \
+		$(SOURCE_DIR)/neutrino-matze/autogen.sh; \
+		$(BUILDENV) \
+		$(SOURCE_DIR)/neutrino-matze/configure --enable-silent-rules \
+			--build=$(BUILD) \
+			--host=$(TARGET) \
+			$(N_CONFIG_OPTS) \
+			--disable-upnpd \
+			--with-boxtype=$(BOXTYPE) \
+			--with-tremor \
+			--with-libdir=/usr/lib \
+			--with-datadir=/usr/share/tuxbox \
+			--with-fontdir=/usr/share/fonts \
+			--with-configdir=/var/tuxbox/config \
+			--with-gamesdir=/var/tuxbox/games \
+			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
+			--with-iconsdir_var=/var/tuxbox/icons \
+			--with-luaplugindir=/var/tuxbox/plugins \
+			--with-localedir=/usr/share/tuxbox/neutrino/locale \
+			--with-localedir_var=/var/tuxbox/locale \
+			--with-plugindir=/var/tuxbox/plugins \
+			--with-plugindir_var=/var/tuxbox/plugins \
+			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
+			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
+			--with-themesdir_var=/var/tuxbox/themes \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
+			--with-stb-hal-build=$(LH_OBJDIR) \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
+			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+
+$(SOURCE_DIR)/neutrino-matze/src/gui/version.h:
+	@rm -f $@; \
+	echo '#define BUILT_DATE "'`date`'"' > $@
+	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
+		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		pushd $(SOURCE_DIR)/neutrino-matze ; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		pushd $(BASE_DIR) ; \
+		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
+		popd ; \
+		echo '#define VCS "CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_Neutrino-matze-rev'$$NMP_REV'"' >> $@ ; \
+	fi
+
+$(D)/neutrino-matze.do_compile: $(D)/neutrino-matze.config.status $(SOURCE_DIR)/neutrino-matze/src/gui/version.h
+	$(START_BUILD)
+	cd $(SOURCE_DIR)/neutrino-matze; \
+		$(MAKE) -C $(N_OBJDIR) all
+	$(TOUCH)
+
+$(D)/neutrino-matze: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compile
+	$(START_BUILD)
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
+	rm -f $(TARGET_DIR)/var/etc/.version
+	make $(TARGET_DIR)/var/etc/.version
+	$(TOUCH)
+
+neutrino-matze-clean:
+	rm -f $(D)/neutrino-matze
+	rm -f $(SOURCE_DIR)/neutrino-matze/src/gui/version.h
+	cd $(N_OBJDIR); \
+		$(MAKE) -C $(N_OBJDIR) distclean
+
+neutrino-matze-distclean:
+	rm -rf $(N_OBJDIR)
+	rm -f $(D)/neutrino-matze*
+
+################################################################################

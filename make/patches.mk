@@ -12,6 +12,7 @@ neutrino-alpha-patch \
 neutrino-test-patch \
 neutrino-msgbox-patch \
 neutrino-fhd-menue-patch \
+neutrino-matze-patch \
 libstb-hal-patch \
 libstb-hal-new-patch \
 libstb-hal-cst-next-patch :
@@ -57,3 +58,6 @@ LIBSTB_HAL_NEW_PATCHES +=
 
 # FS Neutrino-Fhd-Menue
 FS_NEUTRINO_FHD_MENUE_PATCHES +=
+
+# Neutrino-Matze
+NEUTRINO_MATZE_PATCHES +=
