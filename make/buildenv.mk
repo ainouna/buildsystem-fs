@@ -5,7 +5,7 @@
 CONFIG_SITE =
 export CONFIG_SITE
 
-CCACHE_DIR            = $(HOME)/.ccache-ddt
+CCACHE_DIR            = $(HOME)/.ccache-fs
 export CCACHE_DIR
 
 BASE_DIR             := $(shell pwd)
