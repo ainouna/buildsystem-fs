@@ -2,13 +2,13 @@
 # Makefile to build NEUTRINO
 #
 $(TARGET_DIR)/var/etc/.version:
-	echo "imagename=Neutrino HD" > $@
-	echo "homepage=https://github.com/fs-basis" >> $@
+	echo "imagename=Neutrino MP" > $@
+	echo "homepage=https://github.com/Duckbox-Developers" >> $@
 	echo "creator=`id -un`" >> $@
-	echo "docs=https://github.com/fs-basis" >> $@
-	echo "forum=https://github.com/fs-basis/neutrino-gui" >> $@
+	echo "docs=https://github.com/Duckbox-Developers" >> $@
+	echo "forum=https://github.com/Duckbox-Developers/neutrino-mp-cst-next" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
-	echo "git=`git describe --all`" >> $@
+	echo "git=`git describe`" >> $@
 
 NEUTRINO_DEPS  = $(D)/bootstrap $(D)/libncurses $(LIRC) $(D)/libcurl
 NEUTRINO_DEPS += $(D)/libpng $(D)/libjpeg $(D)/giflib $(D)/freetype
