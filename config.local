@@ -9,7 +9,7 @@ LOCAL_ENIGMA2_DEPS          =
 
 VERBOSE = 1
 
-GIT_NAME        = fs-basis
-GIT_NAME_DRIVER = fs-basis
-GIT_NAME_APPS   = fs-basis
-GIT_NAME_FLASH  = fs-basis
+GIT_NAME        =
+GIT_NAME_DRIVER =
+GIT_NAME_APPS   =
+GIT_NAME_FLASH  =

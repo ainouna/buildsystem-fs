@@ -14,3 +14,4 @@ root/boot/*
 config*
 *~
 Makefile.local
+config.local

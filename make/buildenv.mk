@@ -32,10 +32,10 @@ GITHUB               ?= git://github.com
 else
 GITHUB               ?= https://github.com
 endif
-GIT_NAME             ?= Duckbox-Developers
-GIT_NAME_DRIVER      ?= Duckbox-Developers
-GIT_NAME_APPS        ?= Duckbox-Developers
-GIT_NAME_FLASH       ?= Duckbox-Developers
+GIT_NAME             ?= fs-basis
+GIT_NAME_DRIVER      ?= fs-basis
+GIT_NAME_APPS        ?= fs-basis
+GIT_NAME_FLASH       ?= fs-basis
 
 ifneq ($(GIT_STASH_PULL), stashpull)
 GIT_CHECK             = git checkout -f
