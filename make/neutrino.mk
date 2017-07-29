@@ -1140,7 +1140,7 @@ $(D)/libstb-hal-new.do_prepare:
 	[ -d "$(ARCHIVE)/libstb-hal-new.git" ] && \
 	(cd $(ARCHIVE)/libstb-hal-new.git; git pull; cd "$(BUILD_TMP)";); \
 	[ -d "$(ARCHIVE)/libstb-hal-new.git" ] || \
-	git clone -b libstb-hal-new https://github.com/fs-basis/libstb-hal.git $(ARCHIVE)/libstb-hal-new.git; \
+	git clone https://github.com/fs-basis/libstb-hal-new.git $(ARCHIVE)/libstb-hal-new.git; \
 	cp -ra $(ARCHIVE)/libstb-hal-new.git $(SOURCE_DIR)/libstb-hal-new;\
 	cp -ra $(SOURCE_DIR)/libstb-hal-new $(SOURCE_DIR)/libstb-hal-new.org
 	set -e; cd $(SOURCE_DIR)/libstb-hal-new; \
