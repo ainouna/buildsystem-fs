@@ -1317,7 +1317,7 @@ $(D)/neutrino-matze.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	[ -d "$(ARCHIVE)/neutrino-matze.git" ] && \
 	(cd $(ARCHIVE)/neutrino-matze.git; git pull; cd "$(BUILD_TMP)";); \
 	[ -d "$(ARCHIVE)/neutrino-matze.git" ] || \
-	git clone https://github.com/Frankenstone/udog.git $(ARCHIVE)/neutrino-matze.git; \
+	git clone -b udog https://github.com/fs-basis/neutrino-gui.git $(ARCHIVE)/neutrino-matze.git; \
 	cp -ra $(ARCHIVE)/neutrino-matze.git $(SOURCE_DIR)/neutrino-matze; \
 	cp -ra $(SOURCE_DIR)/neutrino-matze $(SOURCE_DIR)/neutrino-matze.org
 	set -e; cd $(SOURCE_DIR)/neutrino-matze; \
