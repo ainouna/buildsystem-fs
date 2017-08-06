@@ -109,6 +109,7 @@ include make/enigma2-release.mk
 include make/neutrino.mk
 include make/neutrino-plugins.mk
 include make/neutrino-release.mk
+include make/flashimage.mk
 include make/cleantargets.mk
 include make/patches.mk
 include make/bootstrap.mk
