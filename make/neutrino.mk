@@ -18,6 +18,14 @@ NEUTRINO_DEPS += $(D)/pugixml $(D)/libopenthreads
 NEUTRINO_DEPS += $(D)/lua $(D)/luaexpat $(D)/luacurl $(D)/luasocket $(D)/luafeedparser $(D)/luasoap $(D)/luajson
 NEUTRINO_DEPS += $(LOCAL_NEUTRINO_DEPS)
 
+#ifeq ($(BOXTYPE), $(filter $(BOXTYPE), atevio7500 spark spark7162 ufs912 ufs913 ufs910))
+#NEUTRINO_DEPS += $(D)/ntfs-3g
+ifneq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910))
+NEUTRINO_DEPS += $(D)/mtd_utils
+endif
+#NEUTRINO_DEPS +=  $(D)/minidlna
+#endif
+
 ifeq ($(IMAGE), neutrino-wlandriver)
 NEUTRINO_DEPS += $(D)/wpa_supplicant $(D)/wireless_tools
 endif
@@ -33,6 +41,7 @@ N_CPPFLAGS     = -I$(DRIVER_DIR)/bpamem
 N_CPPFLAGS    += -I$(TARGET_DIR)/usr/include
 N_CPPFLAGS    += -I$(KERNEL_DIR)/include
 N_CPPFLAGS    += -D__STDC_CONSTANT_MACROS
+N_CPPFLAGS    += -ffunction-sections -fdata-sections
 
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), spark spark7162))
 N_CPPFLAGS += -I$(DRIVER_DIR)/frontcontroller/aotom_spark
@@ -98,6 +107,7 @@ $(D)/libstb-hal-cst-next-max.config.status: | $(NEUTRINO_DEPS)
 			--prefix= \
 			--with-target=cdk \
 			--with-boxtype=$(BOXTYPE) \
+			--enable-silent-rules \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 
 $(D)/libstb-hal-cst-next-max.do_compile: $(D)/libstb-hal-cst-next-max.config.status
@@ -256,6 +266,7 @@ $(D)/libstb-hal-cst-next.config.status: | $(NEUTRINO_DEPS)
 			--prefix= \
 			--with-target=cdk \
 			--with-boxtype=$(BOXTYPE) \
+			--enable-silent-rules \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
@@ -550,6 +561,7 @@ $(SOURCE_DIR)/neutrino-hd2/config.status:
 			--with-isocodesdir=/usr/local/share/iso-codes \
 			$(NHD2_OPTS) \
 			--enable-scart \
+			--enable-silent-rules \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CPPFLAGS="$(N_CPPFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"

@@ -92,7 +92,9 @@ $(D)/mtd_utils: $(D)/bootstrap $(D)/zlib $(D)/lzo $(D)/e2fsprogs $(ARCHIVE)/$(MT
 	$(SET) -e; cd $(BUILD_TMP)/mtd-utils-$(MTD_UTILS_VERSION); \
 		$(BUILDENV) \
 		$(MAKE) PREFIX= CC=$(TARGET)-gcc LD=$(TARGET)-ld STRIP=$(TARGET)-strip WITHOUT_XATTR=1 DESTDIR=$(TARGET_DIR); \
-		$(MAKE) install DESTDIR=$(TARGET_DIR)
+		cp -a $(BUILD_TMP)/mtd-utils-$(MTD_UTILS_VERSION)/mkfs.jffs2 $(TARGET_DIR)/usr/sbin
+		cp -a $(BUILD_TMP)/mtd-utils-$(MTD_UTILS_VERSION)/sumtool $(TARGET_DIR)/usr/sbin
+#		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REMOVE)/mtd-utils-$(MTD_UTILS_VERSION)
 	$(TOUCH)
 
@@ -1275,7 +1277,7 @@ $(D)/nfs_utils: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/$(NFSUTILS_SOURCE)
 	install -m 755 $(SKEL_ROOT)/etc/init.d/nfs-kernel-server $(TARGET_DIR)/etc/init.d/
 	install -m 644 $(SKEL_ROOT)/etc/exports $(TARGET_DIR)/etc/
 	rm -f $(addprefix $(TARGET_DIR)/sbin/,mount.nfs mount.nfs4 umount.nfs umount.nfs4 osd_login)
-	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,mountstats nfsiostat nfsstat rpcdebug showmount sm-notify start-statd)
+	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,mountstats nfsiostat sm-notify start-statd)
 	$(REMOVE)/nfs-utils-$(NFSUTILS_VERSION)
 	$(TOUCH)
 

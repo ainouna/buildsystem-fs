@@ -37,13 +37,6 @@ GIT_NAME_DRIVER      ?= fs-basis
 GIT_NAME_APPS        ?= fs-basis
 GIT_NAME_FLASH       ?= fs-basis
 
-ifneq ($(GIT_STASH_PULL), stashpull)
-GIT_CHECK             = git checkout -f
-GIT_PULL              = git pull
-else
-GIT_PULL              = git stash && git stash show -p stash@{0} > ./pull-stash.patch || true && git pull && git stash pop || true
-endif
-
 BOOT_DIR              = $(BASE_DIR)/tufsbox/cdkroot-tftpboot
 CROSS_BASE            = $(BASE_DIR)/tufsbox/cross
 CROSS_DIR             = $(CROSS_BASE)
@@ -63,6 +56,8 @@ SKEL_ROOT             = $(BASE_DIR)/root
 D                     = $(BASE_DIR)/.deps
 # backwards compatibility
 DEPDIR                = $(D)
+
+SUDOCMD               = echo $(SUDOPASSWD) | sudo -S
 
 WHOAMI               := $(shell id -un)
 #MAINTAINER           ?= $(shell getent passwd $(WHOAMI)|awk -F: '{print $$5}')
@@ -219,6 +214,29 @@ CONFIGURE = \
 CONFIGURE_TOOLS = \
 	./autogen.sh && \
 	$(BUILDENV) \
+	./configure $(CONFIGURE_OPTS)
+
+BUILDENV_ALSA = \
+	CC=$(TARGET)-gcc \
+	CXX=$(TARGET)-g++ \
+	LD=$(TARGET)-ld \
+	NM=$(TARGET)-nm \
+	AR=$(TARGET)-ar \
+	AS=$(TARGET)-as \
+	RANLIB=$(TARGET)-ranlib \
+	STRIP=$(TARGET)-strip \
+	OBJCOPY=$(TARGET)-objcopy \
+	OBJDUMP=$(TARGET)-objdump \
+	LN_S="ln -s" \
+	CFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
+	CPPFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
+	CXXFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
+	LDFLAGS="-Wl,-rpath -Wl,/usr/lib -Wl,-rpath-link -Wl,$(TARGET_DIR)/usr/lib -L$(TARGET_DIR)/usr/lib -L$(TARGET_DIR)/lib" \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)"
+
+CONFIGURE_ALSA = \
+	test -f ./configure || ./autogen.sh && \
+	$(BUILDENV_ALSA) \
 	./configure $(CONFIGURE_OPTS)
 
 MAKE_OPTS := \
@@ -537,27 +555,3 @@ endif
 
 #
 PLATFORM_CPPFLAGS := CPPFLAGS="$(PLATFORM_CPPFLAGS)"
-#
-BUILDENV_ALSA = \
-   CC=$(TARGET)-gcc \
-   CXX=$(TARGET)-g++ \
-   LD=$(TARGET)-ld \
-   NM=$(TARGET)-nm \
-   AR=$(TARGET)-ar \
-   AS=$(TARGET)-as \
-   RANLIB=$(TARGET)-ranlib \
-   STRIP=$(TARGET)-strip \
-   OBJCOPY=$(TARGET)-objcopy \
-   OBJDUMP=$(TARGET)-objdump \
-   LN_S="ln -s" \
-   CFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
-   CPPFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
-   CXXFLAGS="-pipe -Os -I$(TARGET_DIR)/usr/include" \
-   LDFLAGS="-Wl,-rpath -Wl,/usr/lib -Wl,-rpath-link -Wl,$(TARGET_DIR)/usr/lib -L$(TARGET_DIR)/usr/lib -L$(TARGET_DIR)/lib" \
-   PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)"
-
-CONFIGURE_ALSA = \
-   test -f ./configure || ./autogen.sh && \
-   $(BUILDENV_ALSA) \
-   ./configure $(CONFIGURE_OPTS)
-
