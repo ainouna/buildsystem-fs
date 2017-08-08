@@ -37,6 +37,10 @@ GIT_NAME_DRIVER      ?= fs-basis
 GIT_NAME_APPS        ?= fs-basis
 GIT_NAME_FLASH       ?= fs-basis
 
+ifneq ($(GIT_STASH_PULL), stashpull)
+GIT_CHECK             = git checkout -f
+endif
+
 BOOT_DIR              = $(BASE_DIR)/tufsbox/cdkroot-tftpboot
 CROSS_BASE            = $(BASE_DIR)/tufsbox/cross
 CROSS_DIR             = $(CROSS_BASE)
