@@ -8,7 +8,7 @@ $(TARGET_DIR)/var/etc/.version:
 	echo "docs=https://github.com/Duckbox-Developers" >> $@
 	echo "forum=https://github.com/Duckbox-Developers/neutrino-mp-cst-next" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
-	echo "git=`git describe`" >> $@
+	echo "git=`git log | grep "^commit" | wc -l`" >> $@
 
 NEUTRINO_DEPS  = $(D)/bootstrap $(D)/libncurses $(LIRC) $(D)/libcurl
 NEUTRINO_DEPS += $(D)/libpng $(D)/libjpeg $(D)/giflib $(D)/freetype
@@ -270,6 +270,7 @@ $(D)/libstb-hal-cst-next.config.status: | $(NEUTRINO_DEPS)
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	$(TOUCH)
 
 $(D)/libstb-hal-cst-next.do_compile: $(D)/libstb-hal-cst-next.config.status
 	$(START_BUILD)
@@ -284,6 +285,7 @@ $(D)/libstb-hal-cst-next: $(D)/libstb-hal-cst-next.do_prepare $(D)/libstb-hal-cs
 
 libstb-hal-cst-next-clean:
 	rm -f $(D)/libstb-hal-cst-next
+	rm -f $(D)/libstb-hal-cst-next.config.status
 	cd $(LH_OBJDIR); \
 		$(MAKE) -C $(LH_OBJDIR) distclean
 
@@ -299,6 +301,7 @@ yaud-neutrino-mp-cst-next: yaud-none \
 		neutrino-mp-cst-next $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
+mp \
 yaud-neutrino-mp-cst-next-plugins: yaud-none \
 		$(D)/neutrino-mp-cst-next $(D)/neutrino-mp-plugins $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
@@ -353,6 +356,7 @@ $(D)/neutrino-mp-cst-next.config.status:
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	$(TOUCH)
 
 $(SOURCE_DIR)/neutrino-mp-cst-next/src/gui/version.h:
 	@rm -f $@; \
@@ -383,19 +387,22 @@ $(D)/neutrino-mp-cst-next: $(D)/neutrino-mp-cst-next.do_prepare $(D)/neutrino-mp
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
-neutrino-mp-cst-next-clean:
+mp-clean \
+neutrino-mp-cst-next-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-mp-cst-next
+	rm -f $(D)/neutrino-mp-cst-next.config.status
 	rm -f $(SOURCE_DIR)/neutrino-mp-cst-next/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-neutrino-mp-cst-next-distclean:
+mp-distclean \
+neutrino-mp-cst-next-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-mp-cst-next*
 
 ################################################################################
 #
-# neutrino-mp-cst-next
+# neutrino-mp-cst-next-ni
 #
 yaud-neutrino-mp-cst-next-ni: yaud-none \
 		neutrino-mp-cst-next-ni $(D)/release_neutrino
@@ -455,6 +462,7 @@ $(D)/neutrino-mp-cst-next-ni.config.status:
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	$(TOUCH)
 
 $(SOURCE_DIR)/neutrino-mp-cst-next-ni/src/gui/version.h:
 	@rm -f $@; \
@@ -485,13 +493,14 @@ $(D)/neutrino-mp-cst-next-ni: $(D)/neutrino-mp-cst-next-ni.do_prepare $(D)/neutr
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
-neutrino-mp-cst-next-ni-clean:
+neutrino-mp-cst-next-ni-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-mp-cst-next-ni
+	rm -f $(D)/neutrino-mp-cst-next-ni.config.status
 	rm -f $(SOURCE_DIR)/neutrino-mp-cst-next-ni/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-neutrino-mp-cst-next-ni-distclean:
+neutrino-mp-cst-next-ni-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-mp-cst-next-ni*
 
@@ -502,6 +511,20 @@ neutrino-cdkroot-clean:
 	[ -e $(TARGET_DIR)/usr/share/tuxbox/neutrino ] && cd $(TARGET_DIR)/usr/share/tuxbox/neutrino && find -name '*' -delete || true
 	[ -e $(TARGET_DIR)/usr/share/fonts ] && cd $(TARGET_DIR)/usr/share/fonts && find -name '*' -delete || true
 	[ -e $(TARGET_DIR)/var/tuxbox ] && cd $(TARGET_DIR)/var/tuxbox && find -name '*' -delete || true
+
+dual:
+	make nhd2
+	make neutrino-cdkroot-clean
+	make mp
+
+dual-clean:
+	make nhd2-clean
+	make mp-clean
+
+dual-distclean:
+	make nhd2-distclean
+	make mp-distclean
+
 ################################################################################
 #
 # yaud-neutrino-hd2
@@ -510,6 +533,7 @@ yaud-neutrino-hd2: yaud-none \
 		$(D)/neutrino-hd2 $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
+nhd2 \
 yaud-neutrino-hd2-plugins: yaud-none \
 		$(D)/neutrino-hd2 $(D)/neutrino-hd2-plugins $(D)/release_neutrino
 	$(TUXBOX_YAUD_CUSTOMIZE)
@@ -580,11 +604,13 @@ $(D)/neutrino-hd2.do_compile: $(SOURCE_DIR)/neutrino-hd2/config.status
 		$(MAKE) all
 	$(TOUCH)
 
+nhd2-clean \
 neutrino-hd2-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-hd2
 	cd $(SOURCE_DIR)/neutrino-hd2; \
 		$(MAKE) clean
 
+nhd2-distclean \
 neutrino-hd2-distclean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-hd2
 	rm -f $(D)/neutrino-hd2.do_compile
