@@ -126,7 +126,7 @@ update:
 		echo '===================================================================='; \
 		echo; \
 		if [ "$(GIT_STASH_PULL)" = "stashpull" ]; then \
-			git stash && git stash show -p stash@{0} > ./pull-stash-cdk.patch || true && git pull && git stash pop || true; \
+			git stash && git stash show -p > ./pull-stash-cdk.patch || true && git pull && git stash pop || true; \
 		else \
 			git pull; \
 		fi; \
@@ -139,7 +139,7 @@ update:
 		echo '==================================================================='; \
 		echo; \
 		if [ "$(GIT_STASH_PULL)" = "stashpull" ]; then \
-			git stash && git stash show -p stash@{0} > ./pull-stash-driver.patch || true && git pull && git stash pop || true; \
+			git stash && git stash show -p > ./pull-stash-driver.patch || true && git pull && git stash pop || true; \
 		else \
 			git pull; \
 		fi; \
@@ -152,7 +152,7 @@ update:
 		echo '==================================================================='; \
 		echo; \
 		if [ "$(GIT_STASH_PULL)" = "stashpull" ]; then \
-			git stash && git stash show -p stash@{0} > ./pull-stash-apps.patch || true && git pull && git stash pop || true; \
+			git stash && git stash show -p > ./pull-stash-apps.patch || true && git pull && git stash pop || true; \
 		else \
 			git pull; \
 		fi; \
@@ -165,7 +165,7 @@ update:
 		echo '==================================================================='; \
 		echo; \
 		if [ "$(GIT_STASH_PULL)" = "stashpull" ]; then \
-			git stash && git stash show -p stash@{0} > ./pull-stash-flash.patch || true && git pull && git stash pop || true; \
+			git stash && git stash show -p > ./pull-stash-flash.patch || true && git pull && git stash pop || true; \
 		else \
 			git pull; \
 		fi; \
