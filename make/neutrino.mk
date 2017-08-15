@@ -780,10 +780,9 @@ $(D)/libstb-hal.do_prepare:
 	cp -ra $(SOURCE_DIR)/libstb-hal $(SOURCE_DIR)/libstb-hal.org
 	set -e; cd $(SOURCE_DIR)/libstb-hal; \
 		$(call post_patch,$(LIBSTB_HAL_PATCHES))
-	$(TOUCH)
+	@touch $@
 
 $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
-	$(START_BUILD)
 	rm -rf $(LH_OBJDIR); \
 	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
 	cd $(LH_OBJDIR); \
@@ -795,23 +794,24 @@ $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
 			--prefix= \
 			--with-target=cdk \
 			--with-boxtype=$(BOXTYPE) \
+			--enable-silent-rules \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	@touch $@
 
 $(D)/libstb-hal.do_compile: $(D)/libstb-hal.config.status
-	$(START_BUILD)
 	cd $(SOURCE_DIR)/libstb-hal; \
 		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
-	$(TOUCH)
+	@touch $@
 
 $(D)/libstb-hal: $(D)/libstb-hal.do_prepare $(D)/libstb-hal.do_compile
-	$(START_BUILD)
 	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 libstb-hal-clean:
 	rm -f $(D)/libstb-hal
+	rm -f $(D)/libstb-hal.config.status
 	cd $(LH_OBJDIR); \
 		$(MAKE) -C $(LH_OBJDIR) distclean
 
@@ -828,7 +828,7 @@ yaud-neutrino-alpha: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-alpha-plugins: yaud-none \
-		$(D)/neutrino-alpha $(D)/neutrino-mp-plugins $(D)/neutrino_release
+		$(D)/neutrino-alpha $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-alpha-xupnpd: yaud-none \
@@ -850,10 +850,9 @@ $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	cp -ra $(SOURCE_DIR)/neutrino-alpha $(SOURCE_DIR)/neutrino-alpha.org
 	set -e; cd $(SOURCE_DIR)/neutrino-alpha; \
 		$(call post_patch,$(FS_NEUTRINO_ALPHA_PATCHES))
-	$(TOUCH)
+	@touch $@
 
 $(D)/neutrino-alpha.config.status:
-	$(START_BUILD)
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
@@ -885,6 +884,7 @@ $(D)/neutrino-alpha.config.status:
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	@touch $@
 
 $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 	@rm -f $@; \
@@ -903,26 +903,25 @@ $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 	fi
 
 $(D)/neutrino-alpha.do_compile: $(D)/neutrino-alpha.config.status $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
-	$(START_BUILD)
 	cd $(SOURCE_DIR)/neutrino-alpha; \
 		$(MAKE) -C $(N_OBJDIR) all
-	$(TOUCH)
+	@touch $@
 
 $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compile
-	$(START_BUILD)
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
-neutrino-alpha-clean:
+neutrino-alpha-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-alpha
+	rm -f $(D)/neutrino-alpha.config.status
 	rm -f $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-neutrino-alpha-distclean:
+neutrino-alpha-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-alpha*
 
@@ -935,7 +934,7 @@ yaud-neutrino-test: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-test-plugins: yaud-none \
-		$(D)/neutrino-test $(D)/neutrino-mp-plugins $(D)/neutrino_release
+		$(D)/neutrino-test $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-test-xupnpd: yaud-none \
@@ -957,10 +956,9 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	cp -ra $(SOURCE_DIR)/neutrino-test $(SOURCE_DIR)/neutrino-test.org
 	set -e; cd $(SOURCE_DIR)/neutrino-test; \
 		$(call post_patch,$(FS_NEUTRINO_TEST_PATCHES))
-	$(TOUCH)
+	@touch $@
 
 $(D)/neutrino-test.config.status:
-	$(START_BUILD)
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
@@ -992,6 +990,7 @@ $(D)/neutrino-test.config.status:
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	@touch $@
 
 $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 	@rm -f $@; \
@@ -1010,26 +1009,25 @@ $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 	fi
 
 $(D)/neutrino-test.do_compile: $(D)/neutrino-test.config.status $(SOURCE_DIR)/neutrino-test/src/gui/version.h
-	$(START_BUILD)
 	cd $(SOURCE_DIR)/neutrino-test; \
 		$(MAKE) -C $(N_OBJDIR) all
-	$(TOUCH)
+	@touch $@
 
 $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
-	$(START_BUILD)
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
-neutrino-test-clean:
+neutrino-test-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-test
+	rm -f $(D)/neutrino-test.config.status
 	rm -f $(SOURCE_DIR)/neutrino-test/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-neutrino-test-distclean:
+neutrino-test-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test*
 
@@ -1042,7 +1040,7 @@ yaud-neutrino-msgbox: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-msgbox-plugins: yaud-none \
-		$(D)/neutrino-msgbox $(D)/neutrino-mp-plugins $(D)/neutrino_release
+		$(D)/neutrino-msgbox $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-msgbox-xupnpd: yaud-none \
@@ -1064,10 +1062,9 @@ $(D)/neutrino-msgbox.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	cp -ra $(SOURCE_DIR)/neutrino-msgbox $(SOURCE_DIR)/neutrino-msgbox.org
 	set -e; cd $(SOURCE_DIR)/neutrino-msgbox; \
 		$(call post_patch,$(FS_NEUTRINO_MSGBOX_PATCHES))
-	$(TOUCH)
+	@touch $@
 
 $(D)/neutrino-msgbox.config.status:
-	$(START_BUILD)
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
@@ -1099,6 +1096,7 @@ $(D)/neutrino-msgbox.config.status:
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	@touch $@
 
 $(SOURCE_DIR)/neutrino-msgbox/src/gui/version.h:
 	@rm -f $@; \
@@ -1117,26 +1115,25 @@ $(SOURCE_DIR)/neutrino-msgbox/src/gui/version.h:
 	fi
 
 $(D)/neutrino-msgbox.do_compile: $(D)/neutrino-msgbox.config.status $(SOURCE_DIR)/neutrino-msgbox/src/gui/version.h
-	$(START_BUILD)
 	cd $(SOURCE_DIR)/neutrino-msgbox; \
 		$(MAKE) -C $(N_OBJDIR) all
-	$(TOUCH)
+	@touch $@
 
 $(D)/neutrino-msgbox: $(D)/neutrino-msgbox.do_prepare $(D)/neutrino-msgbox.do_compile
-	$(START_BUILD)
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
-neutrino-msgbox-clean:
+neutrino-msgbox-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-msgbox
+	rm -f $(D)/neutrino-msgbox.config.status
 	rm -f $(SOURCE_DIR)/neutrino-msgbox/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-neutrino-msgbox-distclean:
+neutrino-msgbox-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-msgbox*
 
@@ -1159,10 +1156,9 @@ $(D)/libstb-hal-new.do_prepare:
 	cp -ra $(SOURCE_DIR)/libstb-hal-new $(SOURCE_DIR)/libstb-hal-new.org
 	set -e; cd $(SOURCE_DIR)/libstb-hal-new; \
 		$(call post_patch,$(LIBSTB_HAL_NEW_PATCHES))
-	$(TOUCH)
+	@touch $@
 
 $(D)/libstb-hal-new.config.status: | $(NEUTRINO_DEPS)
-	$(START_BUILD)
 	rm -rf $(LH_OBJDIR); \
 	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
 	cd $(LH_OBJDIR); \
@@ -1174,30 +1170,30 @@ $(D)/libstb-hal-new.config.status: | $(NEUTRINO_DEPS)
 			--prefix= \
 			--with-target=cdk \
 			--with-boxtype=$(BOXTYPE) \
+			--enable-silent-rules \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	@touch $@
 
 $(D)/libstb-hal-new.do_compile: $(D)/libstb-hal-new.config.status
-	$(START_BUILD)
 	cd $(SOURCE_DIR)/libstb-hal-new; \
 		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
-	$(TOUCH)
+	@touch $@
 
 $(D)/libstb-hal-new: $(D)/libstb-hal-new.do_prepare $(D)/libstb-hal-new.do_compile
-	$(START_BUILD)
 	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
 libstb-hal-new-clean:
 	rm -f $(D)/libstb-hal-new
+	rm -f $(D)/libstb-hal-new.config.status
 	cd $(LH_OBJDIR); \
 		$(MAKE) -C $(LH_OBJDIR) distclean
 
 libstb-hal-new-distclean:
 	rm -rf $(LH_OBJDIR)
 	rm -f $(D)/libstb-hal-new*
-
 
 ################################################################################
 #
@@ -1208,7 +1204,7 @@ yaud-neutrino-fhd-menue: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-fhd-menue-plugins: yaud-none \
-		$(D)/neutrino-fhd-menue $(D)/neutrino-mp-plugins $(D)/neutrino_release
+		$(D)/neutrino-fhd-menue $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-fhd-menue-xupnpd: yaud-none \
@@ -1233,7 +1229,6 @@ $(D)/neutrino-fhd-menue.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-new
 	$(TOUCH)
 
 $(D)/neutrino-fhd-menue.config.status:
-	$(START_BUILD)
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
@@ -1265,6 +1260,7 @@ $(D)/neutrino-fhd-menue.config.status:
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	@touch $@
 
 $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h:
 	@rm -f $@; \
@@ -1283,28 +1279,28 @@ $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h:
 	fi
 
 $(D)/neutrino-fhd-menue.do_compile: $(D)/neutrino-fhd-menue.config.status $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h
-	$(START_BUILD)
 	cd $(SOURCE_DIR)/neutrino-fhd-menue; \
 		$(MAKE) -C $(N_OBJDIR) all
-	$(TOUCH)
+	@touch $@
 
 $(D)/neutrino-fhd-menue: $(D)/neutrino-fhd-menue.do_prepare $(D)/neutrino-fhd-menue.do_compile
-	$(START_BUILD)
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
-neutrino-fhd-menue-clean:
+neutrino-fhd-menue-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-fhd-menue
+	rm -f $(D)/neutrino-fhd-menue.config.status
 	rm -f $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-neutrino-fhd-menue-distclean:
+neutrino-fhd-menue-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-fhd-menue*
+
 ################################################################################
 #
 #  yaud-neutrino-matze
@@ -1314,7 +1310,7 @@ yaud-neutrino-matze: yaud-none \
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-matze-plugins: yaud-none \
-		$(D)/neutrino-matze $(D)/neutrino-mp-plugins $(D)/neutrino_release
+		$(D)/neutrino-matze $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 yaud-neutrino-matze-xupnpd: yaud-none \
@@ -1336,10 +1332,9 @@ $(D)/neutrino-matze.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 	cp -ra $(SOURCE_DIR)/neutrino-matze $(SOURCE_DIR)/neutrino-matze.org
 	set -e; cd $(SOURCE_DIR)/neutrino-matze; \
 		$(call post_patch,$(NEUTRINO_MATZE_PATCHES))
-	$(TOUCH)
+	@touch $@
 
-$(D)/neutrino-matze.config.status:
-	$(START_BUILD)
+$(D)/neutrino-matze.config.status:)
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
@@ -1371,6 +1366,7 @@ $(D)/neutrino-matze.config.status:
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+	@touch $@
 
 $(SOURCE_DIR)/neutrino-matze/src/gui/version.h:
 	@rm -f $@; \
@@ -1389,25 +1385,25 @@ $(SOURCE_DIR)/neutrino-matze/src/gui/version.h:
 	fi
 
 $(D)/neutrino-matze.do_compile: $(D)/neutrino-matze.config.status $(SOURCE_DIR)/neutrino-matze/src/gui/version.h
-	$(START_BUILD)
 	cd $(SOURCE_DIR)/neutrino-matze; \
 		$(MAKE) -C $(N_OBJDIR) all
-	$(TOUCH)
+	@touch $@
 
 $(D)/neutrino-matze: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compile
-	$(START_BUILD)
+	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
-neutrino-matze-clean:
+neutrino-matze-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-matze
+	rm -f $(D)/neutrino-matze.config.status
 	rm -f $(SOURCE_DIR)/neutrino-matze/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-neutrino-matze-distclean:
+neutrino-matze-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-matze*
 
