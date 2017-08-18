@@ -1334,7 +1334,7 @@ $(D)/neutrino-matze.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
 		$(call post_patch,$(NEUTRINO_MATZE_PATCHES))
 	@touch $@
 
-$(D)/neutrino-matze.config.status:)
+$(D)/neutrino-matze.config.status:
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
