@@ -49,7 +49,7 @@ $(D)/host_pkgconfig: directories $(ARCHIVE)/$(PKGCONFIG_SOURCE) | pkg-config-pre
 	$(REMOVE)/pkg-config-$(PKGCONFIG_VERSION)
 	$(UNTAR)/$(PKGCONFIG_SOURCE)
 	set -e; cd $(BUILD_TMP)/pkg-config-$(PKGCONFIG_VERSION); \
-		./configure $(MAKE_TRACE) \
+		./configure $(SILENT_OPT) \
 			--prefix=$(HOST_DIR) \
 			--program-prefix=$(TARGET)- \
 			--disable-host-tool \
@@ -186,7 +186,7 @@ $(D)/gdb-remote: $(ARCHIVE)/$(GDB_SOURCE)
 	$(REMOVE)/gdb-$(GDB_VERSION)
 	$(UNTAR)/$(GDB_SOURCE)
 	set -e; cd $(BUILD_TMP)/gdb-$(GDB_VERSION); \
-		./configure $(MAKE_TRACE) \
+		./configure $(SILENT_OPT) \
 			--nfp --disable-werror \
 			--prefix=$(HOST_DIR) \
 			--build=$(BUILD) \
@@ -209,7 +209,7 @@ $(D)/gdb: $(D)/bootstrap $(D)/ncurses $(D)/zlib $(ARCHIVE)/$(GDB_SOURCE)
 	$(UNTAR)/$(GDB_SOURCE)
 	set -e; cd $(BUILD_TMP)/gdb-$(GDB_VERSION); \
 		$(call post_patch,$(GDB_PATCH)); \
-		./configure $(MAKE_TRACE) \
+		./configure $(SILENT_OPT) \
 			--host=$(BUILD) \
 			--build=$(BUILD) \
 			--target=$(TARGET) \
@@ -240,10 +240,10 @@ $(D)/host_opkg: directories $(D)/host_libarchive $(ARCHIVE)/$(OPKG_SOURCE)
 	$(UNTAR)/$(OPKG_SOURCE)
 	set -e; cd $(BUILD_TMP)/opkg-$(OPKG_VERSION); \
 		$(call post_patch,$(OPKG_HOST_PATCH)); \
-		./autogen.sh; \
+		./autogen.sh $(SILENT_OPT); \
 		CFLAGS="-I$(HOST_DIR)/include" \
 		LDFLAGS="-L$(HOST_DIR)/lib" \
-		./configure $(MAKE_TRACE) \
+		./configure $(SILENT_OPT) \
 			PKG_CONFIG_PATH=$(HOST_DIR)/lib/pkgconfig \
 			--prefix= \
 			--disable-curl \
@@ -327,8 +327,8 @@ $(D)/host_module_init_tools: $(ARCHIVE)/$(MODULE_INIT_TOOLS_SOURCE)
 	$(UNTAR)/$(MODULE_INIT_TOOLS_SOURCE)
 	set -e; cd $(BUILD_TMP)/module-init-tools-$(MODULE_INIT_TOOLS_VERSION); \
 		$(call post_patch,$(MODULE_INIT_TOOLS_HOST_PATCH)); \
-		autoreconf -fi $(MAKE_TRACE); \
-		./configure $(MAKE_TRACE) \
+		autoreconf -fi $(SILENT_OPT); \
+		./configure $(SILENT_OPT) \
 			--prefix=$(HOST_DIR) \
 			--sbindir=$(HOST_DIR)/bin \
 		; \
@@ -346,7 +346,7 @@ $(D)/module_init_tools: $(D)/bootstrap $(D)/lsb $(ARCHIVE)/$(MODULE_INIT_TOOLS_S
 	$(UNTAR)/$(MODULE_INIT_TOOLS_SOURCE)
 	set -e; cd $(BUILD_TMP)/module-init-tools-$(MODULE_INIT_TOOLS_VERSION); \
 		$(call post_patch,$(MODULE_INIT_TOOLS_PATCH)); \
-		autoreconf -fi $(MAKE_TRACE); \
+		autoreconf -fi $(SILENT_OPT); \
 		$(CONFIGURE) \
 			--target=$(TARGET) \
 			--prefix= \
@@ -507,7 +507,7 @@ $(D)/jfsutils: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/$(JFSUTILS_SOURCE)
 	set -e; cd $(BUILD_TMP)/jfsutils-$(JFSUTILS_VERSION); \
 		$(call post_patch,$(JFSUTILS_PATCH)); \
 		sed "s@<unistd.h>@&\n#include <sys/types.h>@g" -i fscklog/extract.c; \
-		autoreconf -fi $(MAKE_TRACE); \
+		autoreconf -fi $(SILENT_OPT); \
 		$(CONFIGURE) \
 			--prefix= \
 			--target=$(TARGET) \
@@ -664,7 +664,7 @@ $(D)/mc: $(D)/bootstrap $(D)/ncurses $(D)/libglib2 $(ARCHIVE)/$(MC_SOURCE)
 	set -e; cd $(BUILD_TMP)/mc-$(MC_VERSION); \
 		autoreconf -fi; \
 		$(BUILDENV) \
-		./configure $(MAKE_TRACE) \
+		./configure $(SILENT_OPT) \
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			--prefix=/usr \
@@ -995,60 +995,9 @@ $(D)/autofs: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/$(AUTOFS_SOURCE)
 	$(TOUCH)
 
 #
-# imagemagick
-#
-IMAGEMAGICK_VERSION = 6.7.7-7
-IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.gz
-
-$(ARCHIVE)/$(IMAGEMAGICK_SOURCE):
-	$(WGET) ftp://ftp.fifi.org/pub/ImageMagick/$(IMAGEMAGICK_SOURCE)
-
-$(D)/imagemagick: $(D)/bootstrap $(ARCHIVE)/$(IMAGEMAGICK_SOURCE)
-	$(START_BUILD)
-	$(REMOVE)/ImageMagick-$(IMAGEMAGICK_VERSION)
-	$(UNTAR)/$(IMAGEMAGICK_SOURCE)
-	set -e; cd $(BUILD_TMP)/ImageMagick-$(IMAGEMAGICK_VERSION); \
-		$(BUILDENV) \
-		CFLAGS="-O1" \
-		PKG_CONFIG=$(PKG_CONFIG) \
-		./configure $(MAKE_TRACE) \
-			--build=$(BUILD) \
-			--host=$(TARGET) \
-			--prefix=/usr \
-			--without-dps \
-			--without-fpx \
-			--without-gslib \
-			--without-jbig \
-			--without-jp2 \
-			--without-lcms \
-			--without-tiff \
-			--without-xml \
-			--without-perl \
-			--disable-openmp \
-			--disable-opencl \
-			--without-zlib \
-			--enable-shared \
-			--enable-static \
-			--without-x \
-		; \
-		$(MAKE) all; \
-		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/ImageMagick.pc
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/MagickCore.pc
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/MagickWand.pc
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/Wand.pc
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/ImageMagick++.pc
-	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/Magick++.pc
-	$(REWRITE_LIBTOOL)/libMagickCore.la
-	$(REWRITE_LIBTOOL)/libMagickWand.la
-	$(REWRITE_LIBTOOL)/libMagick++.la
-	$(REMOVE)/ImageMagick-$(IMAGEMAGICK_VERSION)
-	$(TOUCH)
-
-#
 # shairport
 #
-$(D)/shairport: $(D)/bootstrap $(D)/openssl $(D)/howl $(D)/alsa-lib
+$(D)/shairport: $(D)/bootstrap $(D)/openssl $(D)/howl $(D)/alsa_lib
 	$(START_BUILD)
 	$(REMOVE)/shairport
 	set -e; if [ -d $(ARCHIVE)/shairport.git ]; \
@@ -1063,6 +1012,35 @@ $(D)/shairport: $(D)/bootstrap $(D)/openssl $(D)/howl $(D)/alsa-lib
 		$(MAKE); \
 		$(MAKE) install PREFIX=$(TARGET_DIR)/usr
 	$(REMOVE)/shairport
+	$(TOUCH)
+
+#
+# shairplay
+#
+$(D)/shairplay: $(D)/bootstrap $(D)/libao
+	$(START_BUILD)
+	$(REMOVE)/shairplay
+	set -e; if [ -d $(ARCHIVE)/shairplay.git ]; \
+		then cd $(ARCHIVE)/shairplay.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/TangoCash/shairplay.git shairplay.git; \
+		fi
+	cp -ra $(ARCHIVE)/shairplay.git $(BUILD_TMP)/shairplay
+	set -e; cd $(BUILD_TMP)/shairplay; \
+		for A in src/test/example.c src/test/main.c src/shairplay.c ; do sed -i "s#airport.key#/share/shairplay/airport.key#" $$A ; done; \
+		PKG_CONFIG=$(PKG_CONFIG) \
+		$(BUILDENV) \
+		$(CONFIGURE) \
+			--prefix=/usr \
+			--enable-shared \
+			--disable-static \
+		; \
+		$(MAKE); \
+		mkdir -p $(TARGET_DIR)/usr/share/shairplay ; \
+		install -m 644 airport.key $(TARGET_DIR)/usr/share/shairplay/airport.key ; \
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
+		$(REWRITE_LIBTOOL)/libshairplay.la
+		rm -f $(addprefix $(TARGET_DIR)/usr/bin/,shairplay)
+	$(REMOVE)/shairplay
 	$(TOUCH)
 
 #
@@ -1406,7 +1384,7 @@ $(D)/samba: $(D)/bootstrap $(ARCHIVE)/$(SAMBA_SOURCE)
 		$(BUILDENV) \
 		libreplace_cv_HAVE_GETADDRINFO=no \
 		libreplace_cv_READDIR_NEEDED=no \
-		./configure $(MAKE_TRACE) \
+		./configure $(SILENT_OPT) \
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			--prefix= \
@@ -1501,7 +1479,7 @@ WIRELESS_TOOLS_SOURCE = wireless_tools.$(WIRELESS_TOOLS_VERSION).tar.gz
 WIRELESS_TOOLS_PATCH = wireless-tools.$(WIRELESS_TOOLS_VERSION).patch
 
 $(ARCHIVE)/$(WIRELESS_TOOLS_SOURCE):
-	$(WGET) https://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/$(WIRELESS_TOOLS_SOURCE)
+	$(WGET) http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/$(WIRELESS_TOOLS_SOURCE)
 
 $(D)/wireless_tools: $(D)/bootstrap $(ARCHIVE)/$(WIRELESS_TOOLS_SOURCE)
 	$(START_BUILD)
@@ -1534,8 +1512,14 @@ $(D)/libnl: $(D)/bootstrap $(D)/openssl $(ARCHIVE)/$(LIBNL_SOURCE)
 			--bindir=/.remove \
 			--mandir=/.remove \
 			--infodir=/.remove \
-		$(MAKE); \
-		$(MAKE) install DESTDIR=$(TARGET_DIR)
+		make $(SILENT_OPT); \
+		make install $(SILENT_OPT) DESTDIR=$(TARGET_DIR)
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libnl-$(LIBNL_VERSION).pc
+	$(REWRITE_LIBTOOL)/libnl.la
+	$(REWRITE_LIBTOOL)/libnl-cli.la
+	$(REWRITE_LIBTOOL)/libnl-genl.la
+	$(REWRITE_LIBTOOL)/libnl-nf.la
+	$(REWRITE_LIBTOOL)/libnl-route.la
 	$(REMOVE)/libnl-$(LIBNL_VERSION)
 	$(TOUCH)
 
@@ -1669,7 +1653,7 @@ $(D)/openssh: $(D)/bootstrap $(D)/zlib $(D)/openssl $(ARCHIVE)/$(OPENSSH_SOURCE)
 	$(UNTAR)/$(OPENSSH_SOURCE)
 	set -e; cd $(BUILD_TMP)/openssh-$(OPENSSH_VERSION); \
 		CC=$(TARGET)-gcc; \
-		./configure $(MAKE_TRACE) \
+		./configure $(SILENT_OPT) \
 			$(CONFIGURE_OPTS) \
 			--prefix=/usr \
 			--mandir=/.remove \
