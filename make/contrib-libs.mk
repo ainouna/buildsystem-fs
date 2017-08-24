@@ -1202,8 +1202,8 @@ $(D)/libiconv: $(D)/bootstrap $(ARCHIVE)/$(LIBICONV_SOURCE)
 			--prefix=/usr \
 			--bindir=/.remove \
 			--datarootdir=/.remove \
-			--enable-static \
-			--disable-shared \
+			--disable-static \
+			--enable-shared \
 		; \
 		$(MAKE); \
 		cp ./srcm4/* $(HOST_DIR)/share/aclocal/ ; \
@@ -1944,7 +1944,7 @@ GRAPHLCD_PATCH = graphlcd-base-touchcol.patch
 $(ARCHIVE)/$(GRAPHLCD_SOURCE):
 	get-git-archive.sh $(GRAPHLCD_URL) $(GRAPHLCD_VERSION) $(notdir $@) $(ARCHIVE)
 
-$(D)/graphlcd: $(D)/bootstrap $(D)/libiconv $(D)/freetype $(D)/libusb $(ARCHIVE)/$(GRAPHLCD_SOURCE)
+$(D)/graphlcd: $(D)/bootstrap $(D)/freetype $(D)/libusb $(ARCHIVE)/$(GRAPHLCD_SOURCE)
 	$(START_BUILD)
 	$(REMOVE)/graphlcd-$(GRAPHLCD_VERSION)
 	$(UNTAR)/$(GRAPHLCD_SOURCE)
