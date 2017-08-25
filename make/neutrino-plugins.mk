@@ -68,7 +68,7 @@ $(D)/neutrino-mp-plugins.do_prepare:
 	cp -ra $(ARCHIVE)/neutrino-mp-plugins.git $(SOURCE_DIR)/neutrino-mp-plugins
 	@touch $@
 
-$(D)/neutrino-mp-plugins.config.status: $(D)/bootstrap
+$(SOURCE_DIR)/neutrino-mp-plugins/config.status: $(D)/bootstrap
 	cd $(SOURCE_DIR)/neutrino-mp-plugins; \
 		./autogen.sh && automake --add-missing; \
 		$(BUILDENV) \
@@ -88,9 +88,8 @@ $(D)/neutrino-mp-plugins.config.status: $(D)/bootstrap
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CPPFLAGS="$(N_CPPFLAGS) -DMARTII -DNEW_LIBCURL" \
 			LDFLAGS="$(TARGET_LDFLAGS) -L$(SOURCE_DIR)/neutrino-mp-plugins/fx2/lib/.libs"
-	@touch $@
 
-$(D)/neutrino-mp-plugins.do_compile: $(D)/neutrino-mp-plugins.config.status
+$(D)/neutrino-mp-plugins.do_compile: $(SOURCE_DIR)/neutrino-mp-plugins/config.status
 	cd $(SOURCE_DIR)/neutrino-mp-plugins; \
 		$(MAKE)
 	@touch $@
