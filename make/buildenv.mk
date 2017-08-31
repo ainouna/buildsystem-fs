@@ -43,10 +43,10 @@ GIT_NAME_FLASH       ?= fs-basis
 GIT_CHECK             = git checkout -f
 
 TUFSBOX_DIR           = $(BASE_DIR)/tufsbox
+CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)
 TARGET_DIR            = $(TUFSBOX_DIR)/cdkroot
 IMAGE_DIR             = $(TUFSBOX_DIR)/cdkroot-flash
 BOOT_DIR              = $(TUFSBOX_DIR)/cdkroot-tftpboot
-CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)
 CROSS_DIR             = $(TUFSBOX_DIR)/cross
 HOST_DIR              = $(TUFSBOX_DIR)/host
 RELEASE_DIR           = $(TUFSBOX_DIR)/release
