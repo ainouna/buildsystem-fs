@@ -255,7 +255,7 @@ ARIVALINK200_PATCHES_24 = $(COMMON_PATCHES_24) \
 # KERNEL
 #
 KERNEL_PATCHES = $(KERNEL_PATCHES_24)
-KERNEL_CONFIG = linux-sh4-$(subst _stm24_,_,$(KERNEL_VERSION))_$(BOXTYPE).config
+KERNEL_CONFIG = linux-sh4-$(subst _stm24_,_,$(KERNEL_VER))_$(BOXTYPE).config
 
 $(D)/kernel.do_prepare: $(PATCHES)/$(BUILD_CONFIG)/$(KERNEL_CONFIG) \
 	$(if $(KERNEL_PATCHES),$(KERNEL_PATCHES:%=$(PATCHES)/$(BUILD_CONFIG)/%))
@@ -314,11 +314,11 @@ $(D)/kernel.do_compile: $(D)/kernel.do_prepare
 
 $(D)/kernel: $(D)/bootstrap host_u_boot_tools $(D)/kernel.do_compile
 	install -m 644 $(KERNEL_DIR)/arch/sh/boot/uImage $(BOOT_DIR)/vmlinux.ub
-	install -m 644 $(KERNEL_DIR)/vmlinux $(TARGET_DIR)/boot/vmlinux-sh4-$(KERNEL_VERSION)
-	install -m 644 $(KERNEL_DIR)/System.map $(TARGET_DIR)/boot/System.map-sh4-$(KERNEL_VERSION)
+	install -m 644 $(KERNEL_DIR)/vmlinux $(TARGET_DIR)/boot/vmlinux-sh4-$(KERNEL_VER)
+	install -m 644 $(KERNEL_DIR)/System.map $(TARGET_DIR)/boot/System.map-sh4-$(KERNEL_VER)
 	cp $(KERNEL_DIR)/arch/sh/boot/uImage $(TARGET_DIR)/boot/
-	rm $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/build || true
-	rm $(TARGET_DIR)/lib/modules/$(KERNEL_VERSION)/source || true
+	rm $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/build || true
+	rm $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/source || true
 	$(TOUCH)
 
 $(D)/kernel-headers: $(D)/kernel.do_prepare
@@ -353,9 +353,9 @@ tfinstaller: $(D)/bootstrap $(TFINSTALLER_DIR)/u-boot.ftfd $(D)/kernel
 
 $(TFINSTALLER_DIR)/u-boot.ftfd: $(D)/uboot $(TFINSTALLER_DIR)/tfpacker
 	$(START_BUILD)
-	$(TFINSTALLER_DIR)/tfpacker $(BUILD_TMP)/u-boot-$(U_BOOT_VERSION)/u-boot.bin $(TFINSTALLER_DIR)/u-boot.ftfd
-	$(TFINSTALLER_DIR)/tfpacker -t $(BUILD_TMP)/u-boot-$(U_BOOT_VERSION)/u-boot.bin $(TFINSTALLER_DIR)/Enigma_Installer.tfd
-	$(REMOVE)/u-boot-$(U_BOOT_VERSION)
+	$(TFINSTALLER_DIR)/tfpacker $(BUILD_TMP)/u-boot-$(U_BOOT_VER)/u-boot.bin $(TFINSTALLER_DIR)/u-boot.ftfd
+	$(TFINSTALLER_DIR)/tfpacker -t $(BUILD_TMP)/u-boot-$(U_BOOT_VER)/u-boot.bin $(TFINSTALLER_DIR)/Enigma_Installer.tfd
+	$(REMOVE)/u-boot-$(U_BOOT_VER)
 	$(TOUCH)
 
 $(TFINSTALLER_DIR)/tfpacker:
@@ -372,24 +372,24 @@ $(D)/tfkernel:
 #
 # u-boot
 #
-UBOOT_VERSION = 1.3.1
-UBOOT_PATCH  =  u-boot-$(UBOOT_VERSION).patch
+UBOOT_VER = 1.3.1
+UBOOT_PATCH  =  u-boot-$(UBOOT_VER).patch
 ifeq ($(BOXTYPE), tf7700)
-UBOOT_PATCH += u-boot-$(UBOOT_VERSION)-tf7700.patch
+UBOOT_PATCH += u-boot-$(UBOOT_VER)-tf7700.patch
 endif
 
-$(ARCHIVE)/u-boot-$(UBOOT_VERSION).tar.bz2:
-	$(WGET) ftp://ftp.denx.de/pub/u-boot/u-boot-$(U_BOOT_VERSION).tar.bz2
+$(ARCHIVE)/u-boot-$(UBOOT_VER).tar.bz2:
+	$(WGET) ftp://ftp.denx.de/pub/u-boot/u-boot-$(U_BOOT_VER).tar.bz2
 
-$(D)/uboot: bootstrap $(ARCHIVE)/u-boot-$(UBOOT_VERSION).tar.bz2
+$(D)/uboot: bootstrap $(ARCHIVE)/u-boot-$(UBOOT_VER).tar.bz2
 	$(START_BUILD)
-	$(REMOVE)/u-boot-$(UBOOT_VERSION)
-	$(UNTAR)/u-boot-$(UBOOT_VERSION).tar.bz2
-	set -e; cd $(BUILD_TMP)/u-boot-$(UBOOT_VERSION); \
+	$(REMOVE)/u-boot-$(UBOOT_VER)
+	$(UNTAR)/u-boot-$(UBOOT_VER).tar.bz2
+	set -e; cd $(BUILD_TMP)/u-boot-$(UBOOT_VER); \
 		$(call post_patch,$(UBOOT_PATCH)); \
 		$(MAKE) $(BOXTYPE)_config; \
 		$(MAKE)
-#	$(REMOVE)/u-boot-$(UBOOT_VERSION)
+#	$(REMOVE)/u-boot-$(UBOOT_VER)
 	$(TOUCH)
 
 #

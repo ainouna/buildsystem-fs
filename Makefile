@@ -1,17 +1,19 @@
 #master makefile
 
+include make/buildenv.mk
+
 SHELL = /bin/bash
 UID := $(shell id -u)
 ifeq ($(UID), 0)
 warn:
 	@echo "You are running as root. Do not do this, it is dangerous."
 	@echo "Aborting the build. Log in as a regular user and retry."
+else ifeq ($(WHOAMI), $(ID))
 else
 LC_ALL:=C
 LANG:=C
 export TOPDIR LC_ALL LANG
 
-include make/buildenv.mk
 
 PARALLEL_JOBS := $(shell echo $$((1 + `getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`)))
 override MAKE = make $(if $(findstring j,$(filter-out --%,$(MAKEFLAGS))),,-j$(PARALLEL_JOBS)) $(SILENT_OPT)
@@ -44,9 +46,9 @@ printenv:
 	@echo "TARGET           : $(TARGET)"
 	@echo "PLATFORM         : $(PLATFORM)"
 	@echo "BOXTYPE          : $(BOXTYPE)"
-	@echo "KERNEL_VERSION   : $(KERNEL_VERSION)"
-	@echo "MULTICOM_VERSION : $(MULTICOM_VERSION)"
-	@echo "PLAYER_VERSION   : $(PLAYER_VERSION)"
+	@echo "KERNEL_VERSION   : $(KERNEL_VER)"
+	@echo "MULTICOM_VERSION : $(MULTICOM_VER)"
+	@echo "PLAYER_VERSION   : $(PLAYER_VER)"
 	@echo "MEDIAFW          : $(MEDIAFW)"
 	@echo "EXTERNAL_LCD     : $(EXTERNAL_LCD)"
 	@echo "PARALLEL_JOBS    : $(PARALLEL_JOBS)"

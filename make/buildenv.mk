@@ -24,7 +24,7 @@ SOURCE_DIR            = $(BASE_DIR)/source
 
 # for local extensions
 -include $(BASE_DIR)/config.local
-
+-include $(BASE_DIR)/root/release/fw_env.config
 # default platform...
 TARGET               ?= sh4-linux
 BOXARCH              ?= sh4
@@ -163,7 +163,7 @@ split_deps_dir=$(subst ., ,$(1))
 DEPS_DIR              = $(subst $(D)/,,$@)
 PKG_NAME              = $(word 1,$(call split_deps_dir,$(DEPS_DIR)))
 PKG_NAME_HELPER       = $(shell echo $(PKG_NAME) | sed 's/.*/\U&/')
-PKG_VER               = " "$($(PKG_NAME_HELPER)_VERSION)
+PKG_VER               = " "$($(PKG_NAME_HELPER)_VER)
 START_BUILD           = @echo "=============================================================="; \
                         echo; \
                         echo -e "Start build of $(TERM_GREEN_BOLD)$(PKG_NAME)$(PKG_VER)$(TERM_NORMAL)";
@@ -176,7 +176,7 @@ PATCH                 = patch -p1 $(SILENT_PATCH) -i $(PATCHES)
 APATCH                = patch -p1 $(SILENT_PATCH) -i
 define post_patch
     for i in $(1); do \
-        if [ -d $$i ] ; then \
+        if [ -d $$i ]; then \
             for p in $$i/*; do \
                 if [ $${p:0:1} == "/" ]; then \
                     echo -e "==> $(TERM_RED)Applying Patch:$(TERM_NORMAL) $$p"; $(APATCH) $$p; \
@@ -210,8 +210,8 @@ OPKG_SH = $(OPKG_SH_ENV) opkg.sh
 # wget tarballs into archive directory
 WGET = wget --progress=bar:force --no-check-certificate $(WGET_SILENT_OPT) -t6 -T20 -c -P $(ARCHIVE)
 
-TUXBOX_YAUD_CUSTOMIZE = [ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(BASE_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
-TUXBOX_CUSTOMIZE      = [ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VERSION=$(KERNEL_VERSION) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(BASE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
+TUXBOX_YAUD_CUSTOMIZE = [ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VER=$(KERNEL_VER) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(BASE_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
+TUXBOX_CUSTOMIZE      = [ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VER=$(KERNEL_VER) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(BASE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
 
 #
 #
@@ -267,26 +267,26 @@ MAKE_OPTS := \
 # kernel
 #
 ifeq ($(KERNEL), p0209)
-KERNEL_VERSION             = 2.6.32.46_stm24_0209
-KERNEL_REVISION            = 8c676f1a85935a94de1fb103c0de1dd25ff69014
-STM_KERNEL_HEADERS_VERSION = 2.6.32.46-47
-P0209                      = p0209
+KERNEL_VER             = 2.6.32.46_stm24_0209
+KERNEL_REVISION        = 8c676f1a85935a94de1fb103c0de1dd25ff69014
+STM_KERNEL_HEADERS_VER = 2.6.32.46-47
+P0209                  = p0209
 endif
 
 ifeq ($(KERNEL), p0217)
-KERNEL_VERSION             = 2.6.32.71_stm24_0217
-KERNEL_REVISION            = 3ec500f4212f9e4b4d2537c8be5ea32ebf68c43b
-STM_KERNEL_HEADERS_VERSION = 2.6.32.46-48
-P0217                      = p0217
+KERNEL_VER             = 2.6.32.71_stm24_0217
+KERNEL_REVISION        = 3ec500f4212f9e4b4d2537c8be5ea32ebf68c43b
+STM_KERNEL_HEADERS_VER = 2.6.32.46-48
+P0217                  = p0217
 endif
 
 split_version=$(subst _, ,$(1))
-KERNEL_UPSTREAM    =$(word 1,$(call split_version,$(KERNEL_VERSION)))
-KERNEL_STM        :=$(word 2,$(call split_version,$(KERNEL_VERSION)))
-KERNEL_LABEL      :=$(word 3,$(call split_version,$(KERNEL_VERSION)))
+KERNEL_UPSTREAM    =$(word 1,$(call split_version,$(KERNEL_VER)))
+KERNEL_STM        :=$(word 2,$(call split_version,$(KERNEL_VER)))
+KERNEL_LABEL      :=$(word 3,$(call split_version,$(KERNEL_VER)))
 KERNEL_RELEASE    :=$(subst ^0,,^$(KERNEL_LABEL))
 KERNEL_STM_LABEL  :=_$(KERNEL_STM)_$(KERNEL_LABEL)
-KERNEL_DIR         =$(BUILD_TMP)/linux-sh4-$(KERNEL_VERSION)
+KERNEL_DIR         =$(BUILD_TMP)/linux-sh4-$(KERNEL_VER)
 
 #
 # image
@@ -322,7 +322,7 @@ endif
 #
 # multicom
 #
-ifeq ($(MULTICOM_VERSION), 324)
+ifeq ($(MULTICOM_VER), 324)
 MULTICOM324        = multicom324
 MULTICOM_LINK      = multicom-3.2.4
 else
@@ -333,16 +333,16 @@ endif
 #
 # player 2
 #
-ifeq ($(PLAYER_VERSION), 191)
-PLAYER2               = PLAYER191=player191
-PLAYER191             = 1
-PLAYER_VERSION_DRIVER = 191
-PLAYER2_LINK          = player2_191
-else ifeq ($(PLAYER_VERSION), 191_test)
-PLAYER2               = PLAYER191=player191
-PLAYER191             = 1
-PLAYER_VERSION_DRIVER = 191
-PLAYER2_LINK          = player2_191_test
+ifeq ($(PLAYER_VER), 191)
+PLAYER2            = PLAYER191=player191
+PLAYER191          = 1
+PLAYER_VER_DRIVER  = 191
+PLAYER2_LINK       = player2_191
+else ifeq ($(PLAYER_VER), 191_test)
+PLAYER2            = PLAYER191=player191
+PLAYER191          = 1
+PLAYER_VER_DRIVER = 191
+PLAYER2_LINK       = player2_191_test
 endif
 
 #
