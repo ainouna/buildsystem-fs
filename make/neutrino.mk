@@ -2,11 +2,11 @@
 # Makefile to build NEUTRINO
 #
 $(TARGET_DIR)/var/etc/.version:
-	echo "imagename=Neutrino MP" > $@
-	echo "homepage=https://github.com/Duckbox-Developers" >> $@
+	echo "imagename=Neutrino HD" > $@
+	echo "homepage=https://github.com/fs-basis" >> $@
 	echo "creator=`id -un`" >> $@
-	echo "docs=https://github.com/Duckbox-Developers" >> $@
-	echo "forum=https://github.com/Duckbox-Developers/neutrino-mp-cst-next" >> $@
+	echo "docs=https://github.com/fs-basis" >> $@
+	echo "forum=https://github.com/fs-basis/neutrino-gui" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
 
