@@ -36,9 +36,6 @@ $(D)/busybox: $(D)/bootstrap $(D)/module_init_tools $(ARCHIVE)/$(BUSYBOX_SOURCE)
 MTD_UTILS_VER = $(HOST_MTD_UTILS_VER)
 MTD_UTILS_SOURCE = mtd-utils-$(MTD_UTILS_VER).tar.bz2
 
-$(ARCHIVE)/$(MTD_UTILS_SOURCE):
-	$(WGET) ftp://ftp.infradead.org/pub/mtd-utils/$(MTD_UTILS_SOURCE)
-
 $(D)/mtd_utils: $(D)/bootstrap $(D)/zlib $(D)/lzo $(D)/e2fsprogs $(ARCHIVE)/$(HOST_MTD_UTILS_SOURCE)
 	$(START_BUILD)
 	$(REMOVE)/mtd-utils-$(MTD_UTILS_VER)
@@ -58,9 +55,6 @@ $(D)/mtd_utils: $(D)/bootstrap $(D)/zlib $(D)/lzo $(D)/e2fsprogs $(ARCHIVE)/$(HO
 MODULE_INIT_TOOLS_VER = $(HOST_MODULE_INIT_TOOLS_VER)
 MODULE_INIT_TOOLS_SOURCE = module-init-tools-$(MODULE_INIT_TOOLS_VER).tar.bz2
 MODULE_INIT_TOOLS_PATCH = module-init-tools-$(MODULE_INIT_TOOLS_VER).patch
-
-$(ARCHIVE)/$(MODULE_INIT_TOOLS_SOURCE):
-	$(WGET) ftp.europeonline.com/pub/linux/utils/kernel/module-init-tools/$(MODULE_INIT_TOOLS_SOURCE)
 
 $(D)/module_init_tools: $(D)/bootstrap $(D)/lsb $(ARCHIVE)/$(HOST_MODULE_INIT_TOOLS_SOURCE)
 	$(START_BUILD)
@@ -878,12 +872,12 @@ $(D)/shairport: $(D)/bootstrap $(D)/openssl $(D)/howl $(D)/alsa_lib
 #
 # shairport-sync
 #
-$(D)/shairport-sync: $(D)/bootstrap $(D)/libdaemon $(D)/libpopt $(D)/openssl $(D)/alsa_lib
+$(D)/shairport-sync: $(D)/bootstrap $(D)/libdaemon $(D)/libpopt $(D)/libconfig $(D)/openssl $(D)/alsa_lib
 	$(START_BUILD)
 	$(REMOVE)/shairport-sync
 	set -e; if [ -d $(ARCHIVE)/shairport-sync.git ]; \
 		then cd $(ARCHIVE)/shairport-sync.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/TangoCash/shairport-sync.git shairport-sync.git; \
+		else cd $(ARCHIVE); git clone https://github.com/mikebrady/shairport-sync.git shairport-sync.git; \
 		fi
 	cp -ra $(ARCHIVE)/shairport-sync.git $(BUILD_TMP)/shairport-sync
 	set -e; cd $(BUILD_TMP)/shairport-sync; \

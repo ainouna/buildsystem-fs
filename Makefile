@@ -101,6 +101,7 @@ help:
 include make/contrib-libs.mk
 include make/contrib-apps.mk
 include make/linux-kernel.mk
+include make/crosstool-sh4.mk
 include make/driver.mk
 include make/tools.mk
 include make/root-etc.mk
@@ -115,7 +116,6 @@ include make/neutrino-release.mk
 include make/flashimage.mk
 include make/cleantargets.mk
 include make/patches.mk
-include make/crosstool-sh4.mk
 include make/bootstrap.mk
 
 update-self:
