@@ -10,7 +10,6 @@ neutrino-mp-cst-next-ni-patch \
 neutrino-mp-cst-next-max-patch \
 neutrino-alpha-patch \
 neutrino-test-patch \
-neutrino-msgbox-patch \
 neutrino-fhd-menue-patch \
 neutrino-matze-patch \
 libstb-hal-patch \
@@ -49,9 +48,6 @@ FS_NEUTRINO_ALPHA_PATCHES +=
 
 # FS Neutrino Test (Master)
 FS_NEUTRINO_TEST_PATCHES +=
-
-# FS Neutrino Msgbox
-FS_NEUTRINO_MSGBOX_PATCHES +=
 
 # FS Libstb Hal New
 LIBSTB_HAL_NEW_PATCHES +=
