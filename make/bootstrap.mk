@@ -184,7 +184,6 @@ $(HOST_DIR)/bin/opkg%sh: | directories
 #
 #
 BOOTSTRAP  = directories
-BOOTSTRAP += crosstool
 BOOTSTRAP += $(D)/ccache
 BOOTSTRAP += $(HOST_DIR)/bin/opkg.sh
 BOOTSTRAP += $(HOST_DIR)/bin/opkg-chksvn.sh
@@ -193,6 +192,7 @@ BOOTSTRAP += $(HOST_DIR)/bin/opkg-find-requires.sh
 BOOTSTRAP += $(HOST_DIR)/bin/opkg-find-provides.sh
 BOOTSTRAP += $(HOST_DIR)/bin/opkg-module-deps.sh
 BOOTSTRAP += $(HOST_DIR)/bin/get-git-archive.sh
+BOOTSTRAP += $(CROSSTOOL)
 BOOTSTRAP += $(D)/host_pkgconfig
 BOOTSTRAP += $(D)/host_module_init_tools
 BOOTSTRAP += $(D)/host_mtd_utils
@@ -209,11 +209,12 @@ SYSTEM_TOOLS  = $(D)/module_init_tools
 SYSTEM_TOOLS += $(D)/busybox
 SYSTEM_TOOLS += $(D)/zlib
 SYSTEM_TOOLS += $(D)/sysvinit
+ifeq ($(BOXARCH), sh4)
 SYSTEM_TOOLS += $(D)/diverse-tools
+endif
 SYSTEM_TOOLS += $(D)/e2fsprogs
 SYSTEM_TOOLS += $(D)/jfsutils
 SYSTEM_TOOLS += $(D)/hdidle
-SYSTEM_TOOLS += $(D)/fbshot
 SYSTEM_TOOLS += $(D)/portmap
 ifneq ($(BOXTYPE), $(filter $(BOXTYPE), ufs922))
 SYSTEM_TOOLS += $(D)/nfs_utils
@@ -222,7 +223,10 @@ SYSTEM_TOOLS += $(D)/vsftpd
 SYSTEM_TOOLS += $(D)/autofs
 #SYSTEM_TOOLS += $(D)/udpxy
 SYSTEM_TOOLS += $(D)/dvbsnoop
+ifeq ($(BOXARCH), sh4)
+SYSTEM_TOOLS += $(D)/fbshot
 SYSTEM_TOOLS += $(D)/driver
+endif
 
 $(D)/system-tools: $(SYSTEM_TOOLS) $(TOOLS)
 	@touch $@
@@ -231,7 +235,7 @@ $(D)/system-tools: $(SYSTEM_TOOLS) $(TOOLS)
 # YAUD NONE
 #
 YAUD_NONE     = $(D)/bootstrap
-YAUD_NONE    += $(D)/kernel
+YAUD_NONE    += $(KERNEL)
 YAUD_NONE    += $(D)/system-tools
 
 yaud-none: $(YAUD_NONE)

@@ -1,18 +1,17 @@
 #master makefile
 
-include make/buildenv.mk
-
 SHELL = /bin/bash
 UID := $(shell id -u)
 ifeq ($(UID), 0)
 warn:
 	@echo "You are running as root. Do not do this, it is dangerous."
 	@echo "Aborting the build. Log in as a regular user and retry."
-else ifeq ($(WHOAMI), $(ID))
 else
 LC_ALL:=C
 LANG:=C
 export TOPDIR LC_ALL LANG
+
+include make/buildenv.mk
 
 
 PARALLEL_JOBS := $(shell echo $$((1 + `getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`)))
@@ -100,11 +99,15 @@ help:
 # define package versions first...
 include make/contrib-libs.mk
 include make/contrib-apps.mk
+ifeq ($(BOXARCH), sh4)
 include make/linux-kernel.mk
 include make/crosstool-sh4.mk
 include make/driver.mk
 include make/tools.mk
 include make/root-etc.mk
+else
+include make/crosstool-arm.mk
+endif
 include make/python.mk
 include make/gstreamer.mk
 include make/enigma2.mk
@@ -222,7 +225,7 @@ everything: $(shell sed -n 's/^\$$.D.\/\(.*\):.*/\1/p' make/*.mk)
 # print all present targets...
 print-targets:
 	@sed -n 's/^\$$.D.\/\(.*\):.*/\1/p; s/^\([a-z].*\):\( \|$$\).*/\1/p;' \
-		`ls -1 make/*.mk|grep -v make/unmaintained.mk` Makefile | \
+		`ls -1 make/*.mk|grep -v make/buildenv.mk|grep -v make/neutrino-release.mk|grep -v make/enigma2-release.mk` | \
 		sort -u | fold -s -w 65
 
 # for local extensions, e.g. special plugins or similar...
