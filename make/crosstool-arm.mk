@@ -1,3 +1,10 @@
+# makefile to build crosstools
+crosstool-renew:
+	ccache -cCz
+	make distclean
+	rm -rf $(CROSS_BASE)
+	make crosstool
+
 #
 # crosstool-ng
 #
@@ -5,7 +12,7 @@ CROSSTOOL_NG_VER = 1dbb06f2
 CROSSTOOL_NG_SOURCE = crosstool-ng-$(CROSSTOOL_NG_VER).tar.bz2
 CROSSTOOL_NG_URL = https://github.com/crosstool-ng/crosstool-ng.git
 
-ifeq ($(wildcard $(CROSS_BASE)),)
+ifeq ($(wildcard $(CROSS_BASE)/build.log.bz2),)
 CROSSTOOL = crosstool
 crosstool: crosstool-ng
 
