@@ -1,5 +1,5 @@
-*** a/setup.c
---- b/setup.c
+--- a/arch/sh/kernel/setup.c.org
++++ b/arch/sh/kernel/setup.c
 ***************
 *** 389,394 ****
 --- 389,422 ----
@@ -39,7 +39,7 @@
   	*cmdline_p = command_line;
 --- linux-sh4/arch/sh/boards/mach-sat7111/setup.c
 +++ linux-sh4/arch/sh/boards/mach-sat7111/setup.c
-@@ -33,126 +33,102 @@
+@@ -33,126 +33,106 @@
  #include <asm/irq-ilc.h>
  #include <asm/irl.h>
  #include <sound/stm.h>
@@ -224,11 +224,11 @@
 +		}, {
 +		 .name	= "E2 Userfs",
 +		 .offset = 0x18800000,
-+		 .size = 0x02800000 //40M
++		 .size = 0x05000000 //80M
 +		}, {
 +		 .name = "NAND DATA",
-+		 .offset	= 0x1B000000,
-+		 .size	= 0x02800000 //40M
++		 .offset = 0x1D800000,
++		 .size	= 0x02700000 //39M
 +		},
  	},
  	.timing_data	= &(struct stm_nand_timing_data) {
