@@ -4,7 +4,7 @@
 $(TARGET_DIR)/var/etc/.version:
 	echo "imagename=Neutrino HD" > $@
 	echo "homepage=https://github.com/fs-basis" >> $@
-	echo "creator=`id -un`" >> $@
+	echo "creator=$(MAINTAINER)" >> $@
 	echo "docs=https://github.com/fs-basis" >> $@
 	echo "forum=https://github.com/fs-basis/neutrino-gui" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
