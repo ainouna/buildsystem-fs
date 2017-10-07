@@ -1048,64 +1048,6 @@ neutrino-test-distclean: neutrino-cdkroot-clean
 
 ################################################################################
 #
-# fs-basis libstb-hal-new
-#
-LIBSTB_HAL_NEW_PATCHES =
-
-$(D)/libstb-hal-new.do_prepare:
-	$(START_BUILD)
-	rm -rf $(SOURCE_DIR)/libstb-hal-new
-	rm -rf $(SOURCE_DIR)/libstb-hal-new.org
-	rm -rf $(LH_OBJDIR)
-	[ -d "$(ARCHIVE)/libstb-hal-new.git" ] && \
-	(cd $(ARCHIVE)/libstb-hal-new.git; git pull; cd "$(BUILD_TMP)";); \
-	[ -d "$(ARCHIVE)/libstb-hal-new.git" ] || \
-	git clone https://github.com/fs-basis/libstb-hal-new.git $(ARCHIVE)/libstb-hal-new.git; \
-	cp -ra $(ARCHIVE)/libstb-hal-new.git $(SOURCE_DIR)/libstb-hal-new;\
-	cp -ra $(SOURCE_DIR)/libstb-hal-new $(SOURCE_DIR)/libstb-hal-new.org
-	set -e; cd $(SOURCE_DIR)/libstb-hal-new; \
-		$(call post_patch,$(LIBSTB_HAL_NEW_PATCHES))
-	@touch $@
-
-$(D)/libstb-hal-new.config.status: | $(NEUTRINO_DEPS)
-	rm -rf $(LH_OBJDIR); \
-	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
-	cd $(LH_OBJDIR); \
-		$(SOURCE_DIR)/libstb-hal-new/autogen.sh; \
-		$(BUILDENV) \
-		$(SOURCE_DIR)/libstb-hal-new/configure --enable-silent-rules \
-			--host=$(TARGET) \
-			--build=$(BUILD) \
-			--prefix= \
-			--with-target=cdk \
-			--with-boxtype=$(BOXTYPE) \
-			--enable-silent-rules \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
-	@touch $@
-
-$(D)/libstb-hal-new.do_compile: $(D)/libstb-hal-new.config.status
-	cd $(SOURCE_DIR)/libstb-hal-new; \
-		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
-	@touch $@
-
-$(D)/libstb-hal-new: $(D)/libstb-hal-new.do_prepare $(D)/libstb-hal-new.do_compile
-	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(TARGET_DIR)
-	$(TOUCH)
-
-libstb-hal-new-clean:
-	rm -f $(D)/libstb-hal-new
-	rm -f $(D)/libstb-hal-new.config.status
-	cd $(LH_OBJDIR); \
-		$(MAKE) -C $(LH_OBJDIR) distclean
-
-libstb-hal-new-distclean:
-	rm -rf $(LH_OBJDIR)
-	rm -f $(D)/libstb-hal-new*
-
-################################################################################
-#
 # fs-basis yaud-neutrino-fhd-menue
 #
 yaud-neutrino-fhd-menue: yaud-none \
@@ -1122,7 +1064,7 @@ yaud-neutrino-fhd-menue-xupnpd: yaud-none \
 
 FS_NEUTRINO_FHD_MENUE_PATCHES =
 
-$(D)/neutrino-fhd-menue.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-new
+$(D)/neutrino-fhd-menue.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-fhd-menue
 	rm -rf $(SOURCE_DIR)/neutrino-fhd-menue.org
@@ -1164,7 +1106,7 @@ $(D)/neutrino-fhd-menue.config.status:
 			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-themesdir_var=/var/tuxbox/themes \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-new/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
@@ -1174,8 +1116,8 @@ $(D)/neutrino-fhd-menue.config.status:
 $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-new ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-new ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
+		pushd $(SOURCE_DIR)/libstb-hal ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		pushd $(SOURCE_DIR)/neutrino-fhd-menue ; \

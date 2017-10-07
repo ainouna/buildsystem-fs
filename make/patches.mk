@@ -13,7 +13,6 @@ neutrino-test-patch \
 neutrino-fhd-menue-patch \
 neutrino-matze-patch \
 libstb-hal-patch \
-libstb-hal-new-patch \
 libstb-hal-next-patch \
 libstb-hal-cst-next-patch \
 libstb-hal-cst-next-tangos-patch:
@@ -50,9 +49,6 @@ FS_NEUTRINO_ALPHA_PATCHES +=
 
 # FS Neutrino Test (Master)
 FS_NEUTRINO_TEST_PATCHES +=
-
-# FS Libstb Hal New
-LIBSTB_HAL_NEW_PATCHES +=
 
 # FS Neutrino-Fhd-Menue
 FS_NEUTRINO_FHD_MENUE_PATCHES +=
