@@ -1,21 +1,7 @@
 #
 # diff helper
 #
-#enigma2-patch
-#neutrino-hd2-patch
-#neutrino-mp-next-patch
-#neutrino-mp-tangos-patch
-#neutrino-mp-cst-next-patch
-#neutrino-mp-cst-next-ni-patch
-#neutrino-alpha-patch
-#neutrino-test-patch
-#neutrino-fhd-menue-patch
-#neutrino-matze-patch
-#libstb-hal-patch
-#libstb-hal-next-patch
-#libstb-hal-cst-next-patch
-#libstb-hal-cst-next-tangos-patch
-%patch:
+%-patch:
 	( cd $(SOURCE_DIR) && diff -Nur --exclude-from=$(SCRIPTS_DIR)/diff-exclude $(subst -patch,,$@).org $(subst -patch,,$@) > $(BASE_DIR)/$(subst -patch,.patch,$@) ; [ $$? -eq 1 ] )
 
 # keeping all patches together in one file
