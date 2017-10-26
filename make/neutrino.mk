@@ -80,6 +80,15 @@ OBJDIR = $(BUILD_TMP)
 N_OBJDIR = $(OBJDIR)/neutrino-mp
 LH_OBJDIR = $(OBJDIR)/libstb-hal
 
+ifeq ($(EXTERNAL_LCD), externallcd)
+N_CONFIG_OPTS += --enable-graphlcd
+NEUTRINO_DEPS += $(D)/graphlcd
+endif
+
+ifeq ($(EXTERNAL_LCD), lcd4linux)
+NEUTRINO_DEPS += $(D)/lcd4linux
+endif
+
 ################################################################################
 #
 # libstb-hal-cst-next
