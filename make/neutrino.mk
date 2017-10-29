@@ -684,7 +684,7 @@ libstb-hal-distclean:
 
 ################################################################################
 #
-# fs-basis yaud-neutrino-alpha
+# fs-basis yaud-neutrino-alpha (Mine)
 #
 yaud-neutrino-alpha: yaud-none \
 		$(D)/neutrino-alpha $(D)/neutrino_release
@@ -762,7 +762,7 @@ $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 		pushd $(BASE_DIR) ; \
 		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
-		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-alpha-rev'$$NMP_REV'"' >> $@ ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Alpha-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
 $(D)/neutrino-alpha.do_compile: $(D)/neutrino-alpha.config.status $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
@@ -868,7 +868,7 @@ $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 		pushd $(BASE_DIR) ; \
 		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
-		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-neutrino-test-rev'$$NMP_REV'"' >> $@ ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Test-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
 $(D)/neutrino-test.do_compile: $(D)/neutrino-test.config.status $(SOURCE_DIR)/neutrino-test/src/gui/version.h
@@ -896,44 +896,44 @@ neutrino-test-distclean: neutrino-cdkroot-clean
 
 ################################################################################
 #
-# fs-basis yaud-neutrino-fhd-menue
+# fs-basis yaud-neutrino-current
 #
-yaud-neutrino-fhd-menue: yaud-none \
-		$(D)/neutrino-fhd-menue $(D)/neutrino_release
+yaud-neutrino-current: yaud-none \
+		$(D)/neutrino-current $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
-yaud-neutrino-fhd-menue-plugins: yaud-none \
-		$(D)/neutrino-fhd-menue $(D)/neutrino-plugins $(D)/neutrino_release
+yaud-neutrino-current-plugins: yaud-none \
+		$(D)/neutrino-current $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
-yaud-neutrino-fhd-menue-xupnpd: yaud-none \
-		$(D)/neutrino-fhd-menue $(D)/xupnpd $(D)/neutrino_release
+yaud-neutrino-current-xupnpd: yaud-none \
+		$(D)/neutrino-current $(D)/xupnpd $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
-FS_NEUTRINO_FHD_MENUE_PATCHES =
+FS_NEUTRINO_CURRENT_PATCHES =
 
-$(D)/neutrino-fhd-menue.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
+$(D)/neutrino-current.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	$(START_BUILD)
-	rm -rf $(SOURCE_DIR)/neutrino-fhd-menue
-	rm -rf $(SOURCE_DIR)/neutrino-fhd-menue.org
+	rm -rf $(SOURCE_DIR)/neutrino-current
+	rm -rf $(SOURCE_DIR)/neutrino-current.org
 	rm -rf $(N_OBJDIR)
-	[ -d "$(ARCHIVE)/neutrino-fhd-menue.git" ] && \
-	(cd $(ARCHIVE)/neutrino-fhd-menue.git; git pull; cd "$(BUILD_TMP)";); \
-	[ -d "$(ARCHIVE)/neutrino-fhd-menue.git" ] || \
-	git clone -b fhd-menue https://github.com/fs-basis/neutrino-gui.git $(ARCHIVE)/neutrino-fhd-menue.git; \
-	cp -ra $(ARCHIVE)/neutrino-fhd-menue.git $(SOURCE_DIR)/neutrino-fhd-menue; \
-	cp -ra $(SOURCE_DIR)/neutrino-fhd-menue $(SOURCE_DIR)/neutrino-fhd-menue.org
-	set -e; cd $(SOURCE_DIR)/neutrino-fhd-menue; \
-		$(call post_patch,$(FS_NEUTRINO_FHD_MENUE_PATCHES))
+	[ -d "$(ARCHIVE)/neutrino-current.git" ] && \
+	(cd $(ARCHIVE)/neutrino-current.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/neutrino-current.git" ] || \
+	git clone -b current https://github.com/fs-basis/neutrino-gui.git $(ARCHIVE)/neutrino-current.git; \
+	cp -ra $(ARCHIVE)/neutrino-current.git $(SOURCE_DIR)/neutrino-current; \
+	cp -ra $(SOURCE_DIR)/neutrino-current $(SOURCE_DIR)/neutrino-current.org
+	set -e; cd $(SOURCE_DIR)/neutrino-current; \
+		$(call post_patch,$(FS_NEUTRINO_CURRENT_PATCHES))
 	$(TOUCH)
 
-$(D)/neutrino-fhd-menue.config.status:
+$(D)/neutrino-current.config.status:
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
 	cd $(N_OBJDIR); \
-		$(SOURCE_DIR)/neutrino-fhd-menue/autogen.sh; \
+		$(SOURCE_DIR)/neutrino-current/autogen.sh; \
 		$(BUILDENV) \
-		$(SOURCE_DIR)/neutrino-fhd-menue/configure --enable-silent-rules \
+		$(SOURCE_DIR)/neutrino-current/configure --enable-silent-rules \
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
@@ -961,44 +961,44 @@ $(D)/neutrino-fhd-menue.config.status:
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 	@touch $@
 
-$(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h:
+$(SOURCE_DIR)/neutrino-current/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
 	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
 		pushd $(SOURCE_DIR)/libstb-hal ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-fhd-menue ; \
+		pushd $(SOURCE_DIR)/neutrino-current ; \
 		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		pushd $(BASE_DIR) ; \
 		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
-		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-neutrino-fhd-menue-rev'$$NMP_REV'"' >> $@ ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Current-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
-$(D)/neutrino-fhd-menue.do_compile: $(D)/neutrino-fhd-menue.config.status $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h
-	cd $(SOURCE_DIR)/neutrino-fhd-menue; \
+$(D)/neutrino-current.do_compile: $(D)/neutrino-current.config.status $(SOURCE_DIR)/neutrino-current/src/gui/version.h
+	cd $(SOURCE_DIR)/neutrino-current; \
 		$(MAKE) -C $(N_OBJDIR) all
 	@touch $@
 
-$(D)/neutrino-fhd-menue: $(D)/neutrino-fhd-menue.do_prepare $(D)/neutrino-fhd-menue.do_compile
+$(D)/neutrino-current: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	rm -f $(TARGET_DIR)/var/etc/.version
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
-neutrino-fhd-menue-clean: neutrino-cdkroot-clean
-	rm -f $(D)/neutrino-fhd-menue
-	rm -f $(D)/neutrino-fhd-menue.config.status
-	rm -f $(SOURCE_DIR)/neutrino-fhd-menue/src/gui/version.h
+neutrino-current-clean: neutrino-cdkroot-clean
+	rm -f $(D)/neutrino-current
+	rm -f $(D)/neutrino-current.config.status
+	rm -f $(SOURCE_DIR)/neutrino-current/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-neutrino-fhd-menue-distclean: neutrino-cdkroot-clean
+neutrino-current-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
-	rm -f $(D)/neutrino-fhd-menue*
+	rm -f $(D)/neutrino-current*
 
 ################################################################################
 #

@@ -33,8 +33,8 @@ FS_NEUTRINO_ALPHA_PATCHES +=
 # FS Neutrino Test (Master)
 FS_NEUTRINO_TEST_PATCHES +=
 
-# FS Neutrino-Fhd-Menue
-FS_NEUTRINO_FHD_MENUE_PATCHES +=
+# FS Neutrino-Current
+FS_NEUTRINO_CURRENT_PATCHES +=
 
 # Neutrino-Matze
 NEUTRINO_MATZE_PATCHES +=
