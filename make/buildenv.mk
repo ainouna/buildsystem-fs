@@ -28,11 +28,13 @@ CCACHE_DIR            = $(HOME)/.ccache-bs-sh4-fs
 export CCACHE_DIR
 TARGET               ?= sh4-linux
 BOXARCH              ?= sh4
+KERNELNAME            = uImage
 else
 CCACHE_DIR            = $(HOME)/.ccache-bs-arm
 export CCACHE_DIR
 TARGET               ?= arm-cortex-linux-gnueabihf
 BOXARCH              ?= arm
+KERNELNAME            = zImage
 endif
 
 GIT_PROTOCOL         ?= http
@@ -145,7 +147,11 @@ WGET_SILENT_OPT       = -o /dev/null
 MAKEFLAGS            += --silent
 endif
 
-# helper-"functions":
+# certificates
+CA_BUNDLE             = ca-certificates.crt
+CA_BUNDLE_DIR         = /etc/ssl/certs
+
+# helper-"functions"
 REWRITE_LIBTOOL       = sed -i "s,^libdir=.*,libdir='$(TARGET_DIR)/usr/lib'," $(TARGET_DIR)/usr/lib
 REWRITE_LIBTOOLDEP    = sed -i -e "s,\(^dependency_libs='\| \|-L\|^dependency_libs='\)/usr/lib,\ $(TARGET_DIR)/usr/lib,g" $(TARGET_DIR)/usr/lib
 REWRITE_PKGCONF       = sed -i "s,^prefix=.*,prefix='$(TARGET_DIR)/usr',"

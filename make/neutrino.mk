@@ -28,6 +28,9 @@ endif
 
 ifeq ($(BOXARCH), arm)
 NEUTRINO_DEPS += $(D)/gst_plugins_dvbmediasink
+NEUTRINO_DEPS += $(D)/ntfs_3g
+NEUTRINO_DEPS += $(D)/aio_grab
+NEUTRINO_DEPS += $(D)/neutrino-mediathek
 endif
 
 ifeq ($(IMAGE), neutrino-wlandriver)
@@ -70,6 +73,11 @@ N_CONFIG_OPTS += --enable-ffmpegdec
 N_CONFIG_OPTS += --enable-giflib
 N_CONFIG_OPTS += --enable-lua
 #N_CONFIG_OPTS += --enable-pip
+<<<<<<< HEAD
+=======
+#N_CONFIG_OPTS += --disable-webif
+#N_CONFIG_OPTS += --disable-tangos
+>>>>>>> DD/master
 N_CONFIG_OPTS += --enable-pugixml
 #N_CONFIG_OPTS += --enable-viasatepg
 ifeq ($(BOXARCH), arm)
@@ -252,20 +260,77 @@ neutrino-mp-cst-next-distclean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-mp-cst-next*
 
 ################################################################################
+ifeq ($(BOXARCH), arm)
+################################################################################
+#
+# libstb-hal-cst-next-ni
+#
+NEUTRINO_MP_LIBSTB_CST_NEXT_NI_PATCHES =
+
+$(D)/libstb-hal-cst-next-ni.do_prepare:
+	$(START_BUILD)
+	rm -rf $(SOURCE_DIR)/libstb-hal-cst-next-ni
+	rm -rf $(SOURCE_DIR)/libstb-hal-cst-next-ni.org
+	rm -rf $(LH_OBJDIR)
+	[ -d "$(ARCHIVE)/libstb-hal-cst-next-ni.git" ] && \
+	(cd $(ARCHIVE)/libstb-hal-cst-next-ni.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/libstb-hal-cst-next-ni.git" ] || \
+	git clone https://bitbucket.org/neutrino-images/ni-libstb-hal-next.git $(ARCHIVE)/libstb-hal-cst-next-ni.git; \
+	cp -ra $(ARCHIVE)/libstb-hal-cst-next-ni.git $(SOURCE_DIR)/libstb-hal-cst-next-ni;\
+	cp -ra $(SOURCE_DIR)/libstb-hal-cst-next-ni $(SOURCE_DIR)/libstb-hal-cst-next-ni.org
+	set -e; cd $(SOURCE_DIR)/libstb-hal-cst-next-ni; \
+		$(call post_patch,$(NEUTRINO_MP_LIBSTB_CST_NEXT_NI_PATCHES))
+	@touch $@
+
+$(D)/libstb-hal-cst-next-ni.config.status: | $(NEUTRINO_DEPS)
+	rm -rf $(LH_OBJDIR); \
+	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
+	cd $(LH_OBJDIR); \
+		$(SOURCE_DIR)/libstb-hal-cst-next-ni/autogen.sh; \
+		$(BUILDENV) \
+		$(SOURCE_DIR)/libstb-hal-cst-next-ni/configure --enable-silent-rules \
+			--host=$(TARGET) \
+			--build=$(BUILD) \
+			--prefix= \
+			--with-target=cdk \
+			--with-boxtype=$(BOXTYPE) \
+			PKG_CONFIG=$(PKG_CONFIG) \
+			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
+			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+
+$(D)/libstb-hal-cst-next-ni.do_compile: $(D)/libstb-hal-cst-next-ni.config.status
+	cd $(SOURCE_DIR)/libstb-hal-cst-next-ni; \
+		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
+	@touch $@
+
+$(D)/libstb-hal-cst-next-ni: $(D)/libstb-hal-cst-next-ni.do_prepare $(D)/libstb-hal-cst-next-ni.do_compile
+	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(TARGET_DIR)
+	$(TOUCH)
+
+libstb-hal-cst-next-ni-clean:
+	rm -f $(D)/libstb-hal-cst-next-ni
+	cd $(LH_OBJDIR); \
+		$(MAKE) -C $(LH_OBJDIR) distclean
+
+libstb-hal-cst-next-ni-distclean:
+	rm -rf $(LH_OBJDIR)
+	rm -f $(D)/libstb-hal-cst-next-ni*
+
+################################################################################
 #
 # neutrino-mp-cst-next-ni
 #
-yaud-neutrino-mp-cst-next-ni: yaud-none \
+yaud-neutrino-mp-cst-next-ni: $(D)/bootstrap yaud-none \
 		neutrino-mp-cst-next-ni $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
-yaud-neutrino-mp-cst-next-ni-plugins: yaud-none \
+yaud-neutrino-mp-cst-next-ni-plugins: $(D)/bootstrap yaud-none \
 		$(D)/neutrino-mp-cst-next-ni $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
 NEUTRINO_MP_CST_NEXT_NI_PATCHES =
 
-$(D)/neutrino-mp-cst-next-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+$(D)/neutrino-mp-cst-next-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next-ni
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-mp-cst-next-ni
 	rm -rf $(SOURCE_DIR)/neutrino-mp-cst-next-ni.org
@@ -273,7 +338,7 @@ $(D)/neutrino-mp-cst-next-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-
 	[ -d "$(ARCHIVE)/neutrino-mp-cst-next-ni.git" ] && \
 	(cd $(ARCHIVE)/neutrino-mp-cst-next-ni.git; git pull; cd "$(BUILD_TMP)";); \
 	[ -d "$(ARCHIVE)/neutrino-mp-cst-next-ni.git" ] || \
-	git clone -b ni https://github.com/Duckbox-Developers/neutrino-mp-cst-next.git $(ARCHIVE)/neutrino-mp-cst-next-ni.git; \
+	git clone -b ni/mp/tuxbox https://bitbucket.org/neutrino-images/ni-neutrino-hd.git $(ARCHIVE)/neutrino-mp-cst-next-ni.git; \
 	cp -ra $(ARCHIVE)/neutrino-mp-cst-next-ni.git $(SOURCE_DIR)/neutrino-mp-cst-next-ni; \
 	cp -ra $(SOURCE_DIR)/neutrino-mp-cst-next-ni $(SOURCE_DIR)/neutrino-mp-cst-next-ni.org
 	set -e; cd $(SOURCE_DIR)/neutrino-mp-cst-next-ni; \
@@ -290,7 +355,11 @@ $(D)/neutrino-mp-cst-next-ni.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-boxtype=$(BOXTYPE) \
+			--with-boxtype=armbox \
+			--with-boxmodel=$(BOXTYPE) \
+			--enable-upnp \
+			--enable-ffmpegdec \
+			--enable-giflib \
 			--with-tremor \
 			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
@@ -307,7 +376,7 @@ $(D)/neutrino-mp-cst-next-ni.config.status:
 			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-themesdir_var=/var/tuxbox/themes \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next-ni/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
@@ -317,8 +386,8 @@ $(D)/neutrino-mp-cst-next-ni.config.status:
 $(SOURCE_DIR)/neutrino-mp-cst-next-ni/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next-ni ; then \
+		pushd $(SOURCE_DIR)/libstb-hal-cst-next-ni ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		pushd $(SOURCE_DIR)/neutrino-mp-cst-next-ni ; \
@@ -351,7 +420,8 @@ neutrino-mp-cst-next-ni-clean: neutrino-cdkroot-clean
 neutrino-mp-cst-next-ni-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-mp-cst-next-ni*
-
+################################################################################
+endif
 ################################################################################
 neutrino-cdkroot-clean:
 	[ -e $(TARGET_DIR)/usr/local/bin ] && cd $(TARGET_DIR)/usr/local/bin && find -name '*' -delete || true
@@ -521,15 +591,15 @@ libstb-hal-cst-next-tangos-distclean:
 #
 # yaud-neutrino-mp-tangos
 #
-yaud-neutrino-mp-tangos: yaud-none \
+yaud-neutrino-mp-tangos: $(D)/bootstrap yaud-none \
 		$(D)/neutrino-mp-tangos $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
-yaud-neutrino-mp-tangos-plugins: yaud-none \
+yaud-neutrino-mp-tangos-plugins: $(D)/bootstrap yaud-none \
 		$(D)/neutrino-mp-tangos $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 
-yaud-neutrino-mp-tangos-all: yaud-none \
+yaud-neutrino-mp-tangos-all: $(D)/bootstrap yaud-none \
 		$(D)/neutrino-mp-tangos $(D)/neutrino-plugins $(D)/shairport $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
 

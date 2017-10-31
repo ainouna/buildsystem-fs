@@ -1005,8 +1005,8 @@ $(D)/avahi: $(D)/bootstrap $(D)/expat $(D)/libdaemon $(D)/dbus $(ARCHIVE)/$(AVAH
 #
 # wget
 #
-WGET_VER = 1.19.1
-WGET_SOURCE = wget-$(WGET_VER).tar.xz
+WGET_VER = 1.19.2
+WGET_SOURCE = wget-$(WGET_VER).tar.gz
 
 $(ARCHIVE)/$(WGET_SOURCE):
 	$(WGET) https://ftp.gnu.org/gnu/wget/$(WGET_SOURCE)
@@ -1085,7 +1085,7 @@ $(D)/smartmontools: $(D)/bootstrap $(ARCHIVE)/$(SMARTMONTOOLS_SOURCE)
 #
 # nfs_utils
 #
-NFS_UTILS_VER = 2.1.1
+NFS_UTILS_VER = 2.2.1
 NFS_UTILS_SOURCE = nfs-utils-$(NFS_UTILS_VER).tar.bz2
 NFS_UTILS_PATCH = nfs-utils-$(NFS_UTILS_VER).patch
 
@@ -1440,12 +1440,12 @@ $(D)/dvbsnoop: $(D)/bootstrap $(ARCHIVE)/$(DVBSNOOP_SOURCE)
 #
 # udpxy
 #
-UDPXY_VER = 1.0.23-9
-UDPXY_SOURCE = udpxy.$(UDPXY_VER)-prod.tar.gz
+UDPXY_VER = 1.0.23-10
+UDPXY_SOURCE = udpxy-src.tar.gz
 UDPXY_PATCH = udpxy-$(UDPXY_VER).patch
 
 $(ARCHIVE)/$(UDPXY_SOURCE):
-	$(WGET) http://www.udpxy.com/download/1_23/$(UDPXY_SOURCE)
+	$(WGET) http://www.udpxy.com/download/udpxy/$(UDPXY_SOURCE)
 
 $(D)/udpxy: $(D)/bootstrap $(ARCHIVE)/$(UDPXY_SOURCE)
 	$(START_BUILD)
@@ -1572,3 +1572,50 @@ $(D)/usb_modeswitch: $(D)/bootstrap $(D)/libusb $(D)/usb_modeswitch_data $(ARCHI
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REMOVE)/usb-modeswitch-$(USB_MODESWITCH_VER)
 	$(TOUCH)
+
+#
+# ofgwrite
+#
+$(D)/ofgwrite: $(D)/bootstrap
+	$(START_BUILD)
+	$(REMOVE)/ofgwrite
+	set -e; cd $(BUILD_TMP); \
+	git clone git://github.com/oe-alliance/ofgwrite.git ofgwrite; \
+	cd ofgwrite; \
+		$(BUILDENV) \
+		$(MAKE) && \
+	install -m 755 $(BUILD_TMP)/ofgwrite/ofgwrite_bin $(TARGET_DIR)/bin
+	install -m 755 $(BUILD_TMP)/ofgwrite/ofgwrite $(TARGET_DIR)/bin
+	sed -i "s,/usr/bin/,/bin/," $(TARGET_DIR)/bin/ofgwrite
+	$(REMOVE)/ofgwrite
+	$(TOUCH)
+
+#
+# aio_grab
+#
+AIO_GRAB_VER = 9e4e986
+AIO_GRAB_SOURCE = aio_grab-$(AIO_GRAB_VER).tar.bz2
+AIO_GRAB_URL = git://github.com/oe-alliance/aio-grab.git
+
+$(ARCHIVE)/$(AIO_GRAB_SOURCE):
+	get-git-archive.sh $(AIO_GRAB_URL) $(AIO_GRAB_VER) $(notdir $@) $(ARCHIVE)
+
+$(D)/aio_grab: $(D)/bootstrap $(D)/zlib $(D)/libpng $(D)/libjpeg $(ARCHIVE)/$(AIO_GRAB_SOURCE)
+	$(START_BUILD)
+	$(REMOVE)/aio_grab-$(AIO_GRAB_VER)
+	$(UNTAR)/$(AIO_GRAB_SOURCE)
+	set -e; cd $(BUILD_TMP)/aio_grab-$(AIO_GRAB_VER); \
+		aclocal --force -I m4; \
+		libtoolize --copy --ltdl --force; \
+		autoconf --force; \
+		automake --add-missing --copy --force-missing --foreign; \
+		$(CONFIGURE) \
+			--target=$(TARGET) \
+			--prefix= \
+			--enable-silent-rules \
+		; \
+		$(MAKE) all; \
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
+	$(REMOVE)/aio_grab-$(AIO_GRAB_VER)
+	$(TOUCH)
+

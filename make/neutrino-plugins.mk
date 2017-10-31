@@ -70,6 +70,9 @@ $(D)/neutrino-mp-plugins.do_prepare:
 		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/neutrino-mp-plugins.git neutrino-mp-plugins.git; \
 		fi
 	cp -ra $(ARCHIVE)/neutrino-mp-plugins.git $(SOURCE_DIR)/neutrino-mp-plugins
+ifeq ($(BOXARCH), arm)
+	sed -i -e 's#shellexec fx2#shellexec#g' $(SOURCE_DIR)/neutrino-mp-plugins/Makefile.am
+endif
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-mp-plugins/config.status: $(D)/bootstrap
@@ -210,3 +213,13 @@ neutrino-hd2-plugins-distclean: neutrino-hd2-plugins-clean
 	rm -f $(D)/neutrino-hd2-plugins.do_prepare
 	rm -f $(D)/neutrino-hd2-plugins.do_compile
 
+$(D)/neutrino-mediathek:
+	$(START_BUILD)
+	$(REMOVE)/$@
+	git clone https://github.com/neutrino-mediathek/mediathek.git $(BUILD_TMP)/$@
+	set -e; cd $(BUILD_TMP)/$@ && \
+	install -d $(TARGET_DIR)/lib/tuxbox/plugins && \
+	cp -a plugins/* $(TARGET_DIR)/lib/tuxbox/plugins/ && \
+	cp -a share $(TARGET_DIR)/usr/
+	$(REMOVE)/$@
+	$(TOUCH)
