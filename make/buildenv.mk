@@ -48,6 +48,8 @@ GIT_NAME_DRIVER      ?= fs-basis
 GIT_NAME_APPS        ?= fs-basis
 GIT_NAME_FLASH       ?= fs-basis
 
+GIT_CHECK             = git checkout -f
+
 TUFSBOX_DIR           = $(BASE_DIR)/tufsbox
 CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)
 TARGET_DIR            = $(TUFSBOX_DIR)/cdkroot

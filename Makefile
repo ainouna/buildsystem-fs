@@ -90,6 +90,10 @@ help:
 	@echo "* make print-targets       - print out all available targets"
 	@echo ""
 	@echo "later, you might find those useful:"
+	@echo "* make check-self          - checkout the build system include Overwrite local changes"
+	@echo "* make check               - checkout the build system, apps, driver and flash include Overwrite local changes"
+	@echo ""
+	@echo "later, you might find those useful:"
 	@echo "* make update-self         - update the build system"
 	@echo "* make update              - update the build system, apps, driver and flash"
 	@echo ""
@@ -184,6 +188,43 @@ update:
 	fi
 	@echo;
 
+check-self:
+	git checkout -f
+
+check:
+	@if test -d $(BASE_DIR); then \
+		cd $(BASE_DIR)/; \
+		echo '==================================================================='; \
+		echo '      check $(GIT_NAME)-cdk git repository'; \
+		echo '==================================================================='; \
+		echo; \
+		$(GIT_CHECK); fi
+		@echo;
+	@if test -d $(DRIVER_DIR); then \
+		cd $(DRIVER_DIR)/; \
+		echo '==================================================================='; \
+		echo '      check $(GIT_NAME_DRIVER)-driver git repository'; \
+		echo '==================================================================='; \
+		echo; \
+		$(GIT_CHECK); fi
+		@echo;
+	@if test -d $(APPS_DIR); then \
+		cd $(APPS_DIR)/; \
+		echo '==================================================================='; \
+		echo '      check $(GIT_NAME_APPS)-apps git repository'; \
+		echo '==================================================================='; \
+		echo; \
+		$(GIT_CHECK); fi
+		@echo;
+	@if test -d $(FLASH_DIR); then \
+		cd $(FLASH_DIR)/; \
+		echo '==================================================================='; \
+		echo '      check $(GIT_NAME_FLASH)-flash git repository'; \
+		echo '==================================================================='; \
+		echo; \
+		$(GIT_CHECK); fi
+		@echo;
+
 all:
 	@echo "'make all' is not a valid target. Please read the documentation."
 
@@ -208,6 +249,7 @@ print-targets:
 PHONY += everything print-targets
 PHONY += all printenv .print-phony
 PHONY += update update-self
+PHONY += check check-self
 .PHONY: $(PHONY)
 
 # this makes sure we do not build top-level dependencies in parallel
