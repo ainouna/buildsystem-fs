@@ -73,11 +73,7 @@ N_CONFIG_OPTS += --enable-ffmpegdec
 N_CONFIG_OPTS += --enable-giflib
 N_CONFIG_OPTS += --enable-lua
 #N_CONFIG_OPTS += --enable-pip
-<<<<<<< HEAD
-=======
-#N_CONFIG_OPTS += --disable-webif
 #N_CONFIG_OPTS += --disable-tangos
->>>>>>> DD/master
 N_CONFIG_OPTS += --enable-pugixml
 #N_CONFIG_OPTS += --enable-viasatepg
 ifeq ($(BOXARCH), arm)
