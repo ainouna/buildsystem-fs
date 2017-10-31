@@ -17,8 +17,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 2: kernel (1-2) for sh4 cpu"
 	echo "Parameter 3: optimization (1-4)"
 	echo "Parameter 4: Media Framework (1-4)"
-	echo "Parameter 5: External LCD support (1-3)"
-	echo "Parameter 6: Image (Enigma=1/2 Neutrino=3/4 (1-4)"
+	echo "Parameter 5: Image (Enigma=1/2 Neutrino=3/4 (1-4)"
 	exit
 fi
 
@@ -205,26 +204,7 @@ echo "MEDIAFW=$MEDIAFW" >> config
 ##############################################
 
 case $5 in
-	[1-3]) REPLY=$5;;
-	*)	echo -e "\nExternal LCD support: (only for neutrino"
-		echo "   1)  No external LCD"
-		echo "   2)  graphlcd for external LCD"
-		echo "   3)  lcd4linux for external LCD"
-		read -p "Select external LCD support (1-3)? ";;
-esac
-
-case "$REPLY" in
-	1) EXTERNAL_LCD="none";;
-	2) EXTERNAL_LCD="externallcd";;
-	3) EXTERNAL_LCD="lcd4linux";;
-	*) EXTERNAL_LCD="none";;
-esac
-echo "EXTERNAL_LCD=$EXTERNAL_LCD" >> config
-
-##############################################
-
-case $6 in
-	[1-4]) REPLY=$6;;
+	[1-4]) REPLY=$5;;
 	*)	echo -e "\nWhich Image do you want to build:"
 		echo "   1)  Enigma2"
 		echo "   2)  Enigma2  (includes WLAN drivers)"

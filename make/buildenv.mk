@@ -48,8 +48,6 @@ GIT_NAME_DRIVER      ?= fs-basis
 GIT_NAME_APPS        ?= fs-basis
 GIT_NAME_FLASH       ?= fs-basis
 
-GIT_CHECK             = git checkout -f
-
 TUFSBOX_DIR           = $(BASE_DIR)/tufsbox
 CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)
 TARGET_DIR            = $(TUFSBOX_DIR)/cdkroot
@@ -98,6 +96,7 @@ TARGET_EXTRA_CFLAGS   =
 TARGET_EXTRA_LDFLAGS  =
 endif
 
+MAKEFLAGS            += --no-print-directory
 
 TARGET_LIB_DIR        = $(TARGET_DIR)/usr/lib
 TARGET_INCLUDE_DIR    = $(TARGET_DIR)/usr/include
@@ -122,31 +121,6 @@ TERM_YELLOW          := \033[00;33m
 TERM_YELLOW_BOLD     := \033[01;33m
 TERM_NORMAL          := \033[0m
 
-MAKEFLAGS            += --no-print-directory
-# To put more focus on warnings, be less verbose as default
-# Use 'make V=1' to see the full commands
-ifeq ("$(origin V)", "command line")
-KBUILD_VERBOSE        = $(V)
-endif
-ifndef KBUILD_VERBOSE
-KBUILD_VERBOSE        = 0
-endif
-
-# If KBUILD_VERBOSE equals 0 then the above command will be hidden.
-# If KBUILD_VERBOSE equals 1 then the above command is displayed.
-ifeq ($(KBUILD_VERBOSE),1)
-SILENT_PATCH          =
-SILENT_OPT            =
-SILENT                =
-WGET_SILENT_OPT       =
-else
-SILENT_PATCH          = -s
-SILENT_OPT           := >/dev/null 2>&1
-SILENT                = @
-WGET_SILENT_OPT       = -o /dev/null
-MAKEFLAGS            += --silent
-endif
-
 # certificates
 CA_BUNDLE             = ca-certificates.crt
 CA_BUNDLE_DIR         = /etc/ssl/certs
@@ -157,8 +131,8 @@ REWRITE_LIBTOOLDEP    = sed -i -e "s,\(^dependency_libs='\| \|-L\|^dependency_li
 REWRITE_PKGCONF       = sed -i "s,^prefix=.*,prefix='$(TARGET_DIR)/usr',"
 
 # unpack tarballs, clean up
-UNTAR                 = $(SILENT)tar -C $(BUILD_TMP) -xf $(ARCHIVE)
-REMOVE                = $(SILENT)rm -rf $(BUILD_TMP)
+UNTAR                 = tar -C $(BUILD_TMP) -xf $(ARCHIVE)
+REMOVE                = rm -rf $(BUILD_TMP)
 
 #
 split_deps_dir=$(subst ., ,$(1))
@@ -185,8 +159,8 @@ TOUCH                 = @touch $@; \
                         echo
 
 #
-PATCH                 = patch -p1 $(SILENT_PATCH) -i $(PATCHES)
-APATCH                = patch -p1 $(SILENT_PATCH) -i
+PATCH                 = patch -p1 -i $(PATCHES)
+APATCH                = patch -p1 -i
 define post_patch
     for i in $(1); do \
         if [ -d $$i ]; then \
@@ -214,7 +188,7 @@ define post_patch
 endef
 
 # wget tarballs into archive directory
-WGET = wget --progress=bar:force --no-check-certificate $(WGET_SILENT_OPT) -t6 -T20 -c -P $(ARCHIVE)
+WGET = wget --no-check-certificate -t6 -T20 -c -P $(ARCHIVE)
 
 TUXBOX_YAUD_CUSTOMIZE = [ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VER=$(KERNEL_VER) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(BASE_DIR) $(SOURCE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
 TUXBOX_CUSTOMIZE      = [ -x $(CUSTOM_DIR)/$(notdir $@)-local.sh ] && KERNEL_VER=$(KERNEL_VER) && BOXTYPE=$(BOXTYPE) && $(CUSTOM_DIR)/$(notdir $@)-local.sh $(RELEASE_DIR) $(TARGET_DIR) $(BASE_DIR) $(FLASH_DIR) $(BOXTYPE) || true
@@ -241,17 +215,17 @@ BUILDENV = \
 	CPPFLAGS="$(TARGET_CPPFLAGS)" \
 	CXXFLAGS="$(TARGET_CXXFLAGS)" \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
-	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)"
+	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH)
 
 CONFIGURE = \
-	test -f ./configure || ./autogen.sh $(SILENT_OPT) && \
+	test -f ./configure || ./autogen.sh && \
 	$(BUILDENV) \
-	./configure $(SILENT_OPT) $(CONFIGURE_OPTS)
+	./configure $(CONFIGURE_OPTS)
 
 CONFIGURE_TOOLS = \
-	./autogen.sh $(SILENT_OPT) && \
+	./autogen.sh && \
 	$(BUILDENV) \
-	./configure $(SILENT_OPT) $(CONFIGURE_OPTS)
+	./configure $(CONFIGURE_OPTS)
 
 MAKE_OPTS := \
 	CC=$(TARGET)-gcc \

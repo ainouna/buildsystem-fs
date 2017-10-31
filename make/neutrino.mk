@@ -84,15 +84,6 @@ OBJDIR = $(BUILD_TMP)
 N_OBJDIR = $(OBJDIR)/neutrino-mp
 LH_OBJDIR = $(OBJDIR)/libstb-hal
 
-ifeq ($(EXTERNAL_LCD), externallcd)
-N_CONFIG_OPTS += --enable-graphlcd
-NEUTRINO_DEPS += $(D)/graphlcd
-endif
-
-ifeq ($(EXTERNAL_LCD), lcd4linux)
-NEUTRINO_DEPS += $(D)/lcd4linux
-endif
-
 ################################################################################
 #
 # libstb-hal-cst-next
@@ -192,6 +183,9 @@ $(D)/neutrino-mp-cst-next.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
+			--enable-upnp \
+			--enable-ffmpegdec \
+			--enable-giflib \
 			--with-tremor \
 			--with-libdir=/usr/lib \
 			--with-datadir=/usr/share/tuxbox \
@@ -629,6 +623,7 @@ $(D)/neutrino-mp-tangos.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
+			--disable-upnp \
 			--with-boxtype=$(BOXTYPE) \
 			--with-tremor \
 			--with-libdir=/usr/lib \
