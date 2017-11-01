@@ -3,6 +3,7 @@
 #
 NCURSES_VER = 5.9
 NCURSES_SOURCE = ncurses-$(NCURSES_VER).tar.gz
+NCURSES_PATCH = ncurses-$(NCURSES_VER)-gcc-5.x-MKlib_gen.patch
 
 $(ARCHIVE)/$(NCURSES_SOURCE):
 	$(WGET) https://ftp.gnu.org/pub/gnu/ncurses/$(NCURSES_SOURCE)
@@ -12,6 +13,7 @@ $(D)/ncurses: $(D)/bootstrap $(ARCHIVE)/$(NCURSES_SOURCE)
 	$(REMOVE)/ncurses-$(NCURSES_VER)
 	$(UNTAR)/$(NCURSES_SOURCE)
 	set -e; cd $(BUILD_TMP)/ncurses-$(NCURSES_VER); \
+		$(call post_patch,$(NCURSES_PATCH)); \
 		$(CONFIGURE) \
 			--target=$(TARGET) \
 			--prefix=/usr \
@@ -131,8 +133,9 @@ LIBGLIB2_VER_MINOR = 45
 LIBGLIB2_VER_MICRO = 4
 LIBGLIB2_VER = $(LIBGLIB2_VER_MAJOR).$(LIBGLIB2_VER_MINOR).$(LIBGLIB2_VER_MICRO)
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VER).tar.xz
-LIBGLIB2_HOST_PATCH = libglib2-host-$(LIBGLIB2_VER)-gdate-suppress-string-format-literal-warning.patch
-LIBGLIB2_PATCH = libglib2-$(LIBGLIB2_VER)-disable-tests.patch
+LIBGLIB2_HOST_PATCH = libglib2-$(LIBGLIB2_VER)-gdate-suppress-string-format-literal-warning.patch
+LIBGLIB2_PATCH  = libglib2-$(LIBGLIB2_VER)-disable-tests.patch
+LIBGLIB2_PATCH += libglib2-$(LIBGLIB2_VER)-gdate-suppress-string-format-literal-warning.patch
 
 $(ARCHIVE)/$(LIBGLIB2_SOURCE):
 	$(WGET) https://ftp.gnome.org/pub/gnome/sources/glib/$(LIBGLIB2_VER_MAJOR).$(LIBGLIB2_VER_MINOR)/$(LIBGLIB2_SOURCE)
