@@ -1131,7 +1131,7 @@ yaud-neutrino-current-xupnpd: yaud-none \
 
 FS_NEUTRINO_CURRENT_PATCHES =
 
-$(D)/neutrino-current.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-cst-next
+$(D)/neutrino-current.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-current
 	rm -rf $(SOURCE_DIR)/neutrino-current.org
@@ -1173,7 +1173,7 @@ $(D)/neutrino-current.config.status:
 			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
 			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 			--with-themesdir_var=/var/tuxbox/themes \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
@@ -1183,7 +1183,7 @@ $(D)/neutrino-current.config.status:
 $(SOURCE_DIR)/neutrino-current/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
+	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
 		pushd $(SOURCE_DIR)/libstb-hal ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
