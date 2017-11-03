@@ -1184,7 +1184,7 @@ $(SOURCE_DIR)/neutrino-current/src/gui/version.h:
 	@rm -f $@; \
 	echo '#define BUILT_DATE "'`date`'"' > $@
 	@if test -d $(SOURCE_DIR)/libstb-hal-cst-next ; then \
-		pushd $(SOURCE_DIR)/libstb-hal ; \
+		pushd $(SOURCE_DIR)/libstb-hal-cst-next ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		pushd $(SOURCE_DIR)/neutrino-current ; \
