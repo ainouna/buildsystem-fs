@@ -2065,7 +2065,7 @@ $(D)/lcd4linux: $(D)/bootstrap $(D)/libusb_compat $(D)/gd $(D)/libusb
 #
 # gd
 #
-GD_VER = 2.2.1
+GD_VER = 2.2.5
 GD_SOURCE = libgd-$(GD_VER).tar.xz
 
 $(ARCHIVE)/$(GD_SOURCE):
@@ -2079,8 +2079,9 @@ $(D)/gd: $(D)/bootstrap $(D)/libpng $(D)/libjpeg $(D)/freetype $(ARCHIVE)/$(GD_S
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--bindir=/.remove \
-			--enable-static \
-			--disable-shared \
+			--without-fontconfig \
+			--without-xpm \
+			--without-x \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
@@ -2092,9 +2093,8 @@ $(D)/gd: $(D)/bootstrap $(D)/libpng $(D)/libjpeg $(D)/freetype $(ARCHIVE)/$(GD_S
 #
 # libusb
 #
+LIBUSB_VER = 1.0.21
 LIBUSB_VER_MAJOR = 1.0
-LIBUSB_VER_MINOR = 9
-LIBUSB_VER = $(LIBUSB_VER_MAJOR).$(LIBUSB_VER_MINOR)
 LIBUSB_SOURCE = libusb-$(LIBUSB_VER).tar.bz2
 LIBUSB_PATCH = libusb-$(LIBUSB_VER).patch
 
@@ -2112,6 +2112,7 @@ $(D)/libusb: $(D)/bootstrap $(ARCHIVE)/$(LIBUSB_SOURCE)
 			--enable-static \
 			--disable-log \
 			--disable-debug-log \
+			--disable-udev \
 			--disable-examples-build \
 		; \
 		$(MAKE) ; \
@@ -2152,7 +2153,7 @@ $(D)/libusb_compat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/$(LIBUSB_COMPAT_SOURCE
 #
 # alsa_lib
 #
-ALSA_LIB_VER = 1.1.4.1
+ALSA_LIB_VER = 1.1.5
 ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VER).tar.bz2
 ALSA_LIB_PATCH  = alsa-lib-$(ALSA_LIB_VER).patch
 ALSA_LIB_PATCH += alsa-lib-$(ALSA_LIB_VER)-link_fix.patch
@@ -2688,8 +2689,8 @@ $(D)/gnutls: $(D)/bootstrap $(D)/nettle $(ARCHIVE)/$(GNUTLS_SOURCE)
 #
 # glib-networking
 #
-GLIB_NETWORKING_VER_MAJOR = 2.45
-GLIB_NETWORKING_VER_MINOR = 1
+GLIB_NETWORKING_VER_MAJOR = 2.50
+GLIB_NETWORKING_VER_MINOR = 0
 GLIB_NETWORKING_VER = $(GLIB_NETWORKING_VER_MAJOR).$(GLIB_NETWORKING_VER_MINOR)
 GLIB_NETWORKING_SOURCE = glib-networking-$(GLIB_NETWORKING_VER).tar.xz
 
