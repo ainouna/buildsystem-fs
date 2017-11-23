@@ -68,6 +68,7 @@ N_CONFIG_OPTS  = $(LOCAL_NEUTRINO_BUILD_OPTIONS)
 N_CONFIG_OPTS += --disable-freesatepg
 N_CONFIG_OPTS += --disable-upnp
 #N_CONFIG_OPTS += --disable-webif
+N_CONFIG_OPTS += --with-tremor
 N_CONFIG_OPTS += --enable-ffmpegdec
 N_CONFIG_OPTS += --enable-giflib
 N_CONFIG_OPTS += --enable-lua
@@ -78,6 +79,27 @@ N_CONFIG_OPTS += --enable-pugixml
 ifeq ($(BOXARCH), arm)
 N_CONFIG_OPTS += --enable-reschange
 endif
+
+N_CONFIG_OPTS += \
+	--with-libdir=/usr/lib \
+	--with-datadir=/usr/share/tuxbox \
+	--with-fontdir=/usr/share/fonts \
+	--with-configdir=/var/tuxbox/config \
+	--with-gamesdir=/var/tuxbox/games \
+	--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
+	--with-iconsdir_var=/var/tuxbox/icons \
+	--with-luaplugindir=/var/tuxbox/plugins \
+	--with-localedir=/usr/share/tuxbox/neutrino/locale \
+	--with-localedir_var=/var/tuxbox/locale \
+	--with-plugindir=/var/tuxbox/plugins \
+	--with-plugindir_var=/var/tuxbox/plugins \
+	--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
+	--with-public_httpddir=/var/tuxbox/httpd \
+	--with-themesdir=/usr/share/tuxbox/neutrino/themes \
+	--with-themesdir_var=/var/tuxbox/themes \
+	--with-webtvdir=/share/tuxbox/neutrino/webtv \
+	--with-webtvdir_var=/var/tuxbox/plugins/webtv
+
 
 OBJDIR = $(BUILD_TMP)
 N_OBJDIR = $(OBJDIR)/neutrino-mp
@@ -183,23 +205,6 @@ $(D)/neutrino-mp-cst-next.config.status:
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
 			--enable-upnp \
-			--enable-giflib \
-			--with-tremor \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
-			--with-iconsdir_var=/var/tuxbox/icons \
-			--with-luaplugindir=/var/tuxbox/plugins \
-			--with-localedir=/usr/share/tuxbox/neutrino/locale \
-			--with-localedir_var=/var/tuxbox/locale \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-plugindir_var=/var/tuxbox/plugins \
-			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
-			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
-			--with-themesdir_var=/var/tuxbox/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
@@ -346,23 +351,6 @@ $(D)/neutrino-mp-cst-next-ni.config.status:
 			--with-boxtype=armbox \
 			--with-boxmodel=$(BOXTYPE) \
 			--enable-upnp \
-			--enable-giflib \
-			--with-tremor \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
-			--with-iconsdir_var=/var/tuxbox/icons \
-			--with-luaplugindir=/var/tuxbox/plugins \
-			--with-localedir=/usr/share/tuxbox/neutrino/locale \
-			--with-localedir_var=/var/tuxbox/locale \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-plugindir_var=/var/tuxbox/plugins \
-			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
-			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
-			--with-themesdir_var=/var/tuxbox/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next-ni/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
@@ -479,7 +467,6 @@ $(SOURCE_DIR)/neutrino-hd2/config.status:
 		./configure \
 			--build=$(BUILD) \
 			--host=$(TARGET) \
-			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
 			--with-datadir=/usr/share/tuxbox \
 			--with-fontdir=/usr/share/fonts \
@@ -622,22 +609,6 @@ $(D)/neutrino-mp-tangos.config.status:
 			$(N_CONFIG_OPTS) \
 			--disable-upnp \
 			--with-boxtype=$(BOXTYPE) \
-			--with-tremor \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
-			--with-iconsdir_var=/var/tuxbox/icons \
-			--with-luaplugindir=/var/tuxbox/plugins \
-			--with-localedir=/usr/share/tuxbox/neutrino/locale \
-			--with-localedir_var=/var/tuxbox/locale \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-plugindir_var=/var/tuxbox/plugins \
-			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
-			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
-			--with-themesdir_var=/var/tuxbox/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next-tangos/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
@@ -780,23 +751,6 @@ $(D)/neutrino-mp.config.status:
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
 			--enable-upnp \
-			--with-tremor \
-			--enable-reschange \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
-			--with-iconsdir_var=/var/tuxbox/icons \
-			--with-luaplugindir=/var/tuxbox/plugins \
-			--with-localedir=/usr/share/tuxbox/neutrino/locale \
-			--with-localedir_var=/var/tuxbox/locale \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-plugindir_var=/var/tuxbox/plugins \
-			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
-			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
-			--with-themesdir_var=/var/tuxbox/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-max/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
@@ -944,22 +898,6 @@ $(D)/neutrino-alpha.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--with-tremor \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
-			--with-iconsdir_var=/var/tuxbox/icons \
-			--with-luaplugindir=/var/tuxbox/plugins \
-			--with-localedir=/usr/share/tuxbox/neutrino/locale \
-			--with-localedir_var=/var/tuxbox/locale \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-plugindir_var=/var/tuxbox/plugins \
-			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
-			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
-			--with-themesdir_var=/var/tuxbox/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
@@ -1050,22 +988,6 @@ $(D)/neutrino-test.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--with-tremor \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
-			--with-iconsdir_var=/var/tuxbox/icons \
-			--with-luaplugindir=/var/tuxbox/plugins \
-			--with-localedir=/usr/share/tuxbox/neutrino/locale \
-			--with-localedir_var=/var/tuxbox/locale \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-plugindir_var=/var/tuxbox/plugins \
-			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
-			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
-			--with-themesdir_var=/var/tuxbox/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
@@ -1156,22 +1078,6 @@ $(D)/neutrino-current.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--with-tremor \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
-			--with-iconsdir_var=/var/tuxbox/icons \
-			--with-luaplugindir=/var/tuxbox/plugins \
-			--with-localedir=/usr/share/tuxbox/neutrino/locale \
-			--with-localedir_var=/var/tuxbox/locale \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-plugindir_var=/var/tuxbox/plugins \
-			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
-			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
-			--with-themesdir_var=/var/tuxbox/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
@@ -1262,22 +1168,6 @@ $(D)/neutrino-matze.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=$(BOXTYPE) \
-			--with-tremor \
-			--with-libdir=/usr/lib \
-			--with-datadir=/usr/share/tuxbox \
-			--with-fontdir=/usr/share/fonts \
-			--with-configdir=/var/tuxbox/config \
-			--with-gamesdir=/var/tuxbox/games \
-			--with-iconsdir=/usr/share/tuxbox/neutrino/icons \
-			--with-iconsdir_var=/var/tuxbox/icons \
-			--with-luaplugindir=/var/tuxbox/plugins \
-			--with-localedir=/usr/share/tuxbox/neutrino/locale \
-			--with-localedir_var=/var/tuxbox/locale \
-			--with-plugindir=/var/tuxbox/plugins \
-			--with-plugindir_var=/var/tuxbox/plugins \
-			--with-private_httpddir=/usr/share/tuxbox/neutrino/httpd \
-			--with-themesdir=/usr/share/tuxbox/neutrino/themes \
-			--with-themesdir_var=/var/tuxbox/themes \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
 			PKG_CONFIG=$(PKG_CONFIG) \
