@@ -65,22 +65,22 @@ N_CPPFLAGS += -I$(DRIVER_DIR)/frontcontroller/aotom_spark
 endif
 
 N_CONFIG_OPTS  = $(LOCAL_NEUTRINO_BUILD_OPTIONS)
-N_CONFIG_OPTS += --disable-freesatepg
-#N_CONFIG_OPTS += --disable-tangos
-N_CONFIG_OPTS += --disable-upnp
-#N_CONFIG_OPTS += --disable-webif
-N_CONFIG_OPTS += --enable-ffmpegdec
-N_CONFIG_OPTS += --enable-giflib
+N_CONFIG_OPTS += --enable-freesatepg
 N_CONFIG_OPTS += --enable-lua
-#N_CONFIG_OPTS += --enable-pip
-N_CONFIG_OPTS += --enable-pugixml
-#N_CONFIG_OPTS += --enable-viasatepg
+N_CONFIG_OPTS += --enable-giflib
 N_CONFIG_OPTS += --with-tremor
+N_CONFIG_OPTS += --enable-ffmpegdec
+#N_CONFIG_OPTS += --enable-pip
+#N_CONFIG_OPTS += --disable-webif
+N_CONFIG_OPTS += --disable-upnp
+#N_CONFIG_OPTS += --disable-tangos
+N_CONFIG_OPTS += --enable-pugixml
 ifeq ($(BOXARCH), arm)
 N_CONFIG_OPTS += --enable-reschange
 endif
 
 N_CONFIG_OPTS += \
+	--with-boxtype=$(BOXTYPE) \
 	--with-libdir=/usr/lib \
 	--with-datadir=/usr/share/tuxbox \
 	--with-fontdir=/usr/share/fonts \
@@ -98,7 +98,10 @@ N_CONFIG_OPTS += \
 	--with-themesdir=/usr/share/tuxbox/neutrino/themes \
 	--with-themesdir_var=/var/tuxbox/themes \
 	--with-webtvdir=/share/tuxbox/neutrino/webtv \
-	--with-webtvdir_var=/var/tuxbox/plugins/webtv
+	--with-webtvdir_var=/var/tuxbox/plugins/webtv \
+	PKG_CONFIG=$(PKG_CONFIG) \
+	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
+	CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 
 
 OBJDIR = $(BUILD_TMP)
@@ -203,13 +206,8 @@ $(D)/neutrino-mp-cst-next.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-boxtype=$(BOXTYPE) \
-			--enable-upnp \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-mp-cst-next/src/gui/version.h:
@@ -349,13 +347,8 @@ $(D)/neutrino-mp-cst-next-ni.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-boxtype=armbox \
-			--with-boxmodel=$(BOXTYPE) \
-			--enable-upnp \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next-ni/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-mp-cst-next-ni/src/gui/version.h:
@@ -607,13 +600,8 @@ $(D)/neutrino-mp-tangos.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--disable-upnp \
-			--with-boxtype=$(BOXTYPE) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next-tangos/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+			--with-stb-hal-build=$(LH_OBJDIR)
 
 $(SOURCE_DIR)/neutrino-mp-tangos/src/gui/version.h:
 	@rm -f $@; \
@@ -749,13 +737,8 @@ $(D)/neutrino-mp.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-boxtype=$(BOXTYPE) \
-			--enable-upnp \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-max/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
+			--with-stb-hal-build=$(LH_OBJDIR)
 
 $(SOURCE_DIR)/neutrino-mp/src/gui/version.h:
 	@rm -f $@; \
@@ -897,12 +880,8 @@ $(D)/neutrino-alpha.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-boxtype=$(BOXTYPE) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
@@ -987,12 +966,8 @@ $(D)/neutrino-test.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-boxtype=$(BOXTYPE) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
@@ -1077,12 +1052,8 @@ $(D)/neutrino-current.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-boxtype=$(BOXTYPE) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-current/src/gui/version.h:
@@ -1167,12 +1138,8 @@ $(D)/neutrino-matze.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-boxtype=$(BOXTYPE) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
 			--with-stb-hal-build=$(LH_OBJDIR) \
-			PKG_CONFIG=$(PKG_CONFIG) \
-			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-matze/src/gui/version.h:
