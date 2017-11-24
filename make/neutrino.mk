@@ -881,7 +881,7 @@ $(D)/neutrino-alpha.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
+			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
@@ -967,7 +967,7 @@ $(D)/neutrino-test.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
+			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
@@ -1053,7 +1053,7 @@ $(D)/neutrino-current.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
+			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-current/src/gui/version.h:
@@ -1139,7 +1139,7 @@ $(D)/neutrino-matze.config.status:
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-cst-next/include \
-			--with-stb-hal-build=$(LH_OBJDIR) \
+			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-matze/src/gui/version.h:
