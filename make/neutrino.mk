@@ -843,15 +843,15 @@ libstb-hal-distclean:
 # fs-basis neutrino-alpha (Mine)
 #
 fsa \
-neutrino-alpha: none \
+neutrino-alpha: \
 		$(D)/neutrino-alpha $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-neutrino-alpha-plugins: none \
+neutrino-alpha-plugins: \
 		$(D)/neutrino-alpha $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-neutrino-alpha-xupnpd: none \
+neutrino-alpha-xupnpd: \
 		$(D)/neutrino-alpha $(D)/xupnpd $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
@@ -932,15 +932,15 @@ neutrino-alpha-distclean: neutrino-cdkroot-clean
 # fs-basis neutrino-test (master)
 #
 fst \
-neutrino-test: none \
+neutrino-test: \
 		$(D)/neutrino-test $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-neutrino-test-plugins: none \
+neutrino-test-plugins: \
 		$(D)/neutrino-test $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-neutrino-test-xupnpd: none \
+neutrino-test-xupnpd: \
 		$(D)/neutrino-test $(D)/xupnpd $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
@@ -1021,15 +1021,15 @@ neutrino-test-distclean: neutrino-cdkroot-clean
 # fs-basis neutrino-current
 #
 fsc \
-neutrino-current: none \
+neutrino-current: \
 		$(D)/neutrino-current $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-neutrino-current-plugins: none \
+neutrino-current-plugins: \
 		$(D)/neutrino-current $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-neutrino-current-xupnpd: none \
+neutrino-current-xupnpd: \
 		$(D)/neutrino-current $(D)/xupnpd $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
@@ -1109,15 +1109,15 @@ neutrino-current-distclean: neutrino-cdkroot-clean
 #
 #  neutrino-matze
 #
-neutrino-matze: none \
+neutrino-matze: \
 		neutrino-matze $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-neutrino-matze-plugins: none \
+neutrino-matze-plugins: \
 		$(D)/neutrino-matze $(D)/neutrino-plugins $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-neutrino-matze-xupnpd: none \
+neutrino-matze-xupnpd: \
 		$(D)/neutrino-matze xupnpd $(D)/neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
