@@ -841,6 +841,7 @@ libstb-hal-distclean:
 #
 # fs-basis yaud-neutrino-alpha (Mine)
 #
+fsa \
 yaud-neutrino-alpha: yaud-none \
 		$(D)/neutrino-alpha $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
@@ -912,6 +913,7 @@ $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compi
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
+fsa-clean \
 neutrino-alpha-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-alpha
 	rm -f $(D)/neutrino-alpha.config.status
@@ -919,6 +921,7 @@ neutrino-alpha-clean: neutrino-cdkroot-clean
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
+fsa-distclean \
 neutrino-alpha-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-alpha*
@@ -927,6 +930,7 @@ neutrino-alpha-distclean: neutrino-cdkroot-clean
 #
 # fs-basis yaud-neutrino-test (master)
 #
+fst \
 yaud-neutrino-test: yaud-none \
 		$(D)/neutrino-test $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
@@ -998,6 +1002,7 @@ $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
+fst-clean \
 neutrino-test-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-test
 	rm -f $(D)/neutrino-test.config.status
@@ -1005,6 +1010,7 @@ neutrino-test-clean: neutrino-cdkroot-clean
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
+fst-distclean \
 neutrino-test-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test*
@@ -1013,6 +1019,7 @@ neutrino-test-distclean: neutrino-cdkroot-clean
 #
 # fs-basis yaud-neutrino-current
 #
+fsc \
 yaud-neutrino-current: yaud-none \
 		$(D)/neutrino-current $(D)/neutrino_release
 	$(TUXBOX_YAUD_CUSTOMIZE)
@@ -1084,6 +1091,7 @@ $(D)/neutrino-current: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do
 	make $(TARGET_DIR)/var/etc/.version
 	$(TOUCH)
 
+fsc-clean \
 neutrino-current-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-current
 	rm -f $(D)/neutrino-current.config.status
@@ -1091,6 +1099,7 @@ neutrino-current-clean: neutrino-cdkroot-clean
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
+fsc-distclean \
 neutrino-current-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-current*
