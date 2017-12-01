@@ -16,8 +16,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 1: target system (1-38)"
 	echo "Parameter 2: kernel (1-2) for sh4 cpu"
 	echo "Parameter 3: optimization (1-4)"
-	echo "Parameter 4: Media Framework (1-4)"
-	echo "Parameter 5: Image (Enigma=1/2 Neutrino=3/4 (1-4)"
+	echo "Parameter 4: Image Neutrino (1-2)"
 	exit
 fi
 
@@ -221,41 +220,16 @@ echo "OPTIMIZATIONS=$OPTIMIZATIONS" >> config
 ##############################################
 
 case $4 in
-	[1-4]) REPLY=$4;;
-	*)	echo -e "\nMedia Framework:"
-		echo "   1) eplayer3"
-		echo "   2) gstreamer"
-		echo "   3) use built-in       (required for Neutrino)"
-		echo "   4) gstreamer+eplayer3 (required for OpenPLi)"
-		read -p "Select media framework (1-4)? ";;
-esac
-
-case "$REPLY" in
-	1) MEDIAFW="eplayer3";;
-	2) MEDIAFW="gstreamer";;
-	3) MEDIAFW="buildinplayer";;
-	4) MEDIAFW="gst-eplayer3";;
-	*) MEDIAFW="buildinplayer";;
-esac
-echo "MEDIAFW=$MEDIAFW" >> config
-
-##############################################
-
-case $5 in
-	[1-4]) REPLY=$5;;
+	[1-2]) REPLY=$4;;
 	*)	echo -e "\nWhich Image do you want to build:"
-		echo "   1)  Enigma2"
-		echo "   2)  Enigma2  (includes WLAN drivers)"
-		echo "   3)  Neutrino"
-		echo "   4)  Neutrino (includes WLAN drivers , not used!!!)"
-		read -p "Select Image to build (1-4)? ";;
+		echo "   1)  Neutrino"
+		echo "   2)  Neutrino (includes WLAN drivers sh4)"
+		read -p "Select Image to build (1-2)? ";;
 esac
 
 case "$REPLY" in
-	1) IMAGE="enigma2";;
-	2) IMAGE="enigma2-wlandriver";;
-	3) IMAGE="neutrino";;
-	4) IMAGE="neutrino-wlandriver";;
+	1) IMAGE="neutrino";;
+	2) IMAGE="neutrino-wlandriver";;
 	*) IMAGE="neutrino";;
 esac
 echo "IMAGE=$IMAGE" >> config
@@ -269,20 +243,18 @@ echo "Your build environment is ready :-)"
 echo "Your next step could be:"
 case "$IMAGE" in
 		neutrino*)
-		echo "  make yaud-neutrino-alpha"
-		echo "  make yaud-neutrino-test"
-		echo "  make yaud-neutrino-current"
-		echo "  make yaud-neutrino-mp-tangos"
-		echo "  make yaud-neutrino-mp-tangos-plugins"
+		echo "  make neutrino-alpha"
+		echo "  make neutrino-test"
+		echo "  make neutrino-current"
+		echo "  make neutrino-mp-tangos"
+		echo "  make neutrino-mp-tangos-plugins"
 		if [ $BOXARCH == 'arm' ]; then
-			echo "  make yaud-neutrino-mp-cst-next-ni"
+			echo "  make neutrino-mp-cst-next-ni"
 		fi
-		echo "  make yaud-neutrino-mp-cst-next"
-		echo "  make yaud-neutrino-mp-cst-next-plugins"
-		echo "  make yaud-neutrino-hd2"
-		echo "  make yaud-neutrino-hd2-plugins";;
-		enigma2*)
-		echo "  make yaud-enigma2";;
+		echo "  make neutrino-mp-cst-next"
+		echo "  make neutrino-mp-cst-next-plugins"
+		echo "  make neutrino-hd2"
+		echo "  make neutrino-hd2-plugins";;
 		*)
 		echo "  make flashimage"
 		echo "  make ofgimage";;

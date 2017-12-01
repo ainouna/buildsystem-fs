@@ -10,7 +10,8 @@ $(TARGET_DIR)/var/etc/.version:
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
 
-NEUTRINO_DEPS  = $(D)/bootstrap $(D)/ncurses $(LIRC) $(D)/libcurl
+NEUTRINO_DEPS  = $(D)/bootstrap $(KERNEL)  $(D)/system-tools
+NEUTRINO_DEPS += $(D)/ncurses $(LIRC) $(D)/libcurl
 NEUTRINO_DEPS += $(D)/libpng $(D)/libjpeg $(D)/giflib $(D)/freetype
 NEUTRINO_DEPS += $(D)/alsa_utils $(D)/ffmpeg
 NEUTRINO_DEPS += $(D)/libfribidi $(D)/libsigc $(D)/libdvbsi $(D)/libusb
@@ -170,14 +171,14 @@ libstb-hal-cst-next-distclean:
 #
 # neutrino-mp-cst-next
 #
-yaud-neutrino-mp-cst-next: yaud-none \
+neutrino-mp-cst-next: \
 		neutrino-mp-cst-next $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 mp \
-yaud-neutrino-mp-cst-next-plugins: yaud-none \
+neutrino-mp-cst-next-plugins: \
 		$(D)/neutrino-mp-cst-next $(D)/neutrino-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 NEUTRINO_MP_CST_NEXT_PATCHES =
 
@@ -311,13 +312,13 @@ libstb-hal-cst-next-ni-distclean:
 #
 # neutrino-mp-cst-next-ni
 #
-yaud-neutrino-mp-cst-next-ni: yaud-none \
+neutrino-mp-cst-next-ni: \
 		neutrino-mp-cst-next-ni $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-mp-cst-next-ni-plugins: yaud-none \
+neutrino-mp-cst-next-ni-plugins: \
 		$(D)/neutrino-mp-cst-next-ni $(D)/neutrino-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 NEUTRINO_MP_CST_NEXT_NI_PATCHES =
 
@@ -413,16 +414,16 @@ dual-distclean:
 
 ################################################################################
 #
-# yaud-neutrino-hd2
+# neutrino-hd2
 #
-yaud-neutrino-hd2: yaud-none \
+neutrino-hd2: \
 		$(D)/neutrino-hd2 $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 nhd2 \
-yaud-neutrino-hd2-plugins: yaud-none \
+neutrino-hd2-plugins: \
 		$(D)/neutrino-hd2 $(D)/neutrino-hd2-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 ifeq ($(BOXTYPE), spark)
 NHD2_OPTS = --enable-4digits
@@ -556,19 +557,19 @@ libstb-hal-cst-next-tangos-distclean:
 
 ################################################################################
 #
-# yaud-neutrino-mp-tangos
+# neutrino-mp-tangos
 #
-yaud-neutrino-mp-tangos: yaud-none \
+neutrino-mp-tangos: \
 		$(D)/neutrino-mp-tangos $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-mp-tangos-plugins: yaud-none \
+neutrino-mp-tangos-plugins: \
 		$(D)/neutrino-mp-tangos $(D)/neutrino-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-mp-tangos-all: yaud-none \
+neutrino-mp-tangos-all: \
 		$(D)/neutrino-mp-tangos $(D)/neutrino-plugins $(D)/shairport $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 #
 # neutrino-mp-tangos
@@ -704,13 +705,13 @@ libstb-hal-max-distclean:
 #
 NEUTRINO_MP_PATCHES =
 
-yaud-neutrino-mp: yaud-none \
+neutrino-mp: \
 		$(D)/neutrino-mp $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-mp-plugins: yaud-none \
+neutrino-mp-plugins: \
 		$(D)/neutrino-mp $(D)/neutrino-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 $(D)/neutrino-mp.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-max
 	$(START_BUILD)
@@ -839,20 +840,20 @@ libstb-hal-distclean:
 
 ################################################################################
 #
-# fs-basis yaud-neutrino-alpha (Mine)
+# fs-basis neutrino-alpha (Mine)
 #
 fsa \
-yaud-neutrino-alpha: yaud-none \
+neutrino-alpha: none \
 		$(D)/neutrino-alpha $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-alpha-plugins: yaud-none \
+neutrino-alpha-plugins: none \
 		$(D)/neutrino-alpha $(D)/neutrino-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-alpha-xupnpd: yaud-none \
+neutrino-alpha-xupnpd: none \
 		$(D)/neutrino-alpha $(D)/xupnpd $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 FS_NEUTRINO_ALPHA_PATCHES =
 
@@ -928,20 +929,20 @@ neutrino-alpha-distclean: neutrino-cdkroot-clean
 
 ################################################################################
 #
-# fs-basis yaud-neutrino-test (master)
+# fs-basis neutrino-test (master)
 #
 fst \
-yaud-neutrino-test: yaud-none \
+neutrino-test: none \
 		$(D)/neutrino-test $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-test-plugins: yaud-none \
+neutrino-test-plugins: none \
 		$(D)/neutrino-test $(D)/neutrino-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-test-xupnpd: yaud-none \
+neutrino-test-xupnpd: none \
 		$(D)/neutrino-test $(D)/xupnpd $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 FS_NEUTRINO_TEST_PATCHES =
 
@@ -1017,20 +1018,20 @@ neutrino-test-distclean: neutrino-cdkroot-clean
 
 ################################################################################
 #
-# fs-basis yaud-neutrino-current
+# fs-basis neutrino-current
 #
 fsc \
-yaud-neutrino-current: yaud-none \
+neutrino-current: none \
 		$(D)/neutrino-current $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-current-plugins: yaud-none \
+neutrino-current-plugins: none \
 		$(D)/neutrino-current $(D)/neutrino-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-current-xupnpd: yaud-none \
+neutrino-current-xupnpd: none \
 		$(D)/neutrino-current $(D)/xupnpd $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 FS_NEUTRINO_CURRENT_PATCHES =
 
@@ -1106,19 +1107,19 @@ neutrino-current-distclean: neutrino-cdkroot-clean
 
 ################################################################################
 #
-#  yaud-neutrino-matze
+#  neutrino-matze
 #
-yaud-neutrino-matze: yaud-none \
+neutrino-matze: none \
 		neutrino-matze $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-matze-plugins: yaud-none \
+neutrino-matze-plugins: none \
 		$(D)/neutrino-matze $(D)/neutrino-plugins $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
-yaud-neutrino-matze-xupnpd: yaud-none \
+neutrino-matze-xupnpd: none \
 		$(D)/neutrino-matze xupnpd $(D)/neutrino_release
-	$(TUXBOX_YAUD_CUSTOMIZE)
+	$(TUXBOX_CUSTOMIZE)
 
 NEUTRINO_MATZE_PATCHES = 
 
