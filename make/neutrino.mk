@@ -1047,7 +1047,7 @@ neutrino-test-clean: neutrino-cdkroot-clean
 		$(MAKE) -C $(N_OBJDIR) distclean
 
 fst-distclean \
-neutrino-test-distclean:
+neutrino-test-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test.do_prepare
 	rm -f $(D)/neutrino-test.do_compile
