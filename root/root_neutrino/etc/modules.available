@@ -15,7 +15,7 @@ cec(activemode=1 deviceName=DuckBox deviceType=3) # HDMI CEC
 usbserial pl2303    # Prolific PL-2303 USB-to-serial
 usbserial ftdi_sio  # FTDI_SIO USB-to-serial
 tun                 # TUN network device
-cifs                # CIFS network driver
+#cifs                # CIFS network driver
 #jfs                # JFS file system driver
 #ntfs               # NTFS file system driver (ro)
 
