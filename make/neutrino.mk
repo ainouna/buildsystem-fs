@@ -961,7 +961,7 @@ neutrino-alpha-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-alpha.do_prepare
 	rm -f $(D)/neutrino-alpha.do_compile
-	rm -f $(D)/neutrino-alpha
+	rm -f $(D)/neutrino-alpha*
 
 ################################################################################
 #
@@ -1051,7 +1051,7 @@ neutrino-test-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test.do_prepare
 	rm -f $(D)/neutrino-test.do_compile
-	rm -f $(D)/neutrino-test
+	rm -f $(D)/neutrino-test*
 
 ################################################################################
 #
@@ -1141,7 +1141,7 @@ neutrino-current-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-current.do_prepare
 	rm -f $(D)/neutrino-current.do_compile
-	rm -f $(D)/neutrino-current
+	rm -f $(D)/neutrino-current*
 
 ################################################################################
 #
@@ -1229,6 +1229,6 @@ neutrino-matze-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-matze.do_prepare
 	rm -f $(D)/neutrino-matze.do_compile
-	rm -f $(D)/neutrino-matze
+	rm -f $(D)/neutrino-matze*
 
 ################################################################################
