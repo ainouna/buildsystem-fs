@@ -1114,7 +1114,7 @@ neutrino-current-clean:
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-fsc-distclean
+fsc-distclean \
 neutrino-current-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-current*
