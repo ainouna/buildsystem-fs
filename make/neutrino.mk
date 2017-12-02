@@ -907,6 +907,7 @@ $(D)/neutrino-alpha.config.status:
 			$(N_CONFIG_OPTS) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR)
+	@touch $@
 
 $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 	@rm -f $@; \
@@ -948,14 +949,15 @@ $(D)/neutrino-alpha-plugins: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.
 	$(TUXBOX_CUSTOMIZE)
 
 fsa-clean \
-neutrino-alpha-clean:
+neutrino-alpha-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-alpha
+	rm -f $(D)/neutrino-alpha.config.status
 	rm -f $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
 fsa-distclean \
-neutrino-alpha-distclean:
+neutrino-alpha-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-alpha.do_prepare
 	rm -f $(D)/neutrino-alpha.do_compile
@@ -995,6 +997,7 @@ $(D)/neutrino-test.config.status:
 			$(N_CONFIG_OPTS) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR)
+	@touch $@
 
 $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 	@rm -f $@; \
@@ -1036,8 +1039,9 @@ $(D)/neutrino-test-plugins: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_
 	$(TUXBOX_CUSTOMIZE)
 
 fst-clean \
-neutrino-test-clean:
+neutrino-test-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-test
+	rm -f $(D)/neutrino-test.config.status
 	rm -f $(SOURCE_DIR)/neutrino-test/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
@@ -1083,6 +1087,7 @@ $(D)/neutrino-current.config.status:
 			$(N_CONFIG_OPTS) \
 			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
 			--with-stb-hal-build=$(LH_OBJDIR)
+	@touch $@
 
 $(SOURCE_DIR)/neutrino-current/src/gui/version.h:
 	@rm -f $@; \
@@ -1124,14 +1129,15 @@ $(D)/neutrino-current-plugins: $(D)/neutrino-current.do_prepare $(D)/neutrino-cu
 	$(TUXBOX_CUSTOMIZE)
 
 fsc-clean \
-neutrino-current-clean:
+neutrino-current-clean: neutrino-cdkroot-clean
 	rm -f $(D)/neutrino-current
+	rm -f $(D)/neutrino-current.config.status
 	rm -f $(SOURCE_DIR)/neutrino-current/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
 fsc-distclean \
-neutrino-current-distclean:
+neutrino-current-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-current.do_prepare
 	rm -f $(D)/neutrino-current.do_compile
