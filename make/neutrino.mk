@@ -1021,11 +1021,11 @@ $(D)/neutrino-test-pluins: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_c
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-fsa-clean \
-neutrino-alpha-clean: neutrino-cdkroot-clean
-	rm -f $(D)/neutrino-alpha
-	rm -f $(D)/neutrino-alpha.config.status
-	rm -f $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
+fst-clean \
+neutrino-test-clean: neutrino-cdkroot-clean
+	rm -f $(D)/neutrino-test
+	rm -f $(D)/neutrino-test.config.status
+	rm -f $(SOURCE_DIR)/neutrino-test/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
@@ -1109,11 +1109,11 @@ $(D)/neutrino-current-pluins: $(D)/neutrino-current.do_prepare $(D)/neutrino-cur
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-fsa-clean \
-neutrino-alpha-clean: neutrino-cdkroot-clean
-	rm -f $(D)/neutrino-alpha
-	rm -f $(D)/neutrino-alpha.config.status
-	rm -f $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
+fsc-clean \
+neutrino-current-clean: neutrino-cdkroot-clean
+	rm -f $(D)/neutrino-current
+	rm -f $(D)/neutrino-current.config.status
+	rm -f $(SOURCE_DIR)/neutrino-current/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
