@@ -934,15 +934,14 @@ $(D)/neutrino-alpha-pluins: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.d
 	$(TUXBOX_CUSTOMIZE)
 
 fsa-clean \
-neutrino-alpha-clean: neutrino-cdkroot-clean
+neutrino-alpha-clean:
 	rm -f $(D)/neutrino-alpha
-	rm -f $(D)/neutrino-alpha.config.status
 	rm -f $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
 fsa-distclean \
-neutrino-alpha-distclean: neutrino-cdkroot-clean
+neutrino-alpha-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-alpha*
 
@@ -1022,15 +1021,14 @@ $(D)/neutrino-test-pluins: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_c
 	$(TUXBOX_CUSTOMIZE)
 
 fst-clean \
-neutrino-test-clean: neutrino-cdkroot-clean
+neutrino-test-clean:
 	rm -f $(D)/neutrino-test
-	rm -f $(D)/neutrino-test.config.status
 	rm -f $(SOURCE_DIR)/neutrino-test/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
 fst-distclean \
-neutrino-test-distclean: neutrino-cdkroot-clean
+neutrino-test-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test*
 
@@ -1110,15 +1108,14 @@ $(D)/neutrino-current-pluins: $(D)/neutrino-current.do_prepare $(D)/neutrino-cur
 	$(TUXBOX_CUSTOMIZE)
 
 fsc-clean \
-neutrino-current-clean: neutrino-cdkroot-clean
+neutrino-current-clean:
 	rm -f $(D)/neutrino-current
-	rm -f $(D)/neutrino-current.config.status
 	rm -f $(SOURCE_DIR)/neutrino-current/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
-fsc-distclean \
-neutrino-current-distclean: neutrino-cdkroot-clean
+fsc-distclean
+neutrino-current-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-current*
 
@@ -1198,15 +1195,14 @@ $(D)/neutrino-matze-pluins: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.d
 	$(TUXBOX_CUSTOMIZE)
 
 matze-clean \
-neutrino-matze-clean: neutrino-cdkroot-clean
+neutrino-matze-clean:
 	rm -f $(D)/neutrino-matze
-	rm -f $(D)/neutrino-matze.config.status
 	rm -f $(SOURCE_DIR)/neutrino-matze/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
 matze-distclean \
-neutrino-matze-distclean: neutrino-cdkroot-clean
+neutrino-matze-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-matze*
 
