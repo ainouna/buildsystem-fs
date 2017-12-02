@@ -938,7 +938,7 @@ $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compi
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-$(D)/neutrino-alpha-pluins: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compile
+$(D)/neutrino-alpha-plugins: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	make $(TARGET_DIR)/var/etc/.version
@@ -1026,7 +1026,7 @@ $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-$(D)/neutrino-test-pluins: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
+$(D)/neutrino-test-plugins: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	make $(TARGET_DIR)/var/etc/.version
@@ -1114,7 +1114,7 @@ $(D)/neutrino-current: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-$(D)/neutrino-current-pluins: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do_compile
+$(D)/neutrino-current-plugins: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	make $(TARGET_DIR)/var/etc/.version
@@ -1202,7 +1202,7 @@ $(D)/neutrino-matze: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compi
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
-$(D)/neutrino-matze-pluins: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compile
+$(D)/neutrino-matze-plugins: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
 	make $(TARGET_DIR)/var/etc/.version
