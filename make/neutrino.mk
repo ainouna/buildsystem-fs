@@ -149,7 +149,7 @@ $(D)/libstb-hal-ddt.config.status: | $(NEUTRINO_DEPS)
 	@touch $@
 
 $(D)/libstb-hal-ddt.do_compile: $(D)/libstb-hal-ddt.config.status
-	cd $(SOURCE_DIR)/libstb-ddt-next; \
+	cd $(SOURCE_DIR)/libstb-hal-ddt; \
 		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
 	@touch $@
 
@@ -267,7 +267,7 @@ ifeq ($(BOXARCH), arm)
 #
 NEUTRINO_MP_LIBSTB_NI_PATCHES =
 
-$(D)/libstb-hal-cst-next-ni.do_prepare:
+$(D)/libstb-hal-ni.do_prepare:
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/libstb-hal-ni
 	rm -rf $(SOURCE_DIR)/libstb-hal-ni.org
@@ -363,7 +363,7 @@ $(SOURCE_DIR)/neutrino-mp-ni/src/gui/version.h:
 		pushd $(SOURCE_DIR)/libstb-hal-ni ; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-mp-cst-next-ni ; \
+		pushd $(SOURCE_DIR)/neutrino-mp-ni ; \
 		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
 		pushd $(BASE_DIR) ; \
@@ -674,7 +674,7 @@ $(SOURCE_DIR)/neutrino-mp-max/src/gui/version.h:
 		pushd $(BASE_DIR) ; \
 		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
 		popd ; \
-		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'"' >> $@ ; \
+		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'-max"' >> $@ ; \
 	fi
 
 $(D)/neutrino-mp-max.do_compile: $(D)/neutrino-mp-max.config.status $(SOURCE_DIR)/neutrino-mp-max/src/gui/version.h
