@@ -131,8 +131,8 @@ $(D)/libstb-hal-ddt.do_prepare:
 	@touch $@
 
 $(D)/libstb-hal-ddt.config.status: | $(NEUTRINO_DEPS)
-	rm -rf $(LH_OBJDIR); \
-	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
+	rm -rf $(LH_OBJDIR)
+	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR)
 	cd $(LH_OBJDIR); \
 		$(SOURCE_DIR)/libstb-hal-ddt/autogen.sh; \
 		$(BUILDENV) \
@@ -192,7 +192,7 @@ $(D)/neutrino-mp-ddt.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-ddt
 
 $(D)/neutrino-mp-ddt.config.status:
 	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-mp-ddt/autogen.sh; \
 		$(BUILDENV) \
@@ -206,19 +206,19 @@ $(D)/neutrino-mp-ddt.config.status:
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-mp-ddt/src/gui/version.h:
-	@rm -f $@; \
+	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-ddt ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-ddt ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-mp-ddt ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(BASE_DIR) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'"' >> $@ ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal-ddt; then \
+		pushd $(SOURCE_DIR)/libstb-hal-ddt; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(SOURCE_DIR)/neutrino-mp-ddt; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(BASE_DIR); \
+		DDT_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'"' >> $@; \
 	fi
 
 $(D)/neutrino-mp-ddt.do_compile: $(D)/neutrino-mp-ddt.config.status $(SOURCE_DIR)/neutrino-mp-ddt/src/gui/version.h
@@ -227,8 +227,7 @@ $(D)/neutrino-mp-ddt.do_compile: $(D)/neutrino-mp-ddt.config.status $(SOURCE_DIR
 	@touch $@
 
 neutrino-mp-ddt: $(D)/neutrino-mp-ddt.do_prepare $(D)/neutrino-mp-ddt.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
@@ -236,8 +235,7 @@ neutrino-mp-ddt: $(D)/neutrino-mp-ddt.do_prepare $(D)/neutrino-mp-ddt.do_compile
 
 mp \
 neutrino-mp-ddt-plugins: $(D)/neutrino-mp-ddt.do_prepare $(D)/neutrino-mp-ddt.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
@@ -257,7 +255,7 @@ neutrino-mp-ddt-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-mp-ddt.do_prepare
 	rm -f $(D)/neutrino-mp-ddt.do_compile
-	rm -f $(D)/neutrino-mp-ddt*
+	rm -f $(D)/neutrino-mp-ddt
 
 ################################################################################
 ifeq ($(BOXARCH), arm)
@@ -283,8 +281,8 @@ $(D)/libstb-hal-ni.do_prepare:
 	@touch $@
 
 $(D)/libstb-hal-ni.config.status: | $(NEUTRINO_DEPS)
-	rm -rf $(LH_OBJDIR); \
-	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
+	rm -rf $(LH_OBJDIR)
+	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR)
 	cd $(LH_OBJDIR); \
 		$(SOURCE_DIR)/libstb-hal-ni/autogen.sh; \
 		$(BUILDENV) \
@@ -342,7 +340,7 @@ $(D)/neutrino-mp-ni.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-ni
 
 $(D)/neutrino-mp-ni.config.status:
 	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-mp-ni/autogen.sh; \
 		$(BUILDENV) \
@@ -357,19 +355,19 @@ $(D)/neutrino-mp-ni.config.status:
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-mp-ni/src/gui/version.h:
-	@rm -f $@; \
+	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-ni ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-ni ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-mp-ni ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(BASE_DIR) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'"' >> $@ ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal-ni; then \
+		pushd $(SOURCE_DIR)/libstb-hal-ni; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(SOURCE_DIR)/neutrino-mp-ni; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(BASE_DIR); \
+		DDT_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'"' >> $@; \
 	fi
 
 $(D)/neutrino-mp-ni.do_compile: $(D)/neutrino-mp-ni.config.status $(SOURCE_DIR)/neutrino-mp-ni/src/gui/version.h
@@ -378,16 +376,14 @@ $(D)/neutrino-mp-ni.do_compile: $(D)/neutrino-mp-ni.config.status $(SOURCE_DIR)/
 	@touch $@
 
 neutrino-mp-ni: $(D)/neutrino-mp-ni.do_prepare $(D)/neutrino-mp-ni.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
 neutrino-mp-ni-plugins: $(D)/neutrino-mp-ni.do_prepare $(D)/neutrino-mp-ni.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
@@ -433,8 +429,8 @@ $(D)/libstb-hal-tangos.do_prepare:
 	@touch $@
 
 $(D)/libstb-hal-tangos.config.status: | $(NEUTRINO_DEPS)
-	rm -rf $(LH_OBJDIR); \
-	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
+	rm -rf $(LH_OBJDIR)
+	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR)
 	cd $(LH_OBJDIR); \
 		$(SOURCE_DIR)/libstb-hal-tangos/autogen.sh; \
 		$(BUILDENV) \
@@ -492,7 +488,7 @@ $(D)/neutrino-mp-tangos.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-tangos
 
 $(D)/neutrino-mp-tangos.config.status:
 	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-mp-tangos/autogen.sh; \
 		$(BUILDENV) \
@@ -505,21 +501,20 @@ $(D)/neutrino-mp-tangos.config.status:
 			--with-stb-hal-build=$(LH_OBJDIR)
 
 $(SOURCE_DIR)/neutrino-mp-tangos/src/gui/version.h:
-	@rm -f $@; \
+	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-tangos ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-tangos ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-mp-tangos ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(BASE_DIR) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'-next_NMP-rev'$$NMP_REV'-tangos"' >> $@ ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal-tangos; then \
+		pushd $(SOURCE_DIR)/libstb-hal-tangos; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(SOURCE_DIR)/neutrino-mp-tangos; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(BASE_DIR); \
+		DDT_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'-next_NMP-rev'$$NMP_REV'-tangos"' >> $@; \
 	fi
-
 
 $(D)/neutrino-mp-tangos.do_compile: $(D)/neutrino-mp-tangos.config.status $(SOURCE_DIR)/neutrino-mp-tangos/src/gui/version.h
 	cd $(SOURCE_DIR)/neutrino-mp-tangos; \
@@ -530,16 +525,14 @@ $(D)/neutrino-mp-tangos.do_compile: $(D)/neutrino-mp-tangos.config.status $(SOUR
 # neutrino-mp-tangos
 #
 neutrino-mp-tangos: $(D)/neutrino-mp-tangos.do_prepare $(D)/neutrino-mp-tangos.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
 neutrino-mp-tangos-all: $(D)/neutrino-mp-tangos.do_prepare $(D)/neutrino-mp-tangos.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make shairport
@@ -548,8 +541,7 @@ neutrino-mp-tangos-all: $(D)/neutrino-mp-tangos.do_prepare $(D)/neutrino-mp-tang
 	$(TUXBOX_CUSTOMIZE)
 
 neutrino-mp-tangos-plugins: $(D)/neutrino-mp-tangos.do_prepare $(D)/neutrino-mp-tangos.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
@@ -590,8 +582,8 @@ $(D)/libstb-hal-max.do_prepare:
 	@touch $@
 
 $(D)/libstb-hal-max.config.status: | $(NEUTRINO_DEPS)
-	rm -rf $(LH_OBJDIR); \
-	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
+	rm -rf $(LH_OBJDIR)
+	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR)
 	cd $(LH_OBJDIR); \
 		$(SOURCE_DIR)/libstb-hal-max/autogen.sh; \
 		export PKG_CONFIG=$(PKG_CONFIG); \
@@ -649,7 +641,7 @@ $(D)/neutrino-mp-max.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-max
 
 $(D)/neutrino-mp-max.config.status:
 	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-mp-max/autogen.sh; \
 		$(BUILDENV) \
@@ -662,18 +654,18 @@ $(D)/neutrino-mp-max.config.status:
 			--with-stb-hal-build=$(LH_OBJDIR)
 
 $(SOURCE_DIR)/neutrino-mp-max/src/gui/version.h:
-	@rm -f $@; \
+	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal-max ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-max ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-mp-max ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(BASE_DIR) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal-max; then \
+		pushd $(SOURCE_DIR)/libstb-hal-max; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(SOURCE_DIR)/neutrino-mp-max; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(BASE_DIR); \
+		DDT_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
 		echo '#define VCS "DDT-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'-max"' >> $@ ; \
 	fi
 
@@ -683,16 +675,14 @@ $(D)/neutrino-mp-max.do_compile: $(D)/neutrino-mp-max.config.status $(SOURCE_DIR
 	@touch $@
 
 neutrino-mp-max: $(D)/neutrino-mp-max.do_prepare $(D)/neutrino-mp-max.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
 	$(TUXBOX_CUSTOMIZE)
 
 neutrino-mp-max-plugins: $(D)/neutrino-mp-max.do_prepare $(D)/neutrino-mp-max.do_compile
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
@@ -772,8 +762,7 @@ $(D)/neutrino-hd2.do_compile: $(SOURCE_DIR)/neutrino-hd2/config.status
 	@touch $@
 
 neutrino-hd2: $(D)/neutrino-hd2.do_prepare $(D)/neutrino-hd2.do_compile
-	$(MAKE) -C $(SOURCE_DIR)/neutrino-hd2 install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(SOURCE_DIR)/neutrino-hd2 install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
@@ -781,8 +770,7 @@ neutrino-hd2: $(D)/neutrino-hd2.do_prepare $(D)/neutrino-hd2.do_compile
 
 nhd2 \
 neutrino-hd2-plugins: $(D)/neutrino-hd2.do_prepare $(D)/neutrino-hd2.do_compile
-	$(MAKE) -C $(SOURCE_DIR)/neutrino-hd2 install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(SOURCE_DIR)/neutrino-hd2 install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-hd2-plugins
@@ -845,8 +833,8 @@ $(D)/libstb-hal.do_prepare:
 	@touch $@
 
 $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
-	rm -rf $(LH_OBJDIR); \
-	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR); \
+	rm -rf $(LH_OBJDIR)
+	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR)
 	cd $(LH_OBJDIR); \
 		$(SOURCE_DIR)/libstb-hal/autogen.sh; \
 		$(BUILDENV) \
@@ -906,7 +894,7 @@ $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 
 $(D)/neutrino-alpha.config.status:
 	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-alpha/autogen.sh; \
 		$(BUILDENV) \
@@ -920,18 +908,18 @@ $(D)/neutrino-alpha.config.status:
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
-	@rm -f $@; \
+	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
-		pushd $(SOURCE_DIR)/libstb-hal ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal; then \
+		pushd $(SOURCE_DIR)/libstb-hal; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
 		pushd $(SOURCE_DIR)/neutrino-alpha ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(BASE_DIR) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(BASE_DIR); \
+		DDT_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
 		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Alpha-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
@@ -943,8 +931,7 @@ $(D)/neutrino-alpha.do_compile: $(D)/neutrino-alpha.config.status $(SOURCE_DIR)/
 fsa \
 $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
@@ -952,8 +939,7 @@ $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compi
 
 $(D)/neutrino-alpha-plugins: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
@@ -973,7 +959,7 @@ neutrino-alpha-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-alpha.do_prepare
 	rm -f $(D)/neutrino-alpha.do_compile
-	rm -f $(D)/neutrino-alpha*
+	rm -f $(D)/neutrino-alpha
 
 ################################################################################
 #
@@ -998,7 +984,7 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 
 $(D)/neutrino-test.config.status:
 	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-test/autogen.sh; \
 		$(BUILDENV) \
@@ -1012,18 +998,18 @@ $(D)/neutrino-test.config.status:
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
-	@rm -f $@; \
+	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
-		pushd $(SOURCE_DIR)/libstb-hal ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-test ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(BASE_DIR) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal; then \
+		pushd $(SOURCE_DIR)/libstb-hal; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(SOURCE_DIR)/neutrino-test; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(BASE_DIR); \
+		DDT_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
 		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Test-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
@@ -1035,8 +1021,7 @@ $(D)/neutrino-test.do_compile: $(D)/neutrino-test.config.status $(SOURCE_DIR)/ne
 fst \
 $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
@@ -1044,8 +1029,7 @@ $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 
 $(D)/neutrino-test-plugins: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
@@ -1065,7 +1049,7 @@ neutrino-test-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-test.do_prepare
 	rm -f $(D)/neutrino-test.do_compile
-	rm -f $(D)/neutrino-test*
+	rm -f $(D)/neutrino-test
 
 ################################################################################
 #
@@ -1090,7 +1074,7 @@ $(D)/neutrino-current.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 
 $(D)/neutrino-current.config.status:
 	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-current/autogen.sh; \
 		$(BUILDENV) \
@@ -1104,18 +1088,18 @@ $(D)/neutrino-current.config.status:
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-current/src/gui/version.h:
-	@rm -f $@; \
+	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal ; then \
-		pushd $(SOURCE_DIR)/libstb-hal ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-current ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(BASE_DIR) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
+	@if test -d $(SOURCE_DIR)/libstb-hal; then \
+		pushd $(SOURCE_DIR)/libstb-hal; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(SOURCE_DIR)/neutrino-current; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(BASE_DIR); \
+		DDT_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
 		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Current-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
@@ -1127,8 +1111,7 @@ $(D)/neutrino-current.do_compile: $(D)/neutrino-current.config.status $(SOURCE_D
 fsc \
 $(D)/neutrino-current: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
@@ -1136,8 +1119,7 @@ $(D)/neutrino-current: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do
 
 $(D)/neutrino-current-plugins: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
@@ -1157,7 +1139,7 @@ neutrino-current-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-current.do_prepare
 	rm -f $(D)/neutrino-current.do_compile
-	rm -f $(D)/neutrino-current*
+	rm -f $(D)/neutrino-current
 
 ################################################################################
 #
@@ -1182,7 +1164,7 @@ $(D)/neutrino-matze.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-ddt
 
 $(D)/neutrino-matze.config.status:
 	rm -rf $(N_OBJDIR)
-	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR); \
+	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
 		$(SOURCE_DIR)/neutrino-matze/autogen.sh; \
 		$(BUILDENV) \
@@ -1195,18 +1177,18 @@ $(D)/neutrino-matze.config.status:
 			--with-stb-hal-build=$(LH_OBJDIR)
 
 $(SOURCE_DIR)/neutrino-matze/src/gui/version.h:
-	@rm -f $@; \
+	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
 	@if test -d $(SOURCE_DIR)/libstb-hal-ddt ; then \
-		pushd $(SOURCE_DIR)/libstb-hal-ddt ; \
-		HAL_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(SOURCE_DIR)/neutrino-matze ; \
-		NMP_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
-		pushd $(BASE_DIR) ; \
-		DDT_REV=$$(git log | grep "^commit" | wc -l) ; \
-		popd ; \
+		pushd $(SOURCE_DIR)/libstb-hal-ddt; \
+		HAL_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(SOURCE_DIR)/neutrino-matze; \
+		NMP_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
+		pushd $(BASE_DIR); \
+		DDT_REV=$$(git log | grep "^commit" | wc -l); \
+		popd; \
 		echo '#define VCS "CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_Neutrino-matze-rev'$$NMP_REV'"' >> $@ ; \
 	fi
 
@@ -1218,8 +1200,7 @@ $(D)/neutrino-matze.do_compile: $(D)/neutrino-matze.config.status $(SOURCE_DIR)/
 matze \
 $(D)/neutrino-matze: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino_release
@@ -1227,8 +1208,7 @@ $(D)/neutrino-matze: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compi
 
 $(D)/neutrino-matze-plugins: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compile
 	$(TARGET)-strip --strip-unneeded $(N_OBJDIR)/src/neutrino
-	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR); \
-	rm -f $(TARGET_DIR)/var/etc/.version
+	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
@@ -1247,6 +1227,16 @@ neutrino-matze-distclean:
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-matze.do_prepare
 	rm -f $(D)/neutrino-matze.do_compile
-	rm -f $(D)/neutrino-matze*
+	rm -f $(D)/neutrino-matze
 
 ################################################################################
+
+PHONY += $(TARGET_DIR)/var/etc/.version
+PHONY += $(SOURCE_DIR)/neutrino-mp-ddt/src/gui/version.h
+PHONY += $(SOURCE_DIR)/neutrino-mp-ni/src/gui/version.h
+PHONY += $(SOURCE_DIR)/neutrino-mp-tangos/src/gui/version.h
+PHONY += $(SOURCE_DIR)/neutrino-mp-max/src/gui/version.h
+PHONY += $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
+PHONY += $(SOURCE_DIR)/neutrino-test/src/gui/version.h
+PHONY += $(SOURCE_DIR)/neutrino-current/src/gui/version.h
+PHONY += $(SOURCE_DIR)/neutrino-matzte/src/gui/version.h
