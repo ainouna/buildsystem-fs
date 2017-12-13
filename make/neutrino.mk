@@ -914,13 +914,13 @@ $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 		pushd $(SOURCE_DIR)/libstb-hal; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
-		pushd $(SOURCE_DIR)/neutrino-alpha ; \
+		pushd $(SOURCE_DIR)/neutrino-alpha; \
 		NMP_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
 		pushd $(BASE_DIR); \
 		DDT_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
-		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Alpha-rev'$$NMP_REV'"' >> $@ ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Alpha-rev'$$NMP_REV'"' >> $@; \
 	fi
 
 $(D)/neutrino-alpha.do_compile: $(D)/neutrino-alpha.config.status $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h
@@ -1010,7 +1010,7 @@ $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 		pushd $(BASE_DIR); \
 		DDT_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
-		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Test-rev'$$NMP_REV'"' >> $@ ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Test-rev'$$NMP_REV'"' >> $@; \
 	fi
 
 $(D)/neutrino-test.do_compile: $(D)/neutrino-test.config.status $(SOURCE_DIR)/neutrino-test/src/gui/version.h
@@ -1100,7 +1100,7 @@ $(SOURCE_DIR)/neutrino-current/src/gui/version.h:
 		pushd $(BASE_DIR); \
 		DDT_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
-		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Current-rev'$$NMP_REV'"' >> $@ ; \
+		echo '#define VCS "FS_CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_FS-Neutrino-Current-rev'$$NMP_REV'"' >> $@; \
 	fi
 
 $(D)/neutrino-current.do_compile: $(D)/neutrino-current.config.status $(SOURCE_DIR)/neutrino-current/src/gui/version.h
@@ -1189,7 +1189,7 @@ $(SOURCE_DIR)/neutrino-matze/src/gui/version.h:
 		pushd $(BASE_DIR); \
 		DDT_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
-		echo '#define VCS "CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_Neutrino-matze-rev'$$NMP_REV'"' >> $@ ; \
+		echo '#define VCS "CDK-rev'$$DDT_REV'_HAL-rev'$$HAL_REV'_Neutrino-matze-rev'$$NMP_REV'"' >> $@; \
 	fi
 
 $(D)/neutrino-matze.do_compile: $(D)/neutrino-matze.config.status $(SOURCE_DIR)/neutrino-matze/src/gui/version.h
