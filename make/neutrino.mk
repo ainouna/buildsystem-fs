@@ -850,9 +850,7 @@ libstb-hal-clean:
 
 libstb-hal-distclean:
 	rm -rf $(LH_OBJDIR)
-	rm -f $(D)/libstb-hal.do_prepare
-	rm -f $(D)/libstb-hal.do_compile
-	rm -f $(D)/libstb-hal
+	rm -f $(D)/libstb-hal*
 
 ################################################################################
 #
