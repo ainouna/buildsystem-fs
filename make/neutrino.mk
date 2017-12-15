@@ -915,7 +915,7 @@ $(D)/neutrino-alpha: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compi
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
-	make neutrino_release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 $(D)/neutrino-alpha-plugins: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.do_compile
@@ -924,7 +924,7 @@ $(D)/neutrino-alpha-plugins: $(D)/neutrino-alpha.do_prepare $(D)/neutrino-alpha.
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
-	make neutrino_release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 fsa-clean \
@@ -1003,7 +1003,7 @@ $(D)/neutrino-test: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
-	make neutrino_release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 $(D)/neutrino-test-plugins: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_compile
@@ -1012,7 +1012,7 @@ $(D)/neutrino-test-plugins: $(D)/neutrino-test.do_prepare $(D)/neutrino-test.do_
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
-	make neutrino_release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 fst-clean \
@@ -1091,7 +1091,7 @@ $(D)/neutrino-current: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
-	make neutrino_release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 $(D)/neutrino-current-plugins: $(D)/neutrino-current.do_prepare $(D)/neutrino-current.do_compile
@@ -1100,7 +1100,7 @@ $(D)/neutrino-current-plugins: $(D)/neutrino-current.do_prepare $(D)/neutrino-cu
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
-	make neutrino_release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 fsc-clean \
@@ -1178,7 +1178,7 @@ $(D)/neutrino-matze: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compi
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
-	make neutrino_release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 $(D)/neutrino-matze-plugins: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.do_compile
@@ -1187,7 +1187,7 @@ $(D)/neutrino-matze-plugins: $(D)/neutrino-matze.do_prepare $(D)/neutrino-matze.
 	make $(TARGET_DIR)/var/etc/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-plugins
-	make neutrino_release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 matze-clean \
