@@ -803,32 +803,32 @@ dual-distclean:
 
 ################################################################################
 #
-# fs-basis libstb-hal
+# libstb-hal-fs
 #
-LIBSTB_HAL_PATCHES =
+LIBSTB_HAL_FS_PATCHES =
 
-$(D)/libstb-hal.do_prepare:
+$(D)/libstb-hal-fs.do_prepare:
 	$(START_BUILD)
-	rm -rf $(SOURCE_DIR)/libstb-hal
-	rm -rf $(SOURCE_DIR)/libstb-hal.org
+	rm -rf $(SOURCE_DIR)/libstb-hal-fs
+	rm -rf $(SOURCE_DIR)/libstb-hal-fs.org
 	rm -rf $(LH_OBJDIR)
-	[ -d "$(ARCHIVE)/libstb-hal.git" ] && \
-	(cd $(ARCHIVE)/libstb-hal.git; git pull; cd "$(BUILD_TMP)";); \
-	[ -d "$(ARCHIVE)/libstb-hal.git" ] || \
-	git clone https://github.com/fs-basis/libstb-hal.git $(ARCHIVE)/libstb-hal.git; \
-	cp -ra $(ARCHIVE)/libstb-hal.git $(SOURCE_DIR)/libstb-hal;\
-	cp -ra $(SOURCE_DIR)/libstb-hal $(SOURCE_DIR)/libstb-hal.org
-	set -e; cd $(SOURCE_DIR)/libstb-hal; \
-		$(call post_patch,$(LIBSTB_HAL_PATCHES))
+	[ -d "$(ARCHIVE)/libstb-hal-fs.git" ] && \
+	(cd $(ARCHIVE)/libstb-hal-fs.git; git pull; cd "$(BUILD_TMP)";); \
+	[ -d "$(ARCHIVE)/libstb-hal-fs.git" ] || \
+	git clone https://github.com/fs-basis/libstb-hal-fs.git $(ARCHIVE)/libstb-hal-fs.git; \
+	cp -ra $(ARCHIVE)/libstb-hal-fs.git $(SOURCE_DIR)/libstb-hal-fs;\
+	cp -ra $(SOURCE_DIR)/libstb-hal-fs $(SOURCE_DIR)/libstb-hal-fs.org
+	set -e; cd $(SOURCE_DIR)/libstb-hal-fs; \
+		$(call post_patch,$(LIBSTB_HAL_FS_PATCHES))
 	@touch $@
 
-$(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
+$(D)/libstb-hal-fs.config.status: | $(NEUTRINO_DEPS)
 	rm -rf $(LH_OBJDIR)
 	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR)
 	cd $(LH_OBJDIR); \
-		$(SOURCE_DIR)/libstb-hal/autogen.sh; \
+		$(SOURCE_DIR)/libstb-hal-fs/autogen.sh; \
 		$(BUILDENV) \
-		$(SOURCE_DIR)/libstb-hal/configure \
+		$(SOURCE_DIR)/libstb-hal-fs/configure \
 			--enable-silent-rules \
 			--host=$(TARGET) \
 			--build=$(BUILD) \
@@ -841,24 +841,24 @@ $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 	@touch $@
 
-$(D)/libstb-hal.do_compile: $(D)/libstb-hal.config.status
-	cd $(SOURCE_DIR)/libstb-hal; \
+$(D)/libstb-hal-fs.do_compile: $(D)/libstb-hal-fs.config.status
+	cd $(SOURCE_DIR)/libstb-hal-fs; \
 		$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
 	@touch $@
 
-$(D)/libstb-hal: $(D)/libstb-hal.do_prepare $(D)/libstb-hal.do_compile
+$(D)/libstb-hal-fs: $(D)/libstb-hal-fs.do_prepare $(D)/libstb-hal-fs.do_compile
 	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
 
-libstb-hal-clean:
-	rm -f $(D)/libstb-hal
-	rm -f $(D)/libstb-hal.config.status
+libstb-hal-fs-clean:
+	rm -f $(D)/libstb-hal-fs
+	rm -f $(D)/libstb-hal-fs.config.status
 	cd $(LH_OBJDIR); \
 		$(MAKE) -C $(LH_OBJDIR) distclean
 
-libstb-hal-distclean:
+libstb-hal-fs-distclean:
 	rm -rf $(LH_OBJDIR)
-	rm -f $(D)/libstb-hal*
+	rm -f $(D)/libstb-hal-fs*
 
 ################################################################################
 #
@@ -866,7 +866,7 @@ libstb-hal-distclean:
 #
 FS_NEUTRINO_ALPHA_PATCHES =
 
-$(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
+$(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-fs
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-alpha
 	rm -rf $(SOURCE_DIR)/neutrino-alpha.org
@@ -892,15 +892,15 @@ $(D)/neutrino-alpha.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-fs/include \
 			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-alpha/src/gui/version.h:
 	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal; then \
-		pushd $(SOURCE_DIR)/libstb-hal; \
+	@if test -d $(SOURCE_DIR)/libstb-hal-fs; then \
+		pushd $(SOURCE_DIR)/libstb-hal-fs; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
 		pushd $(SOURCE_DIR)/neutrino-alpha; \
@@ -954,7 +954,7 @@ neutrino-alpha-distclean: neutrino-cdkroot-clean
 #
 FS_NEUTRINO_TEST_PATCHES =
 
-$(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
+$(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-fs
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-test
 	rm -rf $(SOURCE_DIR)/neutrino-test.org
@@ -980,15 +980,15 @@ $(D)/neutrino-test.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-fs/include \
 			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-test/src/gui/version.h:
 	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal; then \
-		pushd $(SOURCE_DIR)/libstb-hal; \
+	@if test -d $(SOURCE_DIR)/libstb-hal-fs; then \
+		pushd $(SOURCE_DIR)/libstb-hal-fs; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
 		pushd $(SOURCE_DIR)/neutrino-test; \
@@ -1042,7 +1042,7 @@ neutrino-test-distclean: neutrino-cdkroot-clean
 #
 FS_NEUTRINO_CURRENT_PATCHES =
 
-$(D)/neutrino-current.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
+$(D)/neutrino-current.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-fs
 	$(START_BUILD)
 	rm -rf $(SOURCE_DIR)/neutrino-current
 	rm -rf $(SOURCE_DIR)/neutrino-current.org
@@ -1068,15 +1068,15 @@ $(D)/neutrino-current.config.status:
 			--build=$(BUILD) \
 			--host=$(TARGET) \
 			$(N_CONFIG_OPTS) \
-			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal/include \
+			--with-stb-hal-includes=$(SOURCE_DIR)/libstb-hal-fs/include \
 			--with-stb-hal-build=$(LH_OBJDIR)
 	@touch $@
 
 $(SOURCE_DIR)/neutrino-current/src/gui/version.h:
 	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
-	@if test -d $(SOURCE_DIR)/libstb-hal; then \
-		pushd $(SOURCE_DIR)/libstb-hal; \
+	@if test -d $(SOURCE_DIR)/libstb-hal-fs; then \
+		pushd $(SOURCE_DIR)/libstb-hal-fs; \
 		HAL_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
 		pushd $(SOURCE_DIR)/neutrino-current; \
