@@ -823,7 +823,7 @@ $(D)/libstb-hal-fs.do_prepare:
 	cp -ra $(ARCHIVE)/libstb-hal-fs.git $(SOURCE_DIR)/libstb-hal-fs;\
 	cp -ra $(SOURCE_DIR)/libstb-hal-fs $(SOURCE_DIR)/libstb-hal-fs.org
 	set -e; cd $(SOURCE_DIR)/libstb-hal-fs; \
-		$(call post_patch,$(LIBSTB_HAL_FS_PATCHES))
+		$(call apply_patches,$(LIBSTB_HAL_FS_PATCHES))
 	@touch $@
 
 $(D)/libstb-hal-fs.config.status: | $(NEUTRINO_DEPS)
@@ -882,7 +882,7 @@ $(D)/neutrino-alpha.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-fs
 	cp -ra $(ARCHIVE)/neutrino-alpha.git $(SOURCE_DIR)/neutrino-alpha; \
 	cp -ra $(SOURCE_DIR)/neutrino-alpha $(SOURCE_DIR)/neutrino-alpha.org
 	set -e; cd $(SOURCE_DIR)/neutrino-alpha; \
-		$(call post_patch,$(FS_NEUTRINO_ALPHA_PATCHES))
+		$(call apply_patches,$(FS_NEUTRINO_ALPHA_PATCHES))
 	@touch $@
 
 $(D)/neutrino-alpha.config.status:
@@ -970,7 +970,7 @@ $(D)/neutrino-test.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-fs
 	cp -ra $(ARCHIVE)/neutrino-test.git $(SOURCE_DIR)/neutrino-test; \
 	cp -ra $(SOURCE_DIR)/neutrino-test $(SOURCE_DIR)/neutrino-test.org
 	set -e; cd $(SOURCE_DIR)/neutrino-test; \
-		$(call post_patch,$(FS_NEUTRINO_TEST_PATCHES))
+		$(call apply_patches,$(FS_NEUTRINO_TEST_PATCHES))
 	@touch $@
 
 $(D)/neutrino-test.config.status:
@@ -1058,7 +1058,7 @@ $(D)/neutrino-current.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-fs
 	cp -ra $(ARCHIVE)/neutrino-current.git $(SOURCE_DIR)/neutrino-current; \
 	cp -ra $(SOURCE_DIR)/neutrino-current $(SOURCE_DIR)/neutrino-current.org
 	set -e; cd $(SOURCE_DIR)/neutrino-current; \
-		$(call post_patch,$(FS_NEUTRINO_CURRENT_PATCHES))
+		$(call apply_patches,$(FS_NEUTRINO_CURRENT_PATCHES))
 	$(TOUCH)
 
 $(D)/neutrino-current.config.status:
@@ -1146,7 +1146,7 @@ $(D)/neutrino-matze.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal-ddt
 	cp -ra $(ARCHIVE)/neutrino-matze.git $(SOURCE_DIR)/neutrino-matze; \
 	cp -ra $(SOURCE_DIR)/neutrino-matze $(SOURCE_DIR)/neutrino-matze.org
 	set -e; cd $(SOURCE_DIR)/neutrino-matze; \
-		$(call post_patch,$(NEUTRINO_MATZE_PATCHES))
+		$(call apply_patches,$(NEUTRINO_MATZE_PATCHES))
 	@touch $@
 
 $(D)/neutrino-matze.config.status:
