@@ -462,7 +462,7 @@ neutrino-release-hd51:
 neutrino-release-base:
 	rm -rf $(RELEASE_DIR) || true
 	install -d $(RELEASE_DIR)
-	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,hdd,home,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
+	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
 	install -d $(RELEASE_DIR)/etc/{init.d,network,mdev,ssl}
 	install -d $(RELEASE_DIR)/etc/network/if-{post-{up,down},pre-{up,down},up,down}.d
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
@@ -653,15 +653,19 @@ endif
 #
 # fonts
 #
-	if [ -e $(TARGET_DIR)/usr/share/fonts/neutrino.ttf ]; then \
-		cp -aR $(TARGET_DIR)/usr/share/fonts/neutrino.ttf $(RELEASE_DIR)/usr/share/fonts; \
-	fi
-	if [ -e $(TARGET_DIR)/usr/share/fonts/micron.ttf ]; then \
-		cp -aR $(TARGET_DIR)/usr/share/fonts/micron.ttf $(RELEASE_DIR)/usr/share/fonts; \
-	fi
-	if [ -e $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf ]; then \
-		cp -aR $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts; \
-		ln -s /usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf; \
+	if [ -e $(TARGET_DIR)/usr/share/fonts/ubuntu-l-webfont.ttf ]; then \
+		cp -aR $(TARGET_DIR)/usr/share/fonts $(RELEASE_DIR)/usr/share/; \
+	else \
+		if [ -e $(TARGET_DIR)/usr/share/fonts/neutrino.ttf ]; then \
+			cp -aR $(TARGET_DIR)/usr/share/fonts/neutrino.ttf $(RELEASE_DIR)/usr/share/fonts; \
+		fi; \
+		if [ -e $(TARGET_DIR)/usr/share/fonts/micron.ttf ]; then \
+			cp -aR $(TARGET_DIR)/usr/share/fonts/micron.ttf $(RELEASE_DIR)/usr/share/fonts; \
+		fi; \
+		if [ -e $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf ]; then \
+			cp -aR $(TARGET_DIR)/usr/share/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts; \
+			ln -s /usr/share/fonts/tuxt.ttf $(RELEASE_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf; \
+		fi; \
 	fi
 #
 # neutrino
@@ -701,6 +705,7 @@ endif
 # iso-codes
 #
 	[ -e $(TARGET_DIR)/usr/local/share/iso-codes ] && cp -aR $(TARGET_DIR)/usr/local/share/iso-codes $(RELEASE_DIR)/usr/share/ || true
+	[ -e $(TARGET_DIR)/usr/share/tuxbox/iso-codes ] && cp -aR $(TARGET_DIR)/usr/share/tuxbox/iso-codes $(RELEASE_DIR)/usr/share/tuxbox/ || true
 #
 # httpd/icons/locale/themes
 #
@@ -816,6 +821,12 @@ endif
 	rm -f $(RELEASE_DIR)/bin/streamproxy
 	rm -f $(RELEASE_DIR)/bin/libstb-hal-test
 	rm -f $(RELEASE_DIR)/sbin/ldconfig
+ifeq ($(BOXARCH), arm)
+	rm -rf $(RELEASE_DIR)/dev.static
+	rm -rf $(RELEASE_DIR)/ram
+	rm -rf $(RELEASE_DIR)/root
+endif
+
 #
 # The main target depends on the model.
 # IMPORTANT: it is assumed that only one variable is set. Otherwise the target name won't be resolved.
@@ -864,7 +875,7 @@ $(D)/%neutrino-release: neutrino-release-base neutrino-release-$(BOXTYPE)
 #
 # linux-strip all
 #
-ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug))
+ifneq ($(OPTIMIZATIONS), $(filter $(OPTIMIZATIONS), kerneldebug debug normal))
 	find $(RELEASE_DIR)/ -name '*' -exec $(TARGET)-strip --strip-unneeded {} &>/dev/null \;
 endif
 	@echo "***************************************************************"
