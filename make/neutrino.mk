@@ -119,6 +119,14 @@ N_BRANCH    ?= master
 L_BRANCH    ?= master
 N_PATCHES    = NEUTRINO_MP_DDT_PATCHES =
 L_PATCHE     = NEUTRINO_MP_LIBSTB_DDT_PATCHES =
+else ifeq  ($(FLAVOUR), neutrino-mp-fs)
+NEUTRINO_MP  = neutrino-gui
+LIBSTB_HAL   = libstb-hal-fs
+N_BRANCH    ?= current
+L_BRANCH    ?= master
+N_PATCHES    = FS_NEUTRINO_CURRENT_PATCHES =
+L_PATCHE     = LIBSTB_HAL_FS_PATCHES =
+GIT_URL      = https://github.com/fs-basis
 endif
 
 OBJDIR = $(BUILD_TMP)
