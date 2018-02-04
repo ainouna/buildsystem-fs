@@ -120,13 +120,13 @@ L_BRANCH    ?= master
 N_PATCHES    = $(NEUTRINO_MP_DDT_PATCHES)
 L_PATCHE     = $(NEUTRINO_MP_LIBSTB_DDT_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-fs)
+GIT_URL      = https://github.com/fs-basis
 NEUTRINO_MP  = neutrino-gui
 LIBSTB_HAL   = libstb-hal-fs
 N_BRANCH    ?= current
 L_BRANCH    ?= master
 N_PATCHES    = $(FS_NEUTRINO_CURRENT_PATCHES)
 L_PATCHE     = $(LIBSTB_HAL_FS_PATCHES)
-GIT_URL      = https://github.com/fs-basis
 endif
 
 OBJDIR = $(BUILD_TMP)
@@ -191,6 +191,7 @@ libstb-hal-clean:
 libstb-hal-distclean:
 	rm -rf $(LH_OBJDIR)
 	rm -f $(D)/libstb-hal*
+	rm -rf $(SOURCE_DIR)/$(LIBSTB_HAL)*
 
 ################################################################################
 #
@@ -295,6 +296,7 @@ mp-distclean \
 neutrino-mp-distclean: neutrino-cdkroot-clean
 	rm -rf $(N_OBJDIR)
 	rm -f $(D)/neutrino-mp*
+	rm -rf $(SOURCE_DIR)/$(NEUTRINO_MP)*
 
 mpp \
 neutrino-mp-plugins: $(D)/neutrino-mp-plugins.do_prepare $(D)/neutrino-mp-plugins.config.status $(D)/neutrino-mp-plugins.do_compile
