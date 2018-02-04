@@ -127,6 +127,14 @@ N_BRANCH    ?= current
 L_BRANCH    ?= master
 N_PATCHES    = $(FS_NEUTRINO_CURRENT_PATCHES)
 L_PATCHE     = $(LIBSTB_HAL_FS_PATCHES)
+else ifeq  ($(FLAVOUR), neutrino-mp-matze)
+GIT_URL      = https://github.com/fs-basis
+NEUTRINO_MP  = neutrino-gui
+LIBSTB_HAL   = libstb-hal-fs
+N_BRANCH    ?= udog
+L_BRANCH    ?= master
+N_PATCHES    = $(NEUTRINO_MATZE_PATCHES)
+L_PATCHE     = $(LIBSTB_HAL_FS_PATCHES)
 endif
 
 OBJDIR = $(BUILD_TMP)
