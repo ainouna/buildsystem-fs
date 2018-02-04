@@ -125,7 +125,7 @@ NEUTRINO_MP  = neutrino-mp-fs
 LIBSTB_HAL   = libstb-hal-fs
 N_BRANCH    ?= master
 L_BRANCH    ?= master
-N_PATCHES    = $(FS_NEUTRINO_PATCHES)
+N_PATCHES    = $(NEUTRINO_MP_FS_PATCHES)
 L_PATCHE     = $(LIBSTB_HAL_FS_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-matze)
 GIT_URL      = https://github.com/fs-basis
