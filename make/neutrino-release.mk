@@ -472,6 +472,7 @@ neutrino-release-base:
 	install -d $(RELEASE_DIR)/mnt/{hdd,nfs,usb}
 	install -d $(RELEASE_DIR)/mnt/mnt{0..7}
 	install -d $(RELEASE_DIR)/usr/{bin,lib,local,sbin}
+	install -d $(RELEASE_DIR)/usr/lib/tuxbox
 	install -d $(RELEASE_DIR)/usr/local/{bin,sbin}
 	install -d $(RELEASE_DIR)/share/{fonts,tuxbox,udhcpc,zoneinfo,lua}
 	install -d $(RELEASE_DIR)/share/tuxbox/neutrino
