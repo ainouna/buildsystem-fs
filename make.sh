@@ -259,7 +259,7 @@ case $6 in
 		echo "   3)  neutrino-mp-ni"
 		echo "   4)  neutrino-mp-tangos"
 		echo "   5)  neutrino-mp-fs"
-		echo "   6)  neutrino-mp-matze"
+		echo "   6)  neutrino-mp-udog"
 		echo "   7)  neutrino-hd2"
 		read -p "Select Image to build (1-7)? ";;
 esac
@@ -270,7 +270,7 @@ case "$REPLY" in
 	3) FLAVOUR="neutrino-mp-ni";;
 	4) FLAVOUR="neutrino-mp-tangos";;
 	5) FLAVOUR="neutrino-mp-fs";;
-	6) FLAVOUR="neutrino-mp-matze";;
+	6) FLAVOUR="neutrino-mp-udog";;
 	7) FLAVOUR="neutrino-hd2";;
 	*) FLAVOUR="neutrino-mp-ddt";;
 esac

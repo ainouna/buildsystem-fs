@@ -127,13 +127,13 @@ N_BRANCH    ?= master
 L_BRANCH    ?= master
 N_PATCHES    = $(NEUTRINO_MP_FS_PATCHES)
 L_PATCHE     = $(LIBSTB_HAL_FS_PATCHES)
-else ifeq  ($(FLAVOUR), neutrino-mp-matze)
+else ifeq  ($(FLAVOUR), neutrino-mp-udog)
 GIT_URL      = https://github.com/fs-basis
 NEUTRINO_MP  = neutrino-mp-fs
 LIBSTB_HAL   = libstb-hal-fs
 N_BRANCH    ?= udog
 L_BRANCH    ?= master
-N_PATCHES    = $(NEUTRINO_MATZE_PATCHES)
+N_PATCHES    = $(NEUTRINO_MP_UDOG_PATCHES)
 L_PATCHE     = $(LIBSTB_HAL_FS_PATCHES)
 endif
 
