@@ -272,7 +272,7 @@ case "$REPLY" in
 	4) FLAVOUR="neutrino-mp-tangos";;
 	5) FLAVOUR="neutrino-mp-fs";;
 	6) FLAVOUR="neutrino-mp-fs-test";;
-	7) FLAVOUR="neutrino-mp-udog";
+	7) FLAVOUR="neutrino-mp-udog";;
 	8) FLAVOUR="neutrino-hd2";;
 	*) FLAVOUR="neutrino-mp-ddt";;
 esac
