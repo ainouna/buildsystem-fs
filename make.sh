@@ -254,15 +254,15 @@ echo "IMAGE=$IMAGE" >> config
 case $6 in
 	[1-8]) REPLY=$6;;
 	*)	echo -e "\nWhich Neutrino variant do you want to build?:"
-		echo "   1)  neutrino-mp-ddt"
-		echo "   2)  neutrino-mp-max"
-		echo "   3)  neutrino-mp-ni"
-		echo "   4)  neutrino-mp-tangos"
-		echo "   5)  neutrino-mp-fs"
-		echo "   6)  neutrino-mp-fs-test"
-		echo "   7)  neutrino-mp-udog"
-		echo "   8)  neutrino-hd2"
-		read -p "Select Image to build (1-7)? ";;
+		echo "   1)  neutrino-mp-ddt     [ arm/sh4 ]"
+		echo "   2)  neutrino-mp-max     [ arm     ]"
+		echo "   3)  neutrino-mp-ni"     [ arm     ]"
+		echo "   4)  neutrino-mp-tangos  [ arm/sh4 ]"
+		echo "   5)  neutrino-mp-fs      [ arm/sh4 ]"
+		echo "   6)  neutrino-mp-fs-test [ arm/sh4 ]"
+		echo "   7)  neutrino-mp-udog    [ arm/sh4 ]"
+		echo "   8)  neutrino-hd2        [ arm/sh4 ]"
+		read -p "Select Image to build  (1-8)? ";;
 esac
 
 case "$REPLY" in
