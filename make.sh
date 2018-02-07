@@ -256,7 +256,7 @@ case $6 in
 	*)	echo -e "\nWhich Neutrino variant do you want to build?:"
 		echo "   1)  neutrino-mp-ddt     [ arm/sh4 ]"
 		echo "   2)  neutrino-mp-max     [ arm     ]"
-		echo "   3)  neutrino-mp-ni"     [ arm     ]"
+		echo "   3)  neutrino-mp-ni      [ arm     ]"
 		echo "   4)  neutrino-mp-tangos  [ arm/sh4 ]"
 		echo "   5)  neutrino-mp-fs      [ arm/sh4 ]"
 		echo "   6)  neutrino-mp-fs-test [ arm/sh4 ]"
