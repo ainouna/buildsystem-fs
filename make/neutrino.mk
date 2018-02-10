@@ -1,7 +1,7 @@
 #
 # Makefile to build NEUTRINO
 #
-$(TARGET_DIR)/var/etc/.version:
+$(TARGET_DIR)/.version:
 	echo "imagename=Neutrino HD" > $@
 	echo "homepage=https://github.com/fs-basis" >> $@
 	echo "creator=$(MAINTAINER)" >> $@
@@ -160,6 +160,7 @@ $(D)/libstb-hal.do_prepare:
 	rm -rf $(SOURCE_DIR)/$(LIBSTB_HAL)
 	rm -rf $(SOURCE_DIR)/$(LIBSTB_HAL).org
 	rm -rf $(LH_OBJDIR)
+	test -d $(SOURCE_DIR) || mkdir -p $(SOURCE_DIR)
 	[ -d "$(ARCHIVE)/$(LIBSTB_HAL).git" ] && \
 	(cd $(ARCHIVE)/$(LIBSTB_HAL).git; git pull;); \
 	[ -d "$(ARCHIVE)/$(LIBSTB_HAL).git" ] || \
@@ -309,7 +310,7 @@ mp \
 neutrino-mp: $(D)/neutrino-mp.do_prepare $(D)/neutrino-mp.config.status $(D)/neutrino-mp.do_compile
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
-	make $(TARGET_DIR)/var/etc/.version
+	make $(TARGET_DIR)/.version
 	touch $(D)/$(notdir $@)
 	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
@@ -331,7 +332,7 @@ mpp \
 neutrino-mp-plugins: $(D)/neutrino-mp-plugins.do_prepare $(D)/neutrino-mp-plugins.config.status $(D)/neutrino-mp-plugins.do_compile
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
-	make $(TARGET_DIR)/var/etc/.version
+	make $(TARGET_DIR)/.version
 	make $(NEUTRINO_PLUGINS)
 	touch $(D)/$(notdir $@)
 	make neutrino-release
