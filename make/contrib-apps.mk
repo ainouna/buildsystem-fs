@@ -306,7 +306,7 @@ $(D)/portmap: $(D)/bootstrap $(D)/lsb $(ARCHIVE)/$(PORTMAP_SOURCE) $(ARCHIVE)/po
 #
 # e2fsprogs
 #
-E2FSPROGS_VER = 1.43.7
+E2FSPROGS_VER = 1.43.9
 E2FSPROGS_SOURCE = e2fsprogs-$(E2FSPROGS_VER).tar.gz
 E2FSPROGS_PATCH = e2fsprogs-$(E2FSPROGS_VER).patch
 
@@ -1056,7 +1056,7 @@ $(D)/avahi: $(D)/bootstrap $(D)/expat $(D)/libdaemon $(D)/dbus $(ARCHIVE)/$(AVAH
 #
 # wget
 #
-WGET_VER = 1.19.2
+WGET_VER = 1.19.4
 WGET_SOURCE = wget-$(WGET_VER).tar.gz
 
 $(ARCHIVE)/$(WGET_SOURCE):
