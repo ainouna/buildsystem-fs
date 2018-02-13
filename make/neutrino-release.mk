@@ -680,7 +680,7 @@ endif
 		fi; \
 		if [ -e $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts; \
-			ln -s /usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/share/fonts/DejaVuLGCSansMono-Bold.ttf; \
+			ln -s /usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf; \
 		fi; \
 	fi
 #
