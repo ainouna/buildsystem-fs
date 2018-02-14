@@ -158,9 +158,12 @@ $(D)/gdb: $(D)/bootstrap $(D)/ncurses $(D)/zlib $(ARCHIVE)/$(GDB_SOURCE)
 			--build=$(BUILD) \
 			--target=$(TARGET) \
 			--prefix=/usr \
+			--includedir=$(TARGET_DIR)/usr/include \
 			--mandir=$(TARGET_DIR)/.remove \
 			--infodir=$(TARGET_DIR)/.remove \
-			--nfp --disable-werror \
+			--datarootdir=$(TARGET_DIR)/.remove \
+			--nfp \
+			--disable-werror \
 		; \
 		$(MAKE) all-gdb; \
 		$(MAKE) install-gdb prefix=$(TARGET_DIR)
@@ -192,6 +195,7 @@ $(D)/valgrind: $(D)/bootstrap $(ARCHIVE)/$(VALGRIND_SOURCE)
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	rm -f $(addprefix $(TARGET_DIR)/usr/lib/valgrind/,*.a *.xml)
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,cg_* callgrind_* ms_print)
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/valgrind.pc
 	$(REMOVE)/valgrind-$(VALGRIND_VER)
 	$(TOUCH)
 
@@ -618,7 +622,7 @@ $(D)/nano: $(D)/bootstrap $(ARCHIVE)/$(NANO_SOURCE)
 #
 # rsync
 #
-RSYNC_VER = 3.1.2
+RSYNC_VER = 3.1.3
 RSYNC_SOURCE = rsync-$(RSYNC_VER).tar.gz
 
 $(ARCHIVE)/$(RSYNC_SOURCE):
@@ -666,6 +670,7 @@ $(D)/fuse: $(D)/bootstrap $(ARCHIVE)/$(FUSE_SOURCE)
 		-rmdir $(TARGET_DIR)/etc/udev
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/fuse.pc
 	$(REWRITE_LIBTOOL)/libfuse.la
+	$(REWRITE_LIBTOOL)/libulockmgr.la
 	$(REMOVE)/fuse-$(FUSE_VER)
 	$(TOUCH)
 
@@ -752,7 +757,7 @@ $(D)/hddtemp: $(D)/bootstrap $(ARCHIVE)/$(HDDTEMP_SOURCE)
 #
 # hdparm
 #
-HDPARM_VER = 9.52
+HDPARM_VER = 9.54
 HDPARM_SOURCE = hdparm-$(HDPARM_VER).tar.gz
 
 $(ARCHIVE)/$(HDPARM_SOURCE):
@@ -774,6 +779,7 @@ $(D)/hdparm: $(D)/bootstrap $(ARCHIVE)/$(HDPARM_SOURCE)
 #
 HDIDLE_VER = 1.05
 HDIDLE_SOURCE = hd-idle-$(HDIDLE_VER).tgz
+HDIDLE_PATCH = hd-idle-$(HDIDLE_VER).patch
 
 $(ARCHIVE)/$(HDIDLE_SOURCE):
 	$(WGET) https://sourceforge.net/projects/hd-idle/files/$(HDIDLE_SOURCE)
@@ -783,7 +789,7 @@ $(D)/hdidle: $(D)/bootstrap $(ARCHIVE)/$(HDIDLE_SOURCE)
 	$(REMOVE)/hd-idle
 	$(UNTAR)/$(HDIDLE_SOURCE)
 	set -e; cd $(BUILD_TMP)/hd-idle; \
-		sed -i -e 's/-g root -o root//g' Makefile; \
+		$(call apply_patches,$(HDIDLE_PATCH)); \
 		$(BUILDENV) \
 		$(MAKE) CC=$(TARGET)-gcc; \
 		$(MAKE) install TARGET_DIR=$(TARGET_DIR) install
@@ -1252,11 +1258,11 @@ $(D)/vsftpd: $(D)/bootstrap $(ARCHIVE)/$(VSFTPD_SOURCE)
 #
 # ethtool
 #
-ETHTOOL_VER = 6
-ETHTOOL_SOURCE = ethtool-$(ETHTOOL_VER).tar.gz
+ETHTOOL_VER = 4.15
+ETHTOOL_SOURCE = ethtool-$(ETHTOOL_VER).tar.xz
 
 $(ARCHIVE)/$(ETHTOOL_SOURCE):
-	$(WGET) https://downloads.openwrt.org/sources/$(ETHTOOL_SOURCE)
+	$(WGET) https://www.kernel.org/pub/software/network/ethtool/$(ETHTOOL_SOURCE)
 
 $(D)/ethtool: $(D)/bootstrap $(ARCHIVE)/$(ETHTOOL_SOURCE)
 	$(START_BUILD)

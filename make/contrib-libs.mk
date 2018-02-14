@@ -956,7 +956,9 @@ $(D)/libconfig: $(D)/bootstrap $(ARCHIVE)/$(LIBCONFIG_SOURCE)
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libconfig.pc
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libconfig++.pc
 	$(REWRITE_LIBTOOL)/libconfig.la
+	$(REWRITE_LIBTOOL)/libconfig++.la
 	$(REMOVE)/libconfig-$(LIBCONFIG_VER)
 	$(TOUCH)
 
@@ -1759,7 +1761,7 @@ $(D)/pugixml: $(D)/bootstrap $(ARCHIVE)/$(PUGIXML_SOURCE)
 #
 # graphlcd
 #
-GRAPHLCD_VER = 7958e1b
+GRAPHLCD_VER = f5528fe
 GRAPHLCD_SOURCE = graphlcd-$(GRAPHLCD_VER).tar.bz2
 GRAPHLCD_URL = git://projects.vdr-developer.org/graphlcd-base.git
 GRAPHLCD_PATCH = graphlcd-base-touchcol.patch
@@ -1774,9 +1776,10 @@ $(D)/graphlcd: $(D)/bootstrap $(D)/freetype $(D)/libusb $(ARCHIVE)/$(GRAPHLCD_SO
 	set -e; cd $(BUILD_TMP)/graphlcd-$(GRAPHLCD_VER); \
 		$(call apply_patches,$(GRAPHLCD_PATCH)); \
 		export TARGET=$(TARGET)-; \
-		$(BUILDENV) \
-		$(MAKE) DESTDIR=$(TARGET_DIR); \
-		$(MAKE) install DESTDIR=$(TARGET_DIR)
+		$(MAKE) -C glcdgraphics all TARGET=$(TARGET)- DESTDIR=$(TARGET_DIR); \
+		$(MAKE) -C glcddrivers all TARGET=$(TARGET)- ; \
+		$(MAKE) -C glcdgraphics install DESTDIR=$(TARGET_DIR); \
+		$(MAKE) -C glcddrivers install DESTDIR=$(TARGET_DIR); \
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,convpic crtfont genfont showpic showtext lcdtestpattern skintest)
 	$(REMOVE)/graphlcd-$(GRAPHLCD_VER)
 	$(TOUCH)
@@ -2128,6 +2131,7 @@ $(D)/lzo: $(D)/bootstrap $(ARCHIVE)/$(LZO_SOURCE)
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
+	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/lzo2.pc
 	$(REWRITE_LIBTOOL)/liblzo2.la
 	$(REMOVE)/lzo-$(LZO_VER)
 	$(TOUCH)
