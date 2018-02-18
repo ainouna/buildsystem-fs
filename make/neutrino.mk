@@ -84,6 +84,7 @@ N_CONFIG_OPTS += --enable-freesatepg
 #N_CONFIG_OPTS += --disable-webif
 N_CONFIG_OPTS += --disable-upnp
 #N_CONFIG_OPTS += --disable-tangos
+#N_CONFIG_OPTS += --enable-fribidi
 
 ifeq ($(BOXARCH), arm)
 N_CONFIG_OPTS += --enable-reschange
@@ -252,7 +253,6 @@ $(D)/neutrino-mp-plugins.config.status:
 			--enable-silent-rules \
 			\
 			--enable-ffmpegdec \
-			--enable-fribidi \
 			--enable-giflib \
 			--enable-lua \
 			--enable-pugixml \
