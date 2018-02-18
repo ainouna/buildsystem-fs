@@ -252,6 +252,7 @@ $(D)/neutrino-mp-plugins.config.status:
 			--enable-silent-rules \
 			\
 			--enable-ffmpegdec \
+			--enable-fribidi \
 			--enable-giflib \
 			--enable-lua \
 			--enable-pugixml \
