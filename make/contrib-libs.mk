@@ -1775,11 +1775,11 @@ $(D)/graphlcd: $(D)/bootstrap $(D)/freetype $(D)/libusb $(ARCHIVE)/$(GRAPHLCD_SO
 	$(UNTAR)/$(GRAPHLCD_SOURCE)
 	set -e; cd $(BUILD_TMP)/graphlcd-$(GRAPHLCD_VER); \
 		$(call apply_patches,$(GRAPHLCD_PATCH)); \
-		export TARGET=$(TARGET)-; \
-		$(BUILDENV) \
-		$(MAKE) DESTDIR=$(TARGET_DIR); \
-		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,convpic crtfont genfont showpic showtext lcdtestpattern skintest)
+		$(MAKE) -C glcdgraphics all TARGET=$(TARGET)- DESTDIR=$(TARGET_DIR); \
+		$(MAKE) -C glcddrivers all TARGET=$(TARGET)- DESTDIR=$(TARGET_DIR); \
+		$(MAKE) -C glcdgraphics install DESTDIR=$(TARGET_DIR); \
+		$(MAKE) -C glcddrivers install DESTDIR=$(TARGET_DIR); \
+		cp -a graphlcd.conf $(TARGET_DIR)/etc
 	$(REMOVE)/graphlcd-$(GRAPHLCD_VER)
 	$(TOUCH)
 
