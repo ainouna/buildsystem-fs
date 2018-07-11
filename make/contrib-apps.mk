@@ -1,7 +1,7 @@
 #
 # busybox
 #
-BUSYBOX_VER = 1.28.3
+BUSYBOX_VER = 1.29.0
 BUSYBOX_SOURCE = busybox-$(BUSYBOX_VER).tar.bz2
 BUSYBOX_PATCH  = busybox-$(BUSYBOX_VER)-nandwrite.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-unicode.patch
@@ -311,7 +311,7 @@ $(D)/portmap: $(D)/bootstrap $(D)/lsb $(ARCHIVE)/$(PORTMAP_SOURCE) $(ARCHIVE)/po
 #
 # e2fsprogs
 #
-E2FSPROGS_VER = 1.44.1
+E2FSPROGS_VER = 1.44.3
 E2FSPROGS_SOURCE = e2fsprogs-$(E2FSPROGS_VER).tar.gz
 E2FSPROGS_PATCH = e2fsprogs-$(E2FSPROGS_VER).patch
 
@@ -1063,7 +1063,7 @@ $(D)/avahi: $(D)/bootstrap $(D)/expat $(D)/libdaemon $(D)/dbus $(ARCHIVE)/$(AVAH
 #
 # wget
 #
-WGET_VER = 1.19.4
+WGET_VER = 1.19.5
 WGET_SOURCE = wget-$(WGET_VER).tar.gz
 
 $(ARCHIVE)/$(WGET_SOURCE):
@@ -1143,7 +1143,7 @@ $(D)/smartmontools: $(D)/bootstrap $(ARCHIVE)/$(SMARTMONTOOLS_SOURCE)
 #
 # nfs_utils
 #
-NFS_UTILS_VER = 2.3.1
+NFS_UTILS_VER = 2.3.2
 NFS_UTILS_SOURCE = nfs-utils-$(NFS_UTILS_VER).tar.bz2
 NFS_UTILS_PATCH = nfs-utils-$(NFS_UTILS_VER).patch
 
@@ -1814,7 +1814,7 @@ $(D)/usb_modeswitch: $(D)/bootstrap $(D)/libusb $(D)/usb_modeswitch_data $(ARCHI
 #
 # ofgwrite
 #
-OFGWRITE_VER = b7808ce
+OFGWRITE_VER = 78ae5d3
 OFGWRITE_SOURCE = ofgwrite-git-$(OFGWRITE_VER).tar.bz2
 OFGWRITE_URL = https://github.com/Duckbox-Developers/ofgwrite-ddt.git
 
