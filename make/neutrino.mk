@@ -10,6 +10,8 @@ $(TARGET_DIR)/.version:
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
 
+AUDIODEC = ffmpeg
+
 NEUTRINO_DEPS  = $(D)/bootstrap $(KERNEL) $(D)/system-tools
 NEUTRINO_DEPS += $(D)/ncurses $(LIRC) $(D)/libcurl
 NEUTRINO_DEPS += $(D)/libpng $(D)/libjpeg $(D)/giflib $(D)/freetype
@@ -22,13 +24,15 @@ NEUTRINO_DEPS += $(LOCAL_NEUTRINO_DEPS)
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), atevio7500 spark spark7162 ufs912 ufs913 ufs910))
 NEUTRINO_DEPS += $(D)/ntfs_3g
 ifneq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910))
-NEUTRINO_DEPS += $(D)/mtd_utils $(D)/gptfdisk
+NEUTRINO_DEPS += $(D)/mtd_utils
+NEUTRINO_DEPS += $(D)/gptfdisk
 endif
 #NEUTRINO_DEPS +=  $(D)/minidlna
 endif
 
 ifeq ($(BOXARCH), arm)
 NEUTRINO_DEPS += $(D)/ntfs_3g
+NEUTRINO_DEPS += $(D)/gptfdisk
 NEUTRINO_DEPS += $(D)/mc
 endif
 
@@ -90,8 +94,22 @@ ifeq ($(BOXARCH), arm)
 N_CONFIG_OPTS += --enable-reschange
 endif
 
+ifeq ($(AUDIODEC), ffmpeg)
+# enable ffmpeg audio decoder in neutrino
+N_CONFIG_OPTS += --enable-ffmpegdec
+else
+NEUTRINO_DEPS += $(D)/libid3tag
+NEUTRINO_DEPS += $(D)/libmad
+
+N_CONFIG_OPTS += --with-tremor
+NEUTRINO_DEPS += $(D)/libvorbisidec
+
+N_CONFIG_OPTS += --enable-flac
+NEUTRINO_DEPS += $(D)/flac
+endif
+
 ifeq ($(FLAVOUR), neutrino-mp-max)
-GIT_URL      = https://bitbucket.org/max_10
+GIT_URL     ?= https://bitbucket.org/max_10
 NEUTRINO_MP  = neutrino-mp-max
 LIBSTB_HAL   = libstb-hal-max
 NMP_BRANCH  ?= master
@@ -99,7 +117,7 @@ HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_MAX_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_MAX_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-ni)
-GIT_URL      = https://bitbucket.org/neutrino-images
+GIT_URL     ?= https://bitbucket.org/neutrino-images
 NEUTRINO_MP  = ni-neutrino-hd
 LIBSTB_HAL   = ni-libstb-hal-next
 NMP_BRANCH  ?= ni/mp/tuxbox
@@ -107,7 +125,7 @@ HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_NI_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_NI_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-tangos)
-GIT_URL      = https://github.com/TangoCash
+GIT_URL     ?= https://github.com/TangoCash
 NEUTRINO_MP  = neutrino-mp-tangos
 LIBSTB_HAL   = libstb-hal-tangos
 NMP_BRANCH  ?= master
@@ -115,7 +133,7 @@ HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_TANGOS_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_TANGOS_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-ddt)
-GIT_URL      = https://github.com/Duckbox-Developers
+GIT_URL     ?= https://github.com/Duckbox-Developers
 NEUTRINO_MP  = neutrino-mp-ddt
 LIBSTB_HAL   = libstb-hal-ddt
 NMP_BRANCH  ?= master
@@ -123,7 +141,7 @@ HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_DDT_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_DDT_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-fs)
-GIT_URL      = https://github.com/fs-basis
+GIT_URL      ?= https://github.com/fs-basis
 NEUTRINO_MP  = neutrino-mp-fs
 LIBSTB_HAL   = libstb-hal-fs
 NMP_BRANCH  ?= master
@@ -131,7 +149,7 @@ HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_FS_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-fs-test)
-GIT_URL      = https://github.com/fs-basis
+GIT_URL      ?= https://github.com/fs-basis
 NEUTRINO_MP  = neutrino-mp-fs
 LIBSTB_HAL   = libstb-hal-fs
 NMP_BRANCH  ?= test
@@ -139,7 +157,7 @@ HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_FS_TEST_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-udog)
-GIT_URL      = https://github.com/fs-basis
+GIT_URL      ?= https://github.com/fs-basis
 NEUTRINO_MP  = neutrino-mp-fs
 LIBSTB_HAL   = libstb-hal-fs
 NMP_BRANCH  ?= udog
@@ -177,9 +195,9 @@ $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
 	rm -rf $(LH_OBJDIR)
 	test -d $(LH_OBJDIR) || mkdir -p $(LH_OBJDIR)
 	cd $(LH_OBJDIR); \
-		$(SOURCE_DIR)/$(LIBSTB_HAL)/autogen.sh; \
+		$(SOURCE_DIR)/$(LIBSTB_HAL)/autogen.sh $(SILENT_OPT); \
 		$(BUILDENV) \
-		$(SOURCE_DIR)/$(LIBSTB_HAL)/configure \
+		$(SOURCE_DIR)/$(LIBSTB_HAL)/configure $(SILENT_OPT) \
 			--host=$(TARGET) \
 			--build=$(BUILD) \
 			--prefix=/usr \
@@ -198,7 +216,7 @@ $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
 
 $(D)/libstb-hal.do_compile: $(D)/libstb-hal.config.status
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
-	$(MAKE) -C $(LH_OBJDIR) all DESTDIR=$(TARGET_DIR)
+	$(MAKE) -C $(LH_OBJDIR) DESTDIR=$(TARGET_DIR)
 	@touch $@
 
 $(D)/libstb-hal: $(D)/libstb-hal.do_prepare $(D)/libstb-hal.do_compile
@@ -243,16 +261,15 @@ $(D)/neutrino-mp-plugins.config.status:
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
-		$(SOURCE_DIR)/$(NEUTRINO_MP)/autogen.sh; \
+		$(SOURCE_DIR)/$(NEUTRINO_MP)/autogen.sh $(SILENT_OPT); \
 		$(BUILDENV) \
-		$(SOURCE_DIR)/$(NEUTRINO_MP)/configure \
+		$(SOURCE_DIR)/$(NEUTRINO_MP)/configure $(SILENT_OPT) \
 			--host=$(TARGET) \
 			--build=$(BUILD) \
 			--prefix=/usr \
 			--enable-maintainer-mode \
 			--enable-silent-rules \
 			\
-			--enable-ffmpegdec \
 			--enable-giflib \
 			--enable-lua \
 			--enable-pugixml \
