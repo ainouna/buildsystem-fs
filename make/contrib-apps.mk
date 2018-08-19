@@ -1839,9 +1839,11 @@ $(D)/usb_modeswitch: $(D)/bootstrap $(D)/libusb $(D)/usb_modeswitch_data $(ARCHI
 #
 # ofgwrite
 #
-OFGWRITE_VER = 78ae5d3
+#OFGWRITE_VER = 78ae5d3
+OFGWRITE_VER = 8127e60
 OFGWRITE_SOURCE = ofgwrite-git-$(OFGWRITE_VER).tar.bz2
-OFGWRITE_URL = https://github.com/Duckbox-Developers/ofgwrite-ddt.git
+#OFGWRITE_URL = https://github.com/Duckbox-Developers/ofgwrite-ddt.git
+OFGWRITE_URL = https://github.com/fs-basis/ofgwrite-fs.git
 
 $(ARCHIVE)/$(OFGWRITE_SOURCE):
 	$(SCRIPTS_DIR)/get-git-archive.sh $(OFGWRITE_URL) $(OFGWRITE_VER) $(notdir $@) $(ARCHIVE)
