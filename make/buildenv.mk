@@ -71,7 +71,7 @@ KERNELNAME            = uImage
 TARGET_MARCH_CFLAGS   =
 CORTEX_STRINGS        =
 else
-CCACHE_DIR            = $(HOME)/.ccache-bs-arm
+CCACHE_DIR            = $(HOME)/.ccache-bs-arm-fs
 export CCACHE_DIR
 TARGET               ?= arm-cortex-linux-gnueabihf
 BOXARCH              ?= arm
