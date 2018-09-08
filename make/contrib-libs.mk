@@ -1035,6 +1035,8 @@ $(D)/libcurl: $(D)/bootstrap $(D)/zlib $(D)/openssl $(D)/ca-bundle $(ARCHIVE)/$(
 			--disable-pop3 \
 			--disable-smtp \
 			--enable-shared \
+			--enable-optimize \
+			--disable-verbose \
 			--disable-ldap \
 			--without-libidn \
 			--without-libidn2 \
@@ -1051,7 +1053,7 @@ $(D)/libcurl: $(D)/bootstrap $(D)/zlib $(D)/openssl $(D)/ca-bundle $(ARCHIVE)/$(
 		rm -f $(TARGET_DIR)/usr/bin/curl-config
 	$(REWRITE_LIBTOOL)/libcurl.la
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libcurl.pc
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910 ufs922))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), ufs922))
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,curl)
 endif
 	$(REMOVE)/curl-$(LIBCURL_VER)
