@@ -212,25 +212,28 @@ $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
-	@touch $@
+#	@touch $@
 
 $(D)/libstb-hal.do_compile: $(D)/libstb-hal.config.status
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 	$(MAKE) -C $(LH_OBJDIR) DESTDIR=$(TARGET_DIR)
 	@touch $@
 
+hal \
 $(D)/libstb-hal: $(D)/libstb-hal.do_prepare $(D)/libstb-hal.do_compile
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 	$(MAKE) -C $(LH_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	$(REWRITE_LIBTOOL)/libstb-hal.la
 	$(TOUCH)
 
+hal-clean \
 libstb-hal-clean:
 	rm -f $(D)/libstb-hal
 	rm -f $(D)/libstb-hal.config.status
 	cd $(LH_OBJDIR); \
 		$(MAKE) -C $(LH_OBJDIR) distclean
 
+hal-distclean \
 libstb-hal-distclean:
 	rm -rf $(LH_OBJDIR)
 	rm -f $(D)/libstb-hal*
@@ -284,7 +287,7 @@ $(D)/neutrino-mp-plugins.config.status:
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 		+make $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h
-	@touch $@
+#	@touch $@
 
 $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h:
 	@rm -f $@
