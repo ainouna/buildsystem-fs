@@ -496,11 +496,12 @@ neutrino-release-base:
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/logo
 	install -d $(RELEASE_DIR)/usr/share/lua/5.2
-	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,logos,net,tuxbox,update}
+#	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,logos,net,tuxbox,update}
+	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
 	install -d $(RELEASE_DIR)/var/lib/{nfs,modules}
-	install -d $(RELEASE_DIR)/var/net/epg
-	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
-	install -d $(RELEASE_DIR)/var/tuxbox/webtv
+#	install -d $(RELEASE_DIR)/var/net/epg
+	install -d $(RELEASE_DIR)/var/tuxbox/{config,plugins,themes}
+#	install -d $(RELEASE_DIR)/var/tuxbox/webtv
 	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
 	ln -s ../init.d/sendsigs $(RELEASE_DIR)/etc/rc.d/rc0.d/S20sendsigs
@@ -513,6 +514,7 @@ neutrino-release-base:
 	ln -sf /usr/share $(RELEASE_DIR)/share
 	ln -sf /usr/share/tuxbox/neutrino/icons/logo $(RELEASE_DIR)/logos
 	ln -sf /usr/share/tuxbox/neutrino/icons/logo $(RELEASE_DIR)/var/httpd/logos
+	ln -sf /var/tuxbox/plugins $(RELEASE_DIR)/var/plugins
 	touch $(RELEASE_DIR)/var/etc/.firstboot
 	cp -a $(TARGET_DIR)/bin/* $(RELEASE_DIR)/bin/
 	cp -a $(TARGET_DIR)/usr/bin/* $(RELEASE_DIR)/usr/bin/
