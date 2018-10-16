@@ -212,7 +212,7 @@ $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
-#	@touch $@
+	@touch $@
 
 $(D)/libstb-hal.do_compile: $(D)/libstb-hal.config.status
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
