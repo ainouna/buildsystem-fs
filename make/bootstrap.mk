@@ -260,7 +260,7 @@ endif
 SYSTEM_TOOLS += $(D)/vsftpd
 SYSTEM_TOOLS += $(D)/autofs
 #SYSTEM_TOOLS += $(D)/udpxy
-SYSTEM_TOOLS += $(D)/dvbsnoop
+#SYSTEM_TOOLS += $(D)/dvbsnoop
 SYSTEM_TOOLS += $(D)/fbshot
 ifeq ($(BOXARCH), arm)
 SYSTEM_TOOLS += $(D)/ofgwrite
