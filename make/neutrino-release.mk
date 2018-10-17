@@ -537,6 +537,7 @@ neutrino-mp-release-base:
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
 	install -d $(RELEASE_DIR)/var/lib/{nfs,modules}
 #	install -d $(RELEASE_DIR)/var/net/epg
+#	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,plugins,themes}
 #	install -d $(RELEASE_DIR)/var/tuxbox/webtv
 	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
