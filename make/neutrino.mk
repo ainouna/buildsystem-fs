@@ -6,7 +6,7 @@ $(TARGET_DIR)/.version:
 	echo "homepage=https://github.com/fs-basis" >> $@
 	echo "creator=$(MAINTAINER)" >> $@
 	echo "docs=https://github.com/fs-basis" >> $@
-	echo "forum=https://github.com/fs-basis/neutrino-gui" >> $@
+	echo "forum=https://github.com/fs-basis/neutrino-mp-fs" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
 
