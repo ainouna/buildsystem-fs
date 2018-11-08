@@ -40,7 +40,7 @@ endif
 ifeq ($(wildcard $(CROSS_BASE)/build.log.bz2),)
 CROSSTOOL = crosstool
 crosstool: 
-	crosstool-ng
+	make crosstool-ng
 	make crosstool-backup
 
 crosstool-ng: $(D)/directories $(ARCHIVE)/$(KERNEL_SRC) $(ARCHIVE)/$(CROSSTOOL_NG_SOURCE)
