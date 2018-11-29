@@ -39,7 +39,7 @@ endif
 
 ifeq ($(wildcard $(CROSS_BASE)/build.log.bz2),)
 CROSSTOOL = crosstool
-crosstool: 
+crosstool:
 	make crosstool-ng
 	make crosstool-backup
 
