@@ -18,6 +18,7 @@ $(TARGET_DIR)/lib/libc.so.6:
 CROSSTOOL_NG_VER = 872341e3
 CROSSTOOL_NG_SOURCE = crosstool-ng-git-$(CROSSTOOL_NG_VER).tar.bz2
 CROSSTOOL_NG_URL = https://github.com/crosstool-ng/crosstool-ng.git
+CROSSTOOL_NG_BACKUP = $(ARCHIVE)/crosstool-ng-git-$(BOXARCH)-$(BOXCPU)-$(CROSSTOOL_NG_VER)-backup.tar.gz
 
 ifeq ($(BOXTYPE), vusolo4k)
 CROSSTOOL_BOXTYPE_PATCH = $(PATCHES)/ct-ng/crosstool-ng-$(CROSSTOOL_NG_VER)-vusolo4k.patch
@@ -40,8 +41,10 @@ endif
 ifeq ($(wildcard $(CROSS_BASE)/build.log.bz2),)
 CROSSTOOL = crosstool
 crosstool:
-	make crosstool-ng
-	make crosstool-backup
+	make MAKEFLAGS=--no-print-directory crosstool-ng
+	if [ ! -e $(CROSSTOOL_NG_BACKUP) ]; then \
+		make crosstool-backup; \
+	fi;
 
 crosstool-ng: $(D)/directories $(ARCHIVE)/$(KERNEL_SRC) $(ARCHIVE)/$(CROSSTOOL_NG_SOURCE)
 	make $(BUILD_TMP)
@@ -79,21 +82,24 @@ crosstool-ng: $(D)/directories $(ARCHIVE)/$(KERNEL_SRC) $(ARCHIVE)/$(CROSSTOOL_N
 endif
 
 crosstool-backup:
+	if [ -e $(CROSSTOOL_NG_BACKUP) ]; then \
+		mv $(CROSSTOOL_NG_BACKUP) $(CROSSTOOL_NG_BACKUP).old; \
+	fi; \
 	cd $(CROSS_BASE); \
-	tar czvf $(ARCHIVE)/crosstool-ng-git-$(BOXARCH)-$(BOXCPU)-$(CROSSTOOL_NG_VER)-backup.tar.gz *
+	tar czvf $(CROSSTOOL_NG_BACKUP) *
 
-crosstool-restore: $(ARCHIVE)/crosstool-ng-git-$(BOXARCH)-$(BOXCPU)-$(CROSSTOOL_NG_VER)-backup.tar.gz
+crosstool-restore: $(CROSSTOOL_NG_BACKUP)
 	rm -rf $(CROSS_BASE) ; \
 	if [ ! -e $(CROSS_BASE) ]; then \
 		mkdir -p $(CROSS_BASE); \
 	fi;
-	tar xzvf $(ARCHIVE)/crosstool-ng-git-$(BOXARCH)-$(BOXCPU)-$(CROSSTOOL_NG_VER)-backup.tar.gz -C $(CROSS_BASE)
+	tar xzvf $(CROSSTOOL_NG_BACKUP) -C $(CROSS_BASE)
 
 crossmenuconfig: $(D)/directories $(ARCHIVE)/$(CROSSTOOL_NG_SOURCE)
 	$(REMOVE)/crosstool-ng-git-$(CROSSTOOL_NG_VER)
 	$(UNTAR)/$(CROSSTOOL_NG_SOURCE)
 	set -e; unset CONFIG_SITE; cd $(BUILD_TMP)/crosstool-ng-git-$(CROSSTOOL_NG_VER); \
-		cp -a $(PATCHES)/ct-ng/crosstool-ng-$(CROSSTOOL_NG_VER)-$(BOXARCH)-$(BOXTYPE).config .config; \
+		cp -a $(PATCHES)/ct-ng/crosstool-ng-$(CROSSTOOL_NG_VER)-$(BOXARCH)-$(BOXCPU).config .config; \
 		test -f ./configure || ./bootstrap && \
 		./configure --enable-local; \
 		MAKELEVEL=0 make; \
