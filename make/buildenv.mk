@@ -39,6 +39,19 @@ GIT_CHECK             = git checkout -f
 
 TUFSBOX_DIR           = $(BASE_DIR)/tufsbox
 CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)/$(BOXTYPE)
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k))
+BOXCPU                = bcm7376
+CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)/$(BOXCPU)
+endif
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd60 hd61))
+BOXCPU                = Hi3798Mv200
+CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)/$(BOXCPU)
+endif
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 bre2ze4k))
+BOXCPU                = bcm7251s
+CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)/$(BOXCPU)
+endif
+
 TARGET_DIR            = $(TUFSBOX_DIR)/cdkroot
 BOOT_DIR              = $(TUFSBOX_DIR)/cdkroot-tftpboot
 CROSS_DIR             = $(TUFSBOX_DIR)/cross
