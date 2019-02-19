@@ -133,7 +133,7 @@ else ifeq  ($(FLAVOUR), neutrino-mp-ddt)
 GIT_URL     ?= https://github.com/fs-basis
 NEUTRINO_MP  = neutrino-mp-ddt
 LIBSTB_HAL   = libstb-hal-ddt
-NMP_BRANCH  ?= master
+NMP_BRANCH  ?= test
 HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_DDT_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_DDT_PATCHES)
