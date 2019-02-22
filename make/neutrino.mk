@@ -130,11 +130,11 @@ HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_TANGOS_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_TANGOS_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-ddt)
-GIT_URL     ?= https://github.com/fs-basis
+GIT_URL     ?= https://github.com/Duckbox-Developers
 NEUTRINO_MP  = neutrino-mp-ddt
 LIBSTB_HAL   = libstb-hal-ddt
 NMP_BRANCH  ?= test
-HAL_BRANCH  ?= master
+HAL_BRANCH  ?= test
 NMP_PATCHES  = $(NEUTRINO_MP_DDT_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_DDT_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-fs)
@@ -150,7 +150,7 @@ GIT_URL      ?= https://github.com/fs-basis
 NEUTRINO_MP  = neutrino-mp-fs
 LIBSTB_HAL   = libstb-hal-fs
 NMP_BRANCH  ?= test
-HAL_BRANCH  ?= master
+HAL_BRANCH  ?= test
 NMP_PATCHES  = $(NEUTRINO_MP_FS_TEST_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-udog)
