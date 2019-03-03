@@ -283,6 +283,25 @@ esac
 echo "FLAVOUR=$FLAVOUR" >> config
 
 ##############################################
+
+case $7 in
+	[1-3]) REPLY=$7;;
+	*)	echo -e "\nExternal LCD support:"
+		echo "   1)  No external LCD"
+		echo "   2)  graphlcd for external LCD"
+		echo "   3)  lcd4linux for external LCD"
+		read -p "Select external LCD support (1-3)? ";;
+esac
+
+case "$REPLY" in
+	1) EXTERNAL_LCD="none";;
+	2) EXTERNAL_LCD="graphlcd";;
+	3) EXTERNAL_LCD="lcd4linux";;
+	*) EXTERNAL_LCD="none";;
+esac
+echo "EXTERNAL_LCD=$EXTERNAL_LCD" >> config
+
+##############################################
 echo " "
 make printenv
 ##############################################
