@@ -1478,6 +1478,122 @@ $(D)/samba: $(D)/bootstrap $(ARCHIVE)/$(SAMBA_SOURCE)
 	$(TOUCH)
 
 #
+# samba-small
+#
+SAMBA_VER = 3.6.25
+SAMBA_SOURCE = samba-$(SAMBA_VER).tar.gz
+SAMBA_SMALL_PATCH = $(PATCHES)/samba-small
+
+$(ARCHIVE)/$(SAMBA_SOURCE):
+	$(WGET) https://ftp.samba.org/pub/samba/stable/$(SAMBA_SOURCE)
+
+$(D)/samba-small: $(D)/bootstrap $(ARCHIVE)/$(SAMBA_SOURCE)
+	$(START_BUILD)
+	$(REMOVE)/samba-$(SAMBA_VER)
+	$(UNTAR)/$(SAMBA_SOURCE)
+	$(CHDIR)/samba-$(SAMBA_VER); \
+		$(call apply_patches, $(SAMBA_SMALL_PATCH)); \
+		cd source3; \
+		./autogen.sh; \
+		$(BUILDENV) \
+		ac_cv_lib_attr_getxattr=no \
+		ac_cv_search_getxattr=no \
+		ac_cv_file__proc_sys_kernel_core_pattern=yes \
+		libreplace_cv_HAVE_C99_VSNPRINTF=yes \
+		libreplace_cv_HAVE_GETADDRINFO=yes \
+		libreplace_cv_HAVE_IFACE_IFCONF=yes \
+		LINUX_LFS_SUPPORT=no \
+		samba_cv_CC_NEGATIVE_ENUM_VALUES=yes \
+		samba_cv_HAVE_GETTIMEOFDAY_TZ=yes \
+		samba_cv_HAVE_IFACE_IFCONF=yes \
+		samba_cv_HAVE_KERNEL_OPLOCKS_LINUX=yes \
+		samba_cv_HAVE_SECURE_MKSTEMP=yes \
+		samba_cv_HAVE_WRFILE_KEYTAB=no \
+		samba_cv_USE_SETREUID=yes \
+		samba_cv_USE_SETRESUID=yes \
+		samba_cv_have_setreuid=yes \
+		samba_cv_have_setresuid=yes \
+		ac_cv_header_zlib_h=no \
+		samba_cv_zlib_1_2_3=no \
+		ac_cv_path_PYTHON="" \
+		ac_cv_path_PYTHON_CONFIG="" \
+		libreplace_cv_HAVE_GETADDRINFO=no \
+		libreplace_cv_READDIR_NEEDED=no \
+		./configure $(SILENT_OPT) \
+			--build=$(BUILD) \
+			--host=$(TARGET) \
+			--prefix= \
+			--includedir=/usr/include \
+			--exec-prefix=/usr \
+			--disable-pie \
+			--disable-avahi \
+			--disable-cups \
+			--disable-relro \
+			--disable-swat \
+			--disable-shared-libs \
+			--disable-socket-wrapper \
+			--disable-nss-wrapper \
+			--disable-smbtorture4 \
+			--disable-fam \
+			--disable-iprint \
+			--disable-dnssd \
+			--disable-pthreadpool \
+			--disable-dmalloc \
+			--with-included-iniparser \
+			--with-included-popt \
+			--with-sendfile-support \
+			--without-aio-support \
+			--without-cluster-support \
+			--without-ads \
+			--without-krb5 \
+			--without-dnsupdate \
+			--without-automount \
+			--without-ldap \
+			--without-pam \
+			--without-pam_smbpass \
+			--without-winbind \
+			--without-wbclient \
+			--without-syslog \
+			--without-nisplus-home \
+			--without-quotas \
+			--without-sys-quotas \
+			--without-utmp \
+			--without-acl-support \
+			--with-configdir=/etc/samba \
+			--with-privatedir=/etc/samba \
+			--with-mandir=no \
+			--with-piddir=/var/run \
+			--with-logfilebase=/var/log \
+			--with-lockdir=/var/lock \
+			--with-swatdir=/usr/share/swat \
+			--disable-cups \
+			--without-winbind \
+			--without-libtdb \
+			--without-libtalloc \
+			--without-libnetapi \
+			--without-libsmbclient \
+			--without-libsmbsharemodes \
+			--without-libtevent \
+			--without-libaddns \
+		; \
+		$(MAKE) $(MAKE_OPTS); \
+		$(MAKE) $(MAKE_OPTS) installservers installbin installdat installmodules \
+			SBIN_PROGS="bin/samba_multicall" \
+			BIN_PROGS="bin/testparm" \
+			DESTDIR=$(TARGET_DIR) prefix=./. ; \
+			ln -sf samba_multicall $(TARGET_DIR)/usr/sbin/nmbd
+			ln -sf samba_multicall $(TARGET_DIR)/usr/sbin/smbd
+			ln -sf samba_multicall $(TARGET_DIR)/usr/sbin/smbpasswd
+	install -m 755 $(SKEL_ROOT)/etc/init.d/samba $(TARGET_DIR)/etc/init.d/
+	install -m 644 $(SKEL_ROOT)/etc/samba/smb.conf $(TARGET_DIR)/etc/samba/
+	rm -rf $(TARGET_DIR)/usr/lib/pdb
+	rm -rf $(TARGET_DIR)/usr/lib/perfcount
+	rm -rf $(TARGET_DIR)/usr/lib/nss_info
+	rm -rf $(TARGET_DIR)/usr/lib/gpext
+	$(REMOVE)/samba-$(SAMBA_VER)
+	$(TOUCH)
+
+#
 # ntp
 #
 NTP_VER = 4.2.8p10
