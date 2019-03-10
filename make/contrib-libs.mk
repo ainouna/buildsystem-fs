@@ -1896,7 +1896,8 @@ $(D)/lcd4linux: $(D)/bootstrap $(D)/libusb_compat $(D)/gd $(D)/libusb $(D)/libdp
 		$(MAKE) vcs_version all; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	install -m 755 $(SKEL_ROOT)/etc/init.d/lcd4linux $(TARGET_DIR)/etc/init.d/
-	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_ni.conf $(TARGET_DIR)/etc/lcd4linux.conf
+#	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_ni.conf $(TARGET_DIR)/etc/lcd4linux.conf
+	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_own.conf $(TARGET_DIR)/etc/lcd4linux.conf
 	$(REMOVE)/lcd4linux-git-$(LCD4LINUX_VER)
 	$(TOUCH)
 
