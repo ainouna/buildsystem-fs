@@ -171,13 +171,13 @@ NMP_BRANCH  ?= test
 HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_FS_TEST_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
-else ifeq  ($(FLAVOUR), neutrino-mp-udog)
+else ifeq  ($(FLAVOUR), neutrino-mp-fs-lcd4l)
 GIT_URL      ?= https://github.com/fs-basis
 NEUTRINO_MP  = neutrino-mp-fs
 LIBSTB_HAL   = libstb-hal-fs
-NMP_BRANCH  ?= udog
+NMP_BRANCH  ?= lcd4l
 HAL_BRANCH  ?= master
-NMP_PATCHES  = $(NEUTRINO_MP_UDOG_PATCHES)
+NMP_PATCHES  = $(NEUTRINO_MP_FS_LCD4L_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
 endif
 
