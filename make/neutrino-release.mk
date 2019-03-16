@@ -802,6 +802,12 @@ endif
 #
 	cp -aR $(TARGET_DIR)/usr/share/tuxbox/neutrino/* $(RELEASE_DIR)/usr/share/tuxbox/neutrino
 #
+# lcd4linux
+#
+ifeq ($(EXTERNAL_LCD), $(filter $(EXTERNAL_LCD), lcd4linux both))
+		ln -s /var/tuxbox/lcd $(RELEASE_DIR)/usr/share/tuxbox/lcd
+endif
+#
 # alsa
 #
 	if [ -e $(TARGET_DIR)/usr/share/alsa ]; then \
