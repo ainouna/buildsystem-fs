@@ -1899,7 +1899,7 @@ $(D)/lcd4linux: $(D)/bootstrap $(D)/libusb_compat $(D)/gd $(D)/libusb $(D)/libdp
 ifeq ($(BOXTYPE), vusolo4k)
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_vu.conf $(TARGET_DIR)/etc/lcd4linux.conf
 else
-	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_fs.conf $(TARGET_DIR)/etc/lcd4linux.conf
+	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux.conf $(TARGET_DIR)/etc/lcd4linux.conf
 endif
 	$(REMOVE)/lcd4linux-git-$(LCD4LINUX_VER)
 	$(TOUCH)
