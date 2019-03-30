@@ -805,6 +805,7 @@ endif
 # lcd4linux
 #
 ifeq ($(EXTERNAL_LCD), $(filter $(EXTERNAL_LCD), lcd4linux both))
+		install -d $(RELEASE_DIR)/var/tuxbox/lcd/{icons,}
 		ln -s /var/tuxbox/lcd $(RELEASE_DIR)/usr/share/tuxbox/lcd
 endif
 #
