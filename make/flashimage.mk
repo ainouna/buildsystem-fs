@@ -38,12 +38,13 @@ ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo))
 endif
 	$(TUXBOX_CUSTOMIZE)
 
-ofgimage:
+all \
+multi_disk_ofg:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51))
-	$(MAKE) flash-image-hd51-multi-rootfs
+	$(MAKE) $(MAKE) flash-image-hd51-multi-disk flash-image-hd51-multi-rootfs
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k))
-	$(MAKE) flash-image-vusolo4k-multi-rootfs
+	$(MAKE) flash-image-vusolo4k-multi-disk flash-image-vusolo4k-multi-rootfs
 endif
 	$(TUXBOX_CUSTOMIZE)
 
@@ -68,6 +69,13 @@ flash-clean:
 	echo ""
 
 ### armbox hd51
+
+disk \
+diskimage:
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51))
+	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-disk-image
+endif
+	$(TUXBOX_CUSTOMIZE)
 
 # general
 HD51_IMAGE_NAME = disk
@@ -158,6 +166,16 @@ flash-image-hd51-multi-disk: $(D)/host_resize2fs
 	dd if=$(HD51_BUILD_TMP)/$(HD51_IMAGE_LINK) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(ROOTFS_PARTITION_OFFSET) \* $(BLOCK_SECTOR)) count=$(shell expr $(HD51_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR))
 	mv $(HD51_BUILD_TMP)/disk.img $(HD51_BUILD_TMP)/$(BOXTYPE)/
 
+flash-image-hd51-disk-image:
+	# Create final USB-image
+	mkdir -p $(HD51_BUILD_TMP)/$(BOXTYPE)
+	cd $(RELEASE_DIR); \
+	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(HD51_BUILD_TMP)/$(BOXTYPE)/imageversion
+	cd $(HD51_BUILD_TMP) && \
+	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_disk_img_$(shell date '+%d.%m.%Y-%H.%M').zip $(BOXTYPE)/disk.img $(BOXTYPE)/imageversion
+	# cleanup
+	rm -rf $(HD51_BUILD_TMP)
+
 flash-image-hd51-multi-rootfs:
 	# Create final USB-image
 	mkdir -p $(HD51_BUILD_TMP)/$(BOXTYPE)
@@ -167,7 +185,7 @@ flash-image-hd51-multi-rootfs:
 	bzip2 $(HD51_BUILD_TMP)/$(BOXTYPE)/rootfs.tar
 	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(HD51_BUILD_TMP)/$(BOXTYPE)/imageversion
 	cd $(HD51_BUILD_TMP) && \
-	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').zip $(BOXTYPE)/rootfs.tar.bz2 $(BOXTYPE)/kernel.bin $(BOXTYPE)/disk.img $(BOXTYPE)/imageversion
+	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_disk_ofg_$(shell date '+%d.%m.%Y-%H.%M').zip $(BOXTYPE)/rootfs.tar.bz2 $(BOXTYPE)/kernel.bin $(BOXTYPE)/disk.img $(BOXTYPE)/imageversion
 	# cleanup
 	rm -rf $(HD51_BUILD_TMP)
 
@@ -180,7 +198,7 @@ flash-image-hd51-online:
 	bzip2 $(HD51_BUILD_TMP)/$(BOXTYPE)/rootfs.tar
 	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(HD51_BUILD_TMP)/$(BOXTYPE)/imageversion
 	cd $(HD51_BUILD_TMP)/$(BOXTYPE) && \
-	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 kernel.bin imageversion
+	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_ofg_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 kernel.bin imageversion
 	# cleanup
 	rm -rf $(HD51_BUILD_TMP)
 
