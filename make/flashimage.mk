@@ -118,6 +118,7 @@ SWAP_DATA_PARTITION_OFFSET = $(shell expr $(FOURTH_ROOTFS_PARTITION_OFFSET) \+ $
 
 SWAP_PARTITION_OFFSET = $(shell expr $(SWAP_DATA_PARTITION_OFFSET) \+ $(SWAP_DATA_PARTITION_SIZE))
 
+# create disk img
 flash-image-hd51-multi-disk: $(D)/host_resize2fs
 	rm -rf $(HD51_BUILD_TMP)
 	mkdir -p $(HD51_BUILD_TMP)/$(BOXTYPE)
@@ -166,6 +167,7 @@ flash-image-hd51-multi-disk: $(D)/host_resize2fs
 	dd if=$(HD51_BUILD_TMP)/$(HD51_IMAGE_LINK) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(ROOTFS_PARTITION_OFFSET) \* $(BLOCK_SECTOR)) count=$(shell expr $(HD51_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR))
 	mv $(HD51_BUILD_TMP)/disk.img $(HD51_BUILD_TMP)/$(BOXTYPE)/
 
+# disk image
 flash-image-hd51-disk-image:
 	# Create final USB-image
 	mkdir -p $(HD51_BUILD_TMP)/$(BOXTYPE)
@@ -176,6 +178,7 @@ flash-image-hd51-disk-image:
 	# cleanup
 	rm -rf $(HD51_BUILD_TMP)
 
+# ofgwrite + disk image
 flash-image-hd51-multi-rootfs:
 	# Create final USB-image
 	mkdir -p $(HD51_BUILD_TMP)/$(BOXTYPE)
@@ -189,6 +192,7 @@ flash-image-hd51-multi-rootfs:
 	# cleanup
 	rm -rf $(HD51_BUILD_TMP)
 
+# ofgwrite image
 flash-image-hd51-online:
 	# Create final USB-image
 	mkdir -p $(HD51_BUILD_TMP)/$(BOXTYPE)
