@@ -38,7 +38,7 @@ ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo))
 endif
 	$(TUXBOX_CUSTOMIZE)
 
-all \
+mdo \
 multi_disk_ofg:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51))
 	$(MAKE) $(MAKE) flash-image-hd51-multi-disk flash-image-hd51-multi-rootfs
