@@ -187,6 +187,7 @@ $(D)/neutrino-mp-plugin-mediathek:
 	$(CHDIR)/plugins-mediathek; \
 		cp -a plugins/* $(TARGET_DIR)/var/tuxbox/plugins/; \
 #		cp -a share $(TARGET_DIR)/usr/
+		rm -f (TARGET_DIR)/var/tuxbox/plugins/neutrino-mediathek/livestream.lua
 	$(REMOVE)/plugins-mediathek
 	$(TOUCH)
 
