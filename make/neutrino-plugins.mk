@@ -170,11 +170,9 @@ $(D)/neutrino-mp-plugin-scripts-lua: $(D)/bootstrap
 		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/neutrino-mp-plugin-scripts-lua
 	$(TOUCH)
-
 #
 # neutrino-mediathek
 #
-
 $(D)/neutrino-mp-plugin-mediathek:
 	$(START_BUILD)
 	$(REMOVE)/plugins-mediathek
@@ -187,7 +185,7 @@ $(D)/neutrino-mp-plugin-mediathek:
 	$(CHDIR)/plugins-mediathek; \
 		cp -a plugins/* $(TARGET_DIR)/var/tuxbox/plugins/; \
 #		cp -a share $(TARGET_DIR)/usr/
-		rm -f (TARGET_DIR)/var/tuxbox/plugins/neutrino-mediathek/livestream.lua
+		rm -f $(TARGET_DIR)/var/tuxbox/plugins/neutrino-mediathek/livestream.lua
 	$(REMOVE)/plugins-mediathek
 	$(TOUCH)
 
