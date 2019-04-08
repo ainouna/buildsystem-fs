@@ -893,6 +893,9 @@ endif
 #
 # delete unnecessary files
 #
+ifeq ($(BOXARCH), $(filter $(BOXARCH), sh4 mips))
+	rm -f $(RELEASE_DIR)/etc/mdev/ttyUSB-check.sh
+endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910 ufs922))
 	rm -f $(RELEASE_DIR)/sbin/jfs_fsck
 	rm -f $(RELEASE_DIR)/sbin/fsck.jfs
