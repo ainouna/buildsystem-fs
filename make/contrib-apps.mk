@@ -1872,12 +1872,12 @@ $(D)/usb_modeswitch: $(D)/bootstrap $(D)/libusb $(D)/usb_modeswitch_data $(ARCHI
 
 $(D)/ofgwrite: $(D)/bootstrap $(ARCHIVE)/$(OFGWRITE_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/ofgwrite-ddt
+	$(REMOVE)/ofgwrite-fs
 	set -e; if [ -d $(ARCHIVE)/ofgwrite-fs.git ]; \
 		then cd $(ARCHIVE)/ofgwrite-fs.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/ofgwrite-fs.git ofgwrite-fs.git; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/ofgwrite-fs.git ofgwrite-fs.git; \
 		fi
-	cp -ra $(ARCHIVE)/ofgwrite-ddt.git $(BUILD_TMP)/ofgwrite-ddt
+	cp -ra $(ARCHIVE)/ofgwrite-fs.git $(BUILD_TMP)/ofgwrite-fs
 	$(CHDIR)/ofgwrite-ddt; \
 		$(call apply_patches,$(OFGWRITE_PATCH)); \
 		$(BUILDENV) \
@@ -1885,5 +1885,5 @@ $(D)/ofgwrite: $(D)/bootstrap $(ARCHIVE)/$(OFGWRITE_SOURCE)
 	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite_bin $(TARGET_DIR)/usr/bin
 	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite_tgz $(TARGET_DIR)/usr/bin
 	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite $(TARGET_DIR)/usr/bin
-	$(REMOVE)/ofgwrite-ddt
+	$(REMOVE)/ofgwrite-fs
 	$(TOUCH)
