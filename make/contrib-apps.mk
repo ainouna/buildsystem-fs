@@ -1878,7 +1878,7 @@ $(D)/ofgwrite: $(D)/bootstrap $(ARCHIVE)/$(OFGWRITE_SOURCE)
 		else cd $(ARCHIVE); git clone https://github.com/fs-basis/ofgwrite-fs.git ofgwrite-fs.git; \
 		fi
 	cp -ra $(ARCHIVE)/ofgwrite-fs.git $(BUILD_TMP)/ofgwrite-fs
-	$(CHDIR)/ofgwrite-ddt; \
+	$(CHDIR)/ofgwrite-fs; \
 		$(call apply_patches,$(OFGWRITE_PATCH)); \
 		$(BUILDENV) \
 		$(MAKE); \
