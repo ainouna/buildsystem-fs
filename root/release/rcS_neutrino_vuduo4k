@@ -59,21 +59,24 @@ fi
 echo "[rcS] `date +'%d.%m.%Y %H:%M:%S'` load modules"
 
 if [ ! -e /dev/brcm0 ]; then
+	/usr/bin/bp3flash.sh 2>/dev/null
 	insmod /lib/modules/procmk.ko
 	insmod /lib/modules/bcm_event.ko
 	insmod /lib/modules/dvb_base.ko
 	start-stop-daemon --start --quiet --exec /usr/bin/dvb_server -- &
 	mknod -m a=rw /dev/brcm0 c 30 0
 	start-stop-daemon --start --quiet --exec /usr/bin/init_client /lib/modules/dvb-bcm7278.ko /lib/modules/brcmfb.ko -- &
+	insmod /lib/modules/wakeup_drv.ko
 fi
 
 insmod /lib/modules/fpga_directc.ko
 
-oled -tc "Booting... DDT"
-
 while [ ! -c /dev/fb0 ]; do
 	usleep 100000
 done
+
+echo 100 > /proc/stb/fp/oled_brightness
+oled -tc "Booting... DDT"
 
 /bin/initfb $(sed -n 's/osd_resolution=//p' /var/tuxbox/config/neutrino.conf)
 
