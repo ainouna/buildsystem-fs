@@ -11,24 +11,24 @@ $(TARGET_DIR)/.version:
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51))
 ifeq ($(FLAVOUR), neutrino-mp-ddt)
-		echo "distro=DDT-NMP" >> $@
-		echo "imageversion=3.7.1" >> $@
-		echo "date=`date +'%d.%m.%Y %H:%M:%S'`" >> $@
+	echo "distro=DDT-NMP" >> $@
+	echo "imageversion=3.7.1" >> $@
+	echo "date=`date +'%d.%m.%Y %H:%M:%S'`" >> $@
 endif
 ifeq  ($(FLAVOUR), neutrino-mp-fs)
-		echo "distro=FS-NMP" >> $@
-		echo "imageversion=3.7.1" >> $@
-		echo "date=`date +'%d.%m.%Y %H:%M:%S'`" >> $@
+	echo "distro=FS-NMP" >> $@
+	echo "imageversion=3.7.1" >> $@
+	echo "date=`date +'%d.%m.%Y %H:%M:%S'`" >> $@
 endif
 ifeq  ($(FLAVOUR), neutrino-mp-fs-test)
-		echo "distro=FS-NMP" >> $@
-		echo "imageversion=3.7.1" >> $@
-		echo "date=`date +'%d.%m.%Y %H:%M:%S'`" >> $@
+	echo "distro=FS-NMP" >> $@
+	echo "imageversion=3.7.1" >> $@
+	echo "date=`date +'%d.%m.%Y %H:%M:%S'`" >> $@
 endif
 ifeq ($(FLAVOUR), neutrino-mp-fs-lcd4l)
-		echo "distro=FS-NMP" >> $@
-		echo "imageversion=3.7.1" >> $@
-		echo "date=`date +'%d.%m.%Y %H:%M:%S'`" >> $@
+	echo "distro=FS-NMP" >> $@
+	echo "imageversion=3.7.1" >> $@
+	echo "date=`date +'%d.%m.%Y %H:%M:%S'`" >> $@
 endif
 endif
 
