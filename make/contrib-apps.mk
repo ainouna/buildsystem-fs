@@ -1883,7 +1883,7 @@ $(D)/ofgwrite: $(D)/bootstrap $(ARCHIVE)/$(OFGWRITE_SOURCE)
 		$(BUILDENV) \
 		$(MAKE); \
 	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite_bin $(TARGET_DIR)/usr/bin
-	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite_tgz $(TARGET_DIR)/usr/bin
+	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite_caller $(TARGET_DIR)/usr/bin
 	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite $(TARGET_DIR)/usr/bin
 	$(REMOVE)/ofgwrite-fs
 	$(TOUCH)
