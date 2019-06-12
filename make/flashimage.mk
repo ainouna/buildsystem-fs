@@ -52,7 +52,7 @@ endif
 mdo \
 multi_disk_ofg:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51))
-	$(MAKE) $(MAKE) flash-image-hd51-multi-disk flash-image-hd51-multi-rootfs
+	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-multi-rootfs
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k))
 	$(MAKE) flash-image-vusolo4k-rootfs
