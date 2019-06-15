@@ -74,7 +74,7 @@ flash-clean:
 
 disk \
 diskimage:
-ifeq ($(BOXTYPE), hd51))
+ifeq ($(BOXTYPE), hd51)
 	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-disk-image
 endif
 	$(TUXBOX_CUSTOMIZE)
