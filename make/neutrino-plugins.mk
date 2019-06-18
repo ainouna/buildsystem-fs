@@ -178,7 +178,7 @@ $(D)/neutrino-mp-plugin-mediathek:
 	$(REMOVE)/plugins-mediathek
 	set -e; if [ -d $(ARCHIVE)/plugins-mediathek.git ]; \
 		then cd $(ARCHIVE)/plugins-mediathek.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/fs-basis/mediathek.git plugins-mediathek.git; \
+		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/mediathek.git plugins-mediathek.git; \
 		fi
 	cp -ra $(ARCHIVE)/plugins-mediathek.git $(BUILD_TMP)/plugins-mediathek
 	install -d $(TARGET_DIR)/var/tuxbox/plugins
