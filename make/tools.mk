@@ -391,6 +391,7 @@ $(D)/tools-tuxcom: $(D)/bootstrap $(D)/freetype
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
 	$(TOUCH)
+	rm -f $(D)/tools-tuxcom
 
 #
 # ustslave
