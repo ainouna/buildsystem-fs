@@ -8,7 +8,6 @@
 NEUTRINO_PLUGINS  = $(D)/neutrino-mp-plugin
 #NEUTRINO_PLUGINS += $(D)/neutrino-mp-plugin-scripts-lua
 #NEUTRINO_PLUGINS += $(D)/neutrino-mp-plugin-mediathek
-#NEUTRINO_PLUGINS += $(D)/neutrino-mp-plugin-xupnpd
 NEUTRINO_PLUGINS += $(LOCAL_NEUTRINO_PLUGINS)
 
 NP_OBJDIR = $(BUILD_TMP)/neutrino-mp-plugins
@@ -74,36 +73,6 @@ neutrino-mp-plugin-distclean:
 	rm -f $(D)/neutrino-mp-plugin*
 
 #
-# xupnpd
-#
-XUPNPD_PATCH = xupnpd.patch
-
-$(D)/xupnpd \
-$(D)/neutrino-mp-plugin-xupnpd: $(D)/bootstrap $(D)/lua $(D)/openssl $(D)/neutrino-mp-plugin-scripts-lua
-	$(START_BUILD)
-	$(REMOVE)/xupnpd
-	set -e; if [ -d $(ARCHIVE)/xupnpd.git ]; \
-		then cd $(ARCHIVE)/xupnpd.git; git pull; \
-		else cd $(ARCHIVE); git clone git://github.com/clark15b/xupnpd.git xupnpd.git; \
-		fi
-	cp -ra $(ARCHIVE)/xupnpd.git $(BUILD_TMP)/xupnpd
-	$(CHDIR)/xupnpd; \
-		$(call apply_patches, $(XUPNPD_PATCH))
-	$(CHDIR)/xupnpd/src; \
-		$(BUILDENV) \
-		$(MAKE) embedded TARGET=$(TARGET) PKG_CONFIG=$(PKG_CONFIG) LUAFLAGS="$(TARGET_LDFLAGS) -I$(TARGET_INCLUDE_DIR)"; \
-		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	install -m 755 $(SKEL_ROOT)/etc/init.d/xupnpd $(TARGET_DIR)/etc/init.d/
-	mkdir -p $(TARGET_DIR)/usr/share/xupnpd/config
-	rm $(TARGET_DIR)/usr/share/xupnpd/plugins/staff/xupnpd_18plus.lua
-	install -m 644 $(ARCHIVE)/plugin-scripts-lua.git/xupnpd/xupnpd_18plus.lua ${TARGET_DIR}/usr/share/xupnpd/plugins/
-	install -m 644 $(ARCHIVE)/plugin-scripts-lua.git/xupnpd/xupnpd_cczwei.lua ${TARGET_DIR}/usr/share/xupnpd/plugins/
-	: install -m 644 $(ARCHIVE)/plugin-scripts-lua.git/xupnpd/xupnpd_coolstream.lua ${TARGET_DIR}/usr/share/xupnpd/plugins/
-	install -m 644 $(ARCHIVE)/plugin-scripts-lua.git/xupnpd/xupnpd_youtube.lua ${TARGET_DIR}/usr/share/xupnpd/plugins/
-	$(REMOVE)/xupnpd
-	$(TOUCH)
-
-#
 # neutrino-plugin-scripts-lua
 #
 $(D)/neutrino-mp-plugin-scripts-lua: $(D)/bootstrap
@@ -122,6 +91,7 @@ $(D)/neutrino-mp-plugin-scripts-lua: $(D)/bootstrap
 		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/neutrino-mp-plugin-scripts-lua
 	$(TOUCH)
+
 #
 # neutrino-mediathek
 #
@@ -139,34 +109,4 @@ $(D)/neutrino-mp-plugin-mediathek:
 #		cp -a share $(TARGET_DIR)/usr/
 		rm -f $(TARGET_DIR)/var/tuxbox/plugins/neutrino-mediathek/livestream.lua
 	$(REMOVE)/plugins-mediathek
-	$(TOUCH)
-
-#
-# neutrino-iptvplayer
-#
-$(D)/neutrino-mp-plugin-iptvplayer-nightly \
-$(D)/neutrino-mp-plugin-iptvplayer: $(D)/librtmp $(D)/python_twisted_small
-	$(START_BUILD)
-	$(REMOVE)/iptvplayer
-	set -e; if [ -d $(ARCHIVE)/iptvplayer.git ]; \
-		then cd $(ARCHIVE)/iptvplayer.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/TangoCash/crossplatform_iptvplayer.git iptvplayer.git; \
-		fi
-	cp -ra $(ARCHIVE)/iptvplayer.git $(BUILD_TMP)/iptvplayer
-	@if [ "$@" = "$(D)/neutrino-mp-plugin-iptvplayer-nightly" ]; then \
-		$(BUILD_TMP)/iptvplayer/SyncWithGitLab.sh $(BUILD_TMP)/iptvplayer; \
-	fi
-	install -d $(TARGET_DIR)/var/tuxbox/plugins
-	install -d $(TARGET_DIR)/usr/share/E2emulator
-	cp -R $(BUILD_TMP)/iptvplayer/E2emulator/* $(TARGET_DIR)/usr/share/E2emulator/
-	install -d $(TARGET_DIR)/usr/share/E2emulator/Plugins/Extensions/IPTVPlayer
-	cp -R $(BUILD_TMP)/iptvplayer/IPTVplayer/* $(TARGET_DIR)/usr/share/E2emulator//Plugins/Extensions/IPTVPlayer/
-	cp -R $(BUILD_TMP)/iptvplayer/IPTVdaemon/* $(TARGET_DIR)/usr/share/E2emulator//Plugins/Extensions/IPTVPlayer/
-	chmod 755 $(TARGET_DIR)/usr/share/E2emulator/Plugins/Extensions/IPTVPlayer/cmdlineIPTV.*
-	chmod 755 $(TARGET_DIR)/usr/share/E2emulator/Plugins/Extensions/IPTVPlayer/IPTVdaemon.*
-	PYTHONPATH=$(TARGET_DIR)/$(PYTHON_DIR) \
-	$(HOST_DIR)/bin/python$(PYTHON_VER_MAJOR) -Wi -t -O $(TARGET_DIR)/$(PYTHON_DIR)/compileall.py \
-		-d /usr/share/E2emulator -f -x badsyntax $(TARGET_DIR)/usr/share/E2emulator
-	cp -R $(BUILD_TMP)/iptvplayer/addon4neutrino/neutrinoIPTV/* $(TARGET_DIR)/var/tuxbox/plugins/
-	$(REMOVE)/iptvplayer
 	$(TOUCH)
