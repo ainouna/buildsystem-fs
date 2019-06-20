@@ -77,12 +77,7 @@ LH_CONFIG_OPTS += --enable-gstreamer_10=yes
 endif
 
 N_CONFIG_OPTS  = $(LOCAL_NEUTRINO_BUILD_OPTIONS)
-ifeq ($(FLAVOUR), neutrino-mp-ni)
-N_CONFIG_OPTS += --with-boxtype=armbox
-N_CONFIG_OPTS += --with-boxmodel=hd51
-else
 N_CONFIG_OPTS += --with-boxtype=$(BOXTYPE)
-endif
 N_CONFIG_OPTS += --enable-freesatepg
 #N_CONFIG_OPTS += --enable-pip
 #N_CONFIG_OPTS += --disable-webif
@@ -131,15 +126,7 @@ N_CONFIG_OPTS += --enable-lcd4linux
 NEUTRINO_DEPS += $(D)/lcd4linux
 endif
 
-ifeq  ($(FLAVOUR), neutrino-mp-ni)
-GIT_URL     ?= https://bitbucket.org/neutrino-images
-NEUTRINO_MP  = ni-neutrino-hd
-LIBSTB_HAL   = ni-libstb-hal-next
-NMP_BRANCH  ?= ni/mp/tuxbox
-HAL_BRANCH  ?= master
-NMP_PATCHES  = $(NEUTRINO_MP_NI_PATCHES)
-HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_NI_PATCHES)
-else ifeq  ($(FLAVOUR), neutrino-mp-tangos)
+ifeq  ($(FLAVOUR), neutrino-mp-tangos)
 GIT_URL     ?= https://github.com/TangoCash
 NEUTRINO_MP  = neutrino-mp-tangos
 LIBSTB_HAL   = libstb-hal-tangos
