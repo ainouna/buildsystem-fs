@@ -308,9 +308,6 @@ case "$FLAVOUR" in
 	neutrino-mp*)
 		echo "  make neutrino-mp"
 		echo "  make neutrino-mp-plugins";;
-	neutrino-hd2*)
-		echo "  make neutrino-hd2"
-		echo "  make neutrino-hd2-plugins";;
 	*)
 		echo "  make flashimage"
 		echo "  make ofgimage";;
