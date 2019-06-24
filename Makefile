@@ -93,6 +93,7 @@ help:
 include make/system-libs.mk
 include make/system-tools.mk
 include make/system-lua.mk
+include make/system-oscam.mk
 include make/ffmpeg.mk
 ifeq ($(BOXARCH), sh4)
 include make/linux-kernel-sh4.mk

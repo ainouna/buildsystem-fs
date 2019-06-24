@@ -289,7 +289,7 @@ $(D)/neutrino-mp-plugins.config.status:
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
 		+make $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h
-#	@touch $@
+	@touch $@
 
 $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h:
 	@rm -f $@
