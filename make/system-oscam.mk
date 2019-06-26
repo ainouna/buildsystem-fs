@@ -3,23 +3,37 @@
 #
 # -----------------------------------------------------------------------------
 
-OSCAM_PATCH =
+OSCAM_FLAVOUR ?= oscam
+
+ifeq ($(OSCAM_FLAVOUR), oscam)
+OSCAM_FLAVOUR_URL = https://repo.or.cz/oscam.git
+OSCAM_FLAVOUR_DIR = oscam.git
+OSCAM_SOURCE_DIR  = oscam
+else ifeq ($(OSCAM_FLAVOUR), oscam-smod)
+OSCAM_FLAVOUR_URL = https://github.com/Schimmelreiter/oscam-smod.git
+OSCAM_FLAVOUR_DIR = oscam-smod.git
+OSCAM_SOURCE_DIR  = oscam-smod
+endif
 
 # -----------------------------------------------------------------------------
 
+#OSCAM_VER = $(OSCAM_FLAVOUR)
+#OSCAM_SOURCE = $(OSCAM_FLAVOUR_URL)
+OSCAM_PATCH =
+
 $(D)/oscam.do_prepare:
 	$(START_BUILD)
-	rm -rf $(SOURCE_DIR)/oscam
-	rm -rf $(SOURCE_DIR)/oscam.org
+	rm -rf $(SOURCE_DIR)/$(OSCAM_SOURCE_DIR)
+	rm -rf $(SOURCE_DIR)/$(OSCAM_SOURCE_DIR).org
 	rm -rf $(LH_OBJDIR)
 	test -d $(SOURCE_DIR) || mkdir -p $(SOURCE_DIR)
-	[ -d "$(ARCHIVE)/oscam.git" ] && \
-	(cd $(ARCHIVE)/oscam.git; git pull;); \
-	[ -d "$(ARCHIVE)/oscam.git" ] || \
-	git clone https://repo.or.cz/oscam.git $(ARCHIVE)/oscam.git; \
-	cp -ra $(ARCHIVE)/oscam.git $(SOURCE_DIR)/oscam; \
-	cp -ra $(SOURCE_DIR)/oscam $(SOURCE_DIR)/oscam.org
-	set -e; cd $(SOURCE_DIR)/oscam; \
+	[ -d "$(ARCHIVE)/$(OSCAM_FLAVOUR_DIR)" ] && \
+	(cd $(ARCHIVE)/$(OSCAM_FLAVOUR_DIR); git pull;); \
+	[ -d "$(ARCHIVE)/$(OSCAM_FLAVOUR_DIR)" ] || \
+	git clone $(OSCAM_FLAVOUR_URL) $(ARCHIVE)/$(OSCAM_FLAVOUR_DIR); \
+	cp -ra $(ARCHIVE)/$(OSCAM_FLAVOUR_DIR) $(SOURCE_DIR)/$(OSCAM_SOURCE_DIR); \
+	cp -ra $(SOURCE_DIR)/$(OSCAM_SOURCE_DIR) $(SOURCE_DIR)/$(OSCAM_SOURCE_DIR).org
+	set -e; cd $(SOURCE_DIR)/$(OSCAM_SOURCE_DIR); \
 		$(call apply_patches, $(OSCAM_PATCH)); \
 		 $(SHELL) ./config.sh --disable all \
 		--enable WEBIF \
@@ -63,7 +77,7 @@ $(D)/oscam.do_prepare:
 	@touch $@
 
 $(D)/oscam.do_compile:
-	cd $(SOURCE_DIR)/oscam; \
+	cd $(SOURCE_DIR)/$(OSCAM_SOURCE_DIR); \
 		$(BUILDENV) \
 		$(MAKE) CROSS=$(TARGET)- USE_LIBCRYPTO=1 USE_LIBUSB=1 \
 		PLUS_TARGET="-rezap" \
@@ -75,14 +89,14 @@ $(D)/oscam.do_compile:
 $(D)/oscam: $(D)/bootstrap $(D)/openssl $(D)/libusb oscam.do_prepare oscam.do_compile
 	rm -rf $(TARGET_DIR)/../OScam
 	mkdir $(TARGET_DIR)/../OScam
-	cp -pR $(SOURCE_DIR)/oscam/Distribution/* $(TARGET_DIR)/../OScam/
+	cp -pR $(SOURCE_DIR)/$(OSCAM_SOURCE_DIR)/Distribution/* $(TARGET_DIR)/../OScam/
 	$(REMOVE)/oscam
 	$(TOUCH)
 
 oscam-clean:
 	rm -f $(D)/oscam
 	rm -f $(D)/oscam.do_compile
-	$(SOURCE_DIR)/oscam; \
+	$(SOURCE_DIR)/$(OSCAM_SOURCE_DIR); \
 		$(MAKE) distclean
 
 # -----------------------------------------------------------------------------
