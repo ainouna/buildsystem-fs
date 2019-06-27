@@ -6,8 +6,6 @@
 # plugins
 #
 NEUTRINO_PLUGINS  = $(D)/neutrino-mp-plugin
-#NEUTRINO_PLUGINS += $(D)/neutrino-mp-plugin-scripts-lua
-#NEUTRINO_PLUGINS += $(D)/neutrino-mp-plugin-mediathek
 NEUTRINO_PLUGINS += $(LOCAL_NEUTRINO_PLUGINS)
 
 NP_OBJDIR = $(BUILD_TMP)/neutrino-mp-plugins
@@ -101,9 +99,9 @@ $(D)/netzkino: $(D)/bootstrap
 		then cd $(ARCHIVE)/netzkino.git; git pull; \
 		else cd $(ARCHIVE); git clone https://github.com/fs-basis/netzkino.git netzkino.git; \
 		fi
-	cp -ra $(ARCHIVE)/netzkino.git/plugins $(BUILD_TMP)/netzkino
+	cp -ra $(ARCHIVE)/netzkino.git $(BUILD_TMP)/netzkino
 	$(CHDIR)/netzkino; \
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
+		cp -R $(BUILD_TMP)/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/netzkino
 	$(TOUCH)
