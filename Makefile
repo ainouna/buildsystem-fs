@@ -116,7 +116,7 @@ include make/python.mk
 include make/tools.mk
 include make/neutrino.mk
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
-include make/plugins.mk
+include make/own-plugins.mk
 endif
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt neutrino-mp-tangos))
 include make/neutrino-plugins.mk
