@@ -19,6 +19,7 @@ endif
 
 #OSCAM_VER = $(OSCAM_FLAVOUR)
 #OSCAM_SOURCE = $(OSCAM_FLAVOUR_URL)
+OSCAM_CONFIG =
 OSCAM_PATCH =
 
 $(D)/oscam.do_prepare:
@@ -73,7 +74,8 @@ $(D)/oscam.do_prepare:
 			CARDREADER_INTERNAL \
 			CARDREADER_PHOENIX \
 			CARDREADER_SMARGO \
-			CARDREADER_SC8IN1
+			CARDREADER_SC8IN1 \
+			$(OSCAM_CONFIG)
 	@touch $@
 
 $(D)/oscam.do_compile:
