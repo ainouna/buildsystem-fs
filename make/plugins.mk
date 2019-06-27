@@ -73,40 +73,40 @@ neutrino-mp-plugin-distclean:
 	rm -f $(D)/neutrino-mp-plugin*
 
 #
-# neutrino-plugin-scripts-lua
+# mediathek
 #
-$(D)/neutrino-mp-plugin-scripts-lua: $(D)/bootstrap
+$(D)/mediathek:
 	$(START_BUILD)
-	$(REMOVE)/neutrino-mp-plugin-scripts-lua
-	set -e; if [ -d $(ARCHIVE)/plugin-scripts-lua.git ]; \
-		then cd $(ARCHIVE)/plugin-scripts-lua.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/plugin-scripts-lua.git plugin-scripts-lua.git; \
+	$(REMOVE)/mediathek
+	set -e; if [ -d $(ARCHIVE)/mediathek.git ]; \
+		then cd $(ARCHIVE)/mediathek.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/mediathek.git mediathek.git; \
 		fi
-	cp -ra $(ARCHIVE)/plugin-scripts-lua.git/plugins $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua
-	$(CHDIR)/neutrino-mp-plugin-scripts-lua; \
-		install -d $(TARGET_DIR)/var/tuxbox/plugins
-#		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/favorites2bin/* $(TARGET_DIR)/var/tuxbox/plugins/
-#		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/ard_mediathek/* $(TARGET_DIR)/var/tuxbox/plugins/
-		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/mtv/* $(TARGET_DIR)/var/tuxbox/plugins/
-		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
-	$(REMOVE)/neutrino-mp-plugin-scripts-lua
-	$(TOUCH)
-
-#
-# neutrino-mediathek
-#
-$(D)/neutrino-mp-plugin-mediathek:
-	$(START_BUILD)
-	$(REMOVE)/plugins-mediathek
-	set -e; if [ -d $(ARCHIVE)/plugins-mediathek.git ]; \
-		then cd $(ARCHIVE)/plugins-mediathek.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/mediathek.git plugins-mediathek.git; \
-		fi
-	cp -ra $(ARCHIVE)/plugins-mediathek.git $(BUILD_TMP)/plugins-mediathek
+	cp -ra $(ARCHIVE)/mediathek.git $(BUILD_TMP)/mediathek
 	install -d $(TARGET_DIR)/var/tuxbox/plugins
-	$(CHDIR)/plugins-mediathek; \
+	$(CHDIR)/mediathek; \
 		cp -a plugins/* $(TARGET_DIR)/var/tuxbox/plugins/; \
 #		cp -a share $(TARGET_DIR)/usr/
 		rm -f $(TARGET_DIR)/var/tuxbox/plugins/neutrino-mediathek/livestream.lua
-	$(REMOVE)/plugins-mediathek
+	$(REMOVE)/mediathek
 	$(TOUCH)
+
+#
+# neutrino-plugin-scripts-lua
+#
+#$(D)/neutrino-mp-plugin-scripts-lua: $(D)/bootstrap
+#	$(START_BUILD)
+#	$(REMOVE)/neutrino-mp-plugin-scripts-lua
+#	set -e; if [ -d $(ARCHIVE)/plugin-scripts-lua.git ]; \
+#		then cd $(ARCHIVE)/plugin-scripts-lua.git; git pull; \
+#		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/plugin-scripts-lua.git plugin-scripts-lua.git; \
+#		fi
+#	cp -ra $(ARCHIVE)/plugin-scripts-lua.git/plugins $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua
+#	$(CHDIR)/neutrino-mp-plugin-scripts-lua; \
+#		install -d $(TARGET_DIR)/var/tuxbox/plugins
+#		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/favorites2bin/* $(TARGET_DIR)/var/tuxbox/plugins/
+#		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/ard_mediathek/* $(TARGET_DIR)/var/tuxbox/plugins/
+#		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/mtv/* $(TARGET_DIR)/var/tuxbox/plugins/
+#		cp -R $(BUILD_TMP)/neutrino-mp-plugin-scripts-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
+#	$(REMOVE)/neutrino-mp-plugin-scripts-lua
+#	$(TOUCH)
