@@ -118,7 +118,7 @@ include make/neutrino.mk
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
 include make/own-plugins.mk
 endif
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt neutrino-mp-tangos))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 include make/neutrino-plugins.mk
 endif
 include make/neutrino-release.mk
