@@ -82,7 +82,6 @@ N_CONFIG_OPTS += --enable-freesatepg
 #N_CONFIG_OPTS += --enable-pip
 #N_CONFIG_OPTS += --disable-webif
 N_CONFIG_OPTS += --disable-upnp
-#N_CONFIG_OPTS += --disable-tangos
 #N_CONFIG_OPTS += --enable-fribidi
 
 ifeq ($(BOXARCH), arm)
@@ -126,15 +125,7 @@ N_CONFIG_OPTS += --enable-lcd4linux
 NEUTRINO_DEPS += $(D)/lcd4linux
 endif
 
-ifeq  ($(FLAVOUR), neutrino-mp-tangos)
-GIT_URL     ?= https://github.com/TangoCash
-NEUTRINO_MP  = neutrino-mp-tangos
-LIBSTB_HAL   = libstb-hal-tangos
-NMP_BRANCH  ?= master
-HAL_BRANCH  ?= master
-NMP_PATCHES  = $(NEUTRINO_MP_TANGOS_PATCHES)
-HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_TANGOS_PATCHES)
-else ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
 GIT_URL     ?= https://github.com/Duckbox-Developers
 NEUTRINO_MP  = neutrino-mp-ddt
 LIBSTB_HAL   = libstb-hal-ddt
