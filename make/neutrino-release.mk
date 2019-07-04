@@ -557,8 +557,11 @@ endif
 neutrino-mp-release-base:
 	rm -rf $(RELEASE_DIR) || true
 	install -d $(RELEASE_DIR)
-#	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
+else
 	install -d $(RELEASE_DIR)/{bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
+endif
 	install -d $(RELEASE_DIR)/etc/{init.d,network,mdev,ssl}
 	install -d $(RELEASE_DIR)/etc/network/if-{post-{up,down},pre-{up,down},up,down}.d
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
@@ -568,20 +571,31 @@ neutrino-mp-release-base:
 	install -d $(RELEASE_DIR)/mnt/{hdd,nfs,usb}
 	install -d $(RELEASE_DIR)/mnt/mnt{0..7}
 	install -d $(RELEASE_DIR)/usr/{bin,lib,sbin,share}
-#	install -d $(RELEASE_DIR)/usr/lib/tuxbox/{luaplugins,plugins}
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+	install -d $(RELEASE_DIR)/usr/lib/tuxbox/{luaplugins,plugins}
+endif
 	install -d $(RELEASE_DIR)/usr/share/{fonts,tuxbox,udhcpc,zoneinfo,lua}
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/logo
 	install -d $(RELEASE_DIR)/usr/share/lua/5.2
-#	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,logos,net,tuxbox,update}
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,logos,net,tuxbox,update}
+else
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
+endif
 	install -d $(RELEASE_DIR)/var/lib/{nfs,modules}
-#	install -d $(RELEASE_DIR)/var/net/epg
-#	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+	install -d $(RELEASE_DIR)/var/net/epg
+	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
+else
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,plugins,themes}
-#	install -d $(RELEASE_DIR)/var/tuxbox/webtv
-#	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
+endif
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+	install -d $(RELEASE_DIR)/var/tuxbox/webtv
+	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
+else
 	install -d $(RELEASE_DIR)/var/tuxbox/config/zapit
+endif
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
 	ln -s ../init.d/sendsigs $(RELEASE_DIR)/etc/rc.d/rc0.d/S20sendsigs
 	ln -s ../init.d/umountfs $(RELEASE_DIR)/etc/rc.d/rc0.d/S40umountfs
