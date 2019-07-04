@@ -579,7 +579,8 @@ neutrino-mp-release-base:
 #	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,plugins,themes}
 #	install -d $(RELEASE_DIR)/var/tuxbox/webtv
-	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
+#	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
+	install -d $(RELEASE_DIR)/var/tuxbox/config/zapit
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
 	ln -s ../init.d/sendsigs $(RELEASE_DIR)/etc/rc.d/rc0.d/S20sendsigs
 	ln -s ../init.d/umountfs $(RELEASE_DIR)/etc/rc.d/rc0.d/S40umountfs
