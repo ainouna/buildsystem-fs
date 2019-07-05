@@ -798,10 +798,17 @@ endif
 		if [ -e $(TARGET_DIR)/usr/share/fonts/micron.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/micron.ttf $(RELEASE_DIR)/usr/share/fonts; \
 		fi; \
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+		if [ -e $(TARGET_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf ]; then \
+			cp -aR $(TARGET_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf $(RELEASE_DIR)/usr/share/fonts; \
+			ln -s /usr/share/fonts/DejaVuLGCSansMono-Bold.ttf $(RELEASE_DIR)/usr/share/fonts/tuxtxt.ttf; \
+		fi; \
+else
 		if [ -e $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts; \
 			ln -s /usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf; \
 		fi; \
+endif
 	fi
 #
 # neutrino
