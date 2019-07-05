@@ -1004,6 +1004,7 @@ $(D)/neutrino-mp-release: neutrino-mp-release-base neutrino-mp-release-$(BOXTYPE
 	ln -s /tmp $(RELEASE_DIR)/var/run
 	ln -s /tmp $(RELEASE_DIR)/var/tmp
 #
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/scan.jpg $(RELEASE_DIR)/var/boot/
 	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3.jpg $(RELEASE_DIR)/var/boot/
@@ -1015,6 +1016,21 @@ $(D)/neutrino-mp-release: neutrino-mp-release-base neutrino-mp-release-$(BOXTYPE
 	ln -s /var/boot/radiomode.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/start.jpg $(RELEASE_DIR)/var/boot/
 	ln -s /var/boot/start.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
+else
+	rm -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3-?.jpg
+	rm -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3.jpg
+	rm -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/shutdown.jpg
+	rm -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/radiomode.jpg
+	rm -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/start.jpg
+
+	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/scan.jpg $(RELEASE_DIR)/var/boot/
+	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
+	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3.jpg
+	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/shutdown.jpg
+	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/radiomode.jpg
+	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/start.jpg
+endif
+
 #
 # linux-strip all
 #
