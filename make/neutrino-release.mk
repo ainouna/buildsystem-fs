@@ -789,6 +789,7 @@ endif
 #
 # fonts
 #
+ifeq  ($(FLAVOUR), neutrino-mp-ddt)
 	if [ -e $(TARGET_DIR)/usr/share/fonts/ubuntu-l-webfont.ttf ]; then \
 		cp -aR $(TARGET_DIR)/usr/share/fonts $(RELEASE_DIR)/usr/share/; \
 	else \
@@ -798,18 +799,28 @@ endif
 		if [ -e $(TARGET_DIR)/usr/share/fonts/micron.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/micron.ttf $(RELEASE_DIR)/usr/share/fonts; \
 		fi; \
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
 		if [ -e $(TARGET_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf $(RELEASE_DIR)/usr/share/fonts; \
 			ln -s /usr/share/fonts/DejaVuLGCSansMono-Bold.ttf $(RELEASE_DIR)/usr/share/fonts/tuxtxt.ttf; \
 		fi; \
+	fi
 else
+	if [ -e $(TARGET_DIR)/usr/share/fonts/ubuntu-l-webfont.ttf ]; then \
+		cp -aR $(TARGET_DIR)/usr/share/fonts $(RELEASE_DIR)/usr/share/; \
+	else \
+		if [ -e $(TARGET_DIR)/usr/share/fonts/neutrino.ttf ]; then \
+			cp -aR $(TARGET_DIR)/usr/share/fonts/neutrino.ttf $(RELEASE_DIR)/usr/share/fonts; \
+		fi; \
+		if [ -e $(TARGET_DIR)/usr/share/fonts/micron.ttf ]; then \
+			cp -aR $(TARGET_DIR)/usr/share/fonts/micron.ttf $(RELEASE_DIR)/usr/share/fonts; \
+		fi; \
 		if [ -e $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts; \
 			ln -s /usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf; \
 		fi; \
-endif
 	fi
+endif
+
 #
 # neutrino
 #
