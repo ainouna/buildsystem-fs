@@ -14,9 +14,12 @@ BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-unicode.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-extra.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-extra2.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-flashcp-small-output.patch
+BUSYBOX_PATCH += busybox-block-telnet-internet.patch
 
+ifneq ($(BUSYBOX_SNAPSHOT), 1)
 $(ARCHIVE)/$(BUSYBOX_SOURCE):
 	$(WGET) https://busybox.net/downloads/$(BUSYBOX_SOURCE)
+endif
 
 ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 BUSYBOX_CONFIG = busybox-$(BUSYBOX_VER).config_arm
@@ -26,10 +29,22 @@ else
 BUSYBOX_CONFIG = busybox-$(BUSYBOX_VER).config
 endif
 
+ifeq ($(BUSYBOX_SNAPSHOT), 1)
+BUSYBOX_PATCH += busybox-snapshot-tar-fix.patch
+$(D)/busybox: $(D)/bootstrap $(PATCHES)/$(BUSYBOX_CONFIG)
+	$(START_BUILD)
+	$(REMOVE)/busybox$(BB_SNAPSHOT)
+	set -e; if [ -d $(ARCHIVE)/busybox.git ]; \
+		then cd $(ARCHIVE)/busybox.git; git pull; \
+		else cd $(ARCHIVE); git clone git://git.busybox.net/busybox.git busybox.git; \
+		fi
+	cp -ra $(ARCHIVE)/busybox.git $(BUILD_TMP)/busybox$(BB_SNAPSHOT)
+else
 $(D)/busybox: $(D)/bootstrap $(ARCHIVE)/$(BUSYBOX_SOURCE) $(PATCHES)/$(BUSYBOX_CONFIG)
 	$(START_BUILD)
 	$(REMOVE)/busybox$(BB_SNAPSHOT)
 	$(UNTAR)/$(BUSYBOX_SOURCE)
+endif
 	$(CHDIR)/busybox$(BB_SNAPSHOT); \
 		$(call apply_patches, $(BUSYBOX_PATCH)); \
 		install -m 0644 $(lastword $^) .config; \
