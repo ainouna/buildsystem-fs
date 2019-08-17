@@ -7,16 +7,14 @@ BB_SNAPSHOT =
 else
 BUSYBOX_VER = 1.30.1
 BB_SNAPSHOT = -$(BUSYBOX_VER)
-endif
 BUSYBOX_SOURCE = busybox-$(BUSYBOX_VER).tar.bz2
+endif
 BUSYBOX_PATCH  = busybox-$(BUSYBOX_VER)-nandwrite.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-unicode.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-extra.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-extra2.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-flashcp-small-output.patch
-
-$(ARCHIVE)/$(BUSYBOX_SOURCE):
-	$(WGET) https://busybox.net/downloads/$(BUSYBOX_SOURCE)
+BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-block-telnet-internet.patch
 
 ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 BUSYBOX_CONFIG = busybox-$(BUSYBOX_VER).config_arm
@@ -26,10 +24,25 @@ else
 BUSYBOX_CONFIG = busybox-$(BUSYBOX_VER).config
 endif
 
+ifeq ($(BUSYBOX_SNAPSHOT), 1)
+BUSYBOX_PATCH += busybox-snapshot-tar-fix.patch
+$(D)/busybox: $(D)/bootstrap $(PATCHES)/$(BUSYBOX_CONFIG)
+	$(START_BUILD)
+	$(REMOVE)/busybox$(BB_SNAPSHOT)
+	set -e; if [ -d $(ARCHIVE)/busybox.git ]; \
+		then cd $(ARCHIVE)/busybox.git; git pull; \
+		else cd $(ARCHIVE); git clone git://git.busybox.net/busybox.git busybox.git; \
+		fi
+	cp -ra $(ARCHIVE)/busybox.git $(BUILD_TMP)/busybox$(BB_SNAPSHOT)
+else
+$(ARCHIVE)/$(BUSYBOX_SOURCE):
+	$(WGET) https://busybox.net/downloads/$(BUSYBOX_SOURCE)
+
 $(D)/busybox: $(D)/bootstrap $(ARCHIVE)/$(BUSYBOX_SOURCE) $(PATCHES)/$(BUSYBOX_CONFIG)
 	$(START_BUILD)
 	$(REMOVE)/busybox$(BB_SNAPSHOT)
 	$(UNTAR)/$(BUSYBOX_SOURCE)
+endif
 	$(CHDIR)/busybox$(BB_SNAPSHOT); \
 		$(call apply_patches, $(BUSYBOX_PATCH)); \
 		install -m 0644 $(lastword $^) .config; \
@@ -117,7 +130,7 @@ $(D)/sysvinit: $(D)/bootstrap $(ARCHIVE)/$(SYSVINIT_SOURCE)
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), fortis_hdbox octagon1008 cuberevo cuberevo_mini2 cuberevo_2000hd cuberevo_3000hd))
 	install -m 644 $(SKEL_ROOT)/etc/inittab_ttyAS1 $(TARGET_DIR)/etc/inittab
 else
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 vusolo4k vuduo4k vuduo))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 vusolo4k vuduo4k vuzero4k vuduo))
 	install -m 644 $(SKEL_ROOT)/etc/inittab_ttyS0 $(TARGET_DIR)/etc/inittab
 else
 	install -m 644 $(SKEL_ROOT)/etc/inittab $(TARGET_DIR)/etc/inittab
