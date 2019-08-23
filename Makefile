@@ -135,7 +135,7 @@ update:
 	@if test -d $(BASE_DIR); then \
 		cd $(BASE_DIR)/; \
 		echo '===================================================================='; \
-		echo '      updating $(GIT_NAME)-cdk git repository'; \
+		echo '      updating $(GIT_NAME)-buildsystem git repository'; \
 		echo '===================================================================='; \
 		echo; \
 		if [ "$(GIT_STASH_PULL)" = "stashpull" ]; then \
@@ -192,7 +192,7 @@ check:
 	@if test -d $(BASE_DIR); then \
 		cd $(BASE_DIR)/; \
 		echo '==================================================================='; \
-		echo '      check $(GIT_NAME)-cdk git repository'; \
+		echo '      check $(GIT_NAME)-buildsystem git repository'; \
 		echo '==================================================================='; \
 		echo; \
 		$(GIT_CHECK); fi
