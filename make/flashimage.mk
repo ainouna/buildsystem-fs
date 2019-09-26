@@ -13,7 +13,7 @@ ifeq ($(BOXTYPE), hd51)
 	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-multi-rootfs
 endif
 ifeq ($(BOXTYPE), hd60)
-	$(MAKE) flash-image-hd60-multi-disk
+	$(MAKE) flash-image-hd60-multi-disk flash-image-hd60-multi-rootfs
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k))
 ifeq ($(VU_MULTIBOOT), 1)
@@ -32,6 +32,9 @@ multi_disk_ofg:
 ifeq ($(BOXTYPE), hd51)
 	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-multi-rootfs
 endif
+ifeq ($(BOXTYPE), hd60)
+	$(MAKE) flash-image-hd60-multi-rootfs
+endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k))
 	$(MAKE) flash-image-vu-rootfs
 endif
@@ -41,6 +44,9 @@ oi \
 online-image:
 ifeq ($(BOXTYPE), hd51)
 	$(MAKE) flash-image-hd51-online
+endif
+ifeq ($(BOXTYPE), hd60)
+	$(MAKE) flash-image-hd60-online
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k))
 	$(MAKE) flash-image-vu-online
@@ -213,11 +219,11 @@ flash-image-hd60-multi-disk: $(ARCHIVE)/$(HD60_BOOTARGS_SRC) $(ARCHIVE)/$(HD60_P
 	mkdir -p $(HD60_BUILD_TMP)/$(BOXTYPE)
 	unzip -o $(ARCHIVE)/$(HD60_BOOTARGS_SRC) -d $(HD60_BUILD_TMP)
 	unzip -o $(ARCHIVE)/$(HD60_PARTITONS_SRC) -d $(HD60_BUILD_TMP)
-	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(HD60_BUILD_TMP)/$(BOXTYPE)/imageversion
-	dd if=/dev/zero of=$(HD60_BUILD_TMP)/$(HD60_IMAGE_LINK) seek=$(shell expr $(HD60_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR)) count=0 bs=$(BLOCK_SIZE)
-	$(HOST_DIR)/bin/mkfs.ext4 -F $(HD60_BUILD_TMP)/$(HD60_IMAGE_LINK) -d $(RELEASE_DIR)
-	# Error codes 0-3 indicate successfull operation of fsck (no errors or errors corrected)
-	$(HOST_DIR)/bin/fsck.ext4 -pvfD $(HD60_BUILD_TMP)/$(HD60_IMAGE_LINK) || [ $? -le 3 ]
+	echo $(BOXTYPE)_DDT_recovery_$(shell date '+%d%m%Y-%H%M%S') > $(HD60_BUILD_TMP)/$(BOXTYPE)/recoveryversion
+#	dd if=/dev/zero of=$(HD60_BUILD_TMP)/$(HD60_IMAGE_LINK) seek=$(shell expr $(HD60_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR)) count=0 bs=$(BLOCK_SIZE)
+#	$(HOST_DIR)/bin/mkfs.ext4 -F $(HD60_BUILD_TMP)/$(HD60_IMAGE_LINK) -d $(RELEASE_DIR)
+#	# Error codes 0-3 indicate successfull operation of fsck (no errors or errors corrected)
+#	$(HOST_DIR)/bin/fsck.ext4 -pvfD $(HD60_BUILD_TMP)/$(HD60_IMAGE_LINK) || [ $? -le 3 ]
 	dd if=/dev/zero of=$(HD60_BUILD_TMP)/$(HD60_BOOT_IMAGE) bs=1024 count=$(HD60_BOOTOPTIONS_PARTITION_SIZE)
 	mkfs.msdos -S 512 $(HD60_BUILD_TMP)/$(HD60_BOOT_IMAGE)
 	echo "bootcmd=mmc read 0 0x1000000 0x53D000 0x8000; bootm 0x1000000 bootargs=console=ttyAMA0,115200 root=/dev/mmcblk0p21 rootfstype=ext4" > $(HD60_BUILD_TMP)/STARTUP
@@ -230,13 +236,40 @@ flash-image-hd60-multi-disk: $(ARCHIVE)/$(HD60_BOOTARGS_SRC) $(ARCHIVE)/$(HD60_P
 	mcopy -i $(HD60_BUILD_TMP)/$(HD60_BOOT_IMAGE) -v $(HD60_BUILD_TMP)/STARTUP_GREEN ::
 	mcopy -i $(HD60_BUILD_TMP)/$(HD60_BOOT_IMAGE) -v $(HD60_BUILD_TMP)/STARTUP_YELLOW ::
 	mcopy -i $(HD60_BUILD_TMP)/$(HD60_BOOT_IMAGE) -v $(HD60_BUILD_TMP)/STARTUP_BLUE ::
-	cp $(HD60_BUILD_TMP)/$(HD60_BOOT_IMAGE) $(HD60_BUILD_TMP)/$(BOXTYPE)/$(HD60_BOOT_IMAGE)
-	ext2simg -zv $(HD60_BUILD_TMP)/$(HD60_IMAGE_LINK) $(HD60_BUILD_TMP)/$(BOXTYPE)/rootfs.fastboot.gz
+	rm -f $(HD60_BUILD_TMP)/STARTUP*
+	mv $(HD60_BUILD_TMP)/$(HD60_BOOT_IMAGE) $(HD60_BUILD_TMP)/$(BOXTYPE)/$(HD60_BOOT_IMAGE)
+#	ext2simg -zv $(HD60_BUILD_TMP)/$(HD60_IMAGE_LINK) $(HD60_BUILD_TMP)/$(BOXTYPE)/rootfs.fastboot.gz
 	mv $(HD60_BUILD_TMP)/bootargs-8gb.bin $(HD60_BUILD_TMP)/bootargs.bin
 	mv $(HD60_BUILD_TMP)/$(BOXTYPE)/bootargs-8gb.bin $(HD60_BUILD_TMP)/$(BOXTYPE)/bootargs.bin
-	cp $(RELEASE_DIR)/boot/uImage $(HD51_BUILD_TMP)/$(BOXTYPE)/uImage
+	cp $(RELEASE_DIR)/boot/uImage $(HD60_BUILD_TMP)/$(BOXTYPE)/uImage
 	cd $(HD60_BUILD_TMP) && \
-	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').zip *
+	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(shell date '+%d.%m.%Y-%H.%M')_recovery.zip *
+	# cleanup
+	rm -rf $(HD60_BUILD_TMP)
+
+flash-image-hd60-multi-rootfs:
+	# Create final USB-image
+	mkdir -p $(HD60_BUILD_TMP)/$(BOXTYPE)
+	cp $(RELEASE_DIR)/boot/uImage $(HD60_BUILD_TMP)/$(BOXTYPE)/uImage
+	cd $(RELEASE_DIR); \
+	tar -cvf $(HD60_BUILD_TMP)/$(BOXTYPE)/rootfs.tar --exclude=uImage* . > /dev/null 2>&1; \
+	bzip2 $(HD60_BUILD_TMP)/$(BOXTYPE)/rootfs.tar
+	echo $(BOXTYPE)_DDT_mmc_$(shell date '+%d%m%Y-%H%M%S') > $(HD60_BUILD_TMP)/$(BOXTYPE)/imageversion
+	cd $(HD60_BUILD_TMP) && \
+	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(shell date '+%d.%m.%Y-%H.%M')_mmc.zip $(BOXTYPE)/rootfs.tar.bz2 $(BOXTYPE)/uImage $(BOXTYPE)/imageversion
+	# cleanup
+	rm -rf $(HD60_BUILD_TMP)
+
+flash-image-hd60-online:
+	# Create final USB-image
+	mkdir -p $(HD60_BUILD_TMP)/$(BOXTYPE)
+	cp $(RELEASE_DIR)/boot/uImage $(HD60_BUILD_TMP)/$(BOXTYPE)/uImage
+	cd $(RELEASE_DIR); \
+	tar -cvf $(HD60_BUILD_TMP)/$(BOXTYPE)/rootfs.tar --exclude=uImage* . > /dev/null 2>&1; \
+	bzip2 $(HD60_BUILD_TMP)/$(BOXTYPE)/rootfs.tar
+	echo $(BOXTYPE)_DDT_online_$(shell date '+%d%m%Y-%H%M%S') > $(HD60_BUILD_TMP)/$(BOXTYPE)/imageversion
+	cd $(HD60_BUILD_TMP)/$(BOXTYPE) && \
+	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(shell date '+%d.%m.%Y-%H.%M')_online.tgz rootfs.tar.bz2 uImage imageversion
 	# cleanup
 	rm -rf $(HD60_BUILD_TMP)
 
@@ -303,17 +336,17 @@ flash-image-vu-rootfs:
 
 flash-image-vu-online:
 	# Create final USB-image
-	mkdir -p $(VU_BUILD_TMP)/$(BOXTYPE)
-	cp $(RELEASE_DIR)/boot/$(VU_INITRD) $(VU_BUILD_TMP)/$(BOXTYPE)/initrd_auto.bin
-	cp $(RELEASE_DIR)/boot/zImage $(VU_BUILD_TMP)/$(BOXTYPE)/kernel_auto.bin
+	mkdir -p $(VU_BUILD_TMP)/$(VU_PREFIX)
+	cp $(RELEASE_DIR)/boot/$(VU_INITRD) $(VU_BUILD_TMP)/$(VU_PREFIX)/initrd_auto.bin
+	cp $(RELEASE_DIR)/boot/zImage $(VU_BUILD_TMP)/$(VU_PREFIX)/kernel_auto.bin
 	cd $(RELEASE_DIR); \
-	tar -cvf $(VU_BUILD_TMP)/$(BOXTYPE)/rootfs.tar --exclude=zImage* --exclude=vmlinuz-initrd* . > /dev/null 2>&1; \
-	bzip2 $(VU_BUILD_TMP)/$(BOXTYPE)/rootfs.tar
-	$(VU_FORCE); \
-	echo This file forces a reboot after the update. > $(VU_BUILD_TMP)/$(BOXTYPE)/reboot.update
-	echo This file forces creating partitions. > $(VU_BUILD_TMP)/$(BOXTYPE)/mkpart.update
-	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(VU_BUILD_TMP)/$(BOXTYPE)/imageversion
-	cd $(VU_BUILD_TMP)/$(BOXTYPE) && \
+	tar -cvf $(VU_BUILD_TMP)/$(VU_PREFIX)/rootfs.tar --exclude=zImage* --exclude=vmlinuz-initrd* . > /dev/null 2>&1; \
+	bzip2 $(VU_BUILD_TMP)/$(VU_PREFIX)/rootfs.tar
+	$(VU_FORCE)
+	echo This file forces a reboot after the update. > $(VU_BUILD_TMP)/$(VU_PREFIX)/reboot.update
+	echo This file forces creating partitions. > $(VU_BUILD_TMP)/$(VU_PREFIX)/mkpart.update
+	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(VU_BUILD_TMP)/$(VU_PREFIX)/imageversion
+	cd $(VU_BUILD_TMP)/$(VU_PREFIX) && \
 	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_usb_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 initrd_auto.bin kernel_auto.bin *.update imageversion
 	# cleanup
 	rm -rf $(VU_BUILD_TMP)
