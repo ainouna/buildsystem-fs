@@ -15,7 +15,7 @@ endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-multi-disk flash-image-hd60-multi-rootfs
 endif
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k vuuno4kse))
 ifeq ($(VU_MULTIBOOT), 1)
 	$(MAKE) flash-image-vu-multi-rootfs
 else
@@ -35,7 +35,7 @@ endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-multi-rootfs
 endif
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k vuuno4kse))
 	$(MAKE) flash-image-vu-rootfs
 endif
 	$(TUXBOX_CUSTOMIZE)
@@ -48,7 +48,7 @@ endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-online
 endif
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vusolo4k vuduo4k vuultimo4k vuzero4k vuuno4kse))
 	$(MAKE) flash-image-vu-online
 endif
 	$(TUXBOX_CUSTOMIZE)
@@ -289,6 +289,11 @@ endif
 ifeq ($(BOXTYPE), vuultimo4k)
 VU_PREFIX = vuplus/ultimo4k
 VU_INITRD = vmlinuz-initrd-7445d0
+VU_FORCE = echo -n
+endif
+ifeq ($(BOXTYPE), vuuno4kse)
+VU_PREFIX = vuplus/uno4kse
+VU_INITRD = vmlinuz-initrd-7439b0
 VU_FORCE = echo -n
 endif
 ifeq ($(BOXTYPE), vuzero4k)
