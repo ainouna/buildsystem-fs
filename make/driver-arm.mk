@@ -40,11 +40,12 @@ $(ARCHIVE)/$(EXTRA_MALI_MODULE_SRC):
 endif
 
 ifeq ($(BOXTYPE), zgemmah7)
-DRIVER_VER = 4.10.12
+DRIVER_VER = 4.10.12-$(DRIVER_DATE)
 DRIVER_DATE = 20190405
-DRIVER_SRC = h7-drivers-$(DRIVER_VER)-$(DRIVER_DATE).zip
+DRIVER_SRC = h7-drivers-$(DRIVER_VER).zip
+DRIVER_URL = http://source.mynonpublic.com/zgemma
 $(ARCHIVE)/$(DRIVER_SRC):
-	$(WGET) http://www.zgemma.org/downloads/h7-drivers-$(DRIVER_SRC)
+	$(WGET) $(DRIVER_URL)/$(DRIVER_SRC)
 endif
 
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
@@ -151,6 +152,16 @@ $(D)/mali-gpu-modul: $(ARCHIVE)/$(EXTRA_MALI_MODULE_SRC) $(D)/bootstrap $(D)/ker
 	$(REMOVE)/$(EXTRA_MALI_MODULE_VER)
 	$(TOUCH)
 endif
+
+ifeq ($(BOXTYPE), zgemmah7)
+driver: $(D)/driver
+$(D)/driver: $(ARCHIVE)/$(DRIVER_SRC) $(D)/bootstrap $(D)/kernel
+	$(START_BUILD)
+	install -d $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/extra
+	unzip -o $(ARCHIVE)/$(DRIVER_SRC) -d $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/extra
+	$(TOUCH)
+endif
+
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 driver: $(D)/driver
 $(D)/driver: $(ARCHIVE)/$(DRIVER_SRC) $(D)/bootstrap $(D)/kernel
