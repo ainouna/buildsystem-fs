@@ -15,8 +15,8 @@ endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-multi-disk flash-image-hd60-multi-rootfs
 endif
-ifeq ($(BOXTYPE), zgemma)
-	$(MAKE) flash-image-zgemma-multi-disk flash-image-zgemma-multi-rootfs
+ifeq ($(BOXTYPE), h7)
+	$(MAKE) flash-image-h7-multi-disk flash-image-h7-multi-rootfs
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 ifeq ($(VU_MULTIBOOT), 1)
@@ -38,8 +38,8 @@ endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-multi-rootfs
 endif
-ifeq ($(BOXTYPE), zgemma)
-	$(MAKE) flash-image-zgemma-multi-disk flash-image-zgemma-multi-rootfs
+ifeq ($(BOXTYPE), h7)
+	$(MAKE) flash-image-h7-multi-disk flash-image-h7-multi-rootfs
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 	$(MAKE) flash-image-vu-rootfs
@@ -54,8 +54,8 @@ endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-online
 endif
-ifeq ($(BOXTYPE), zgemma)
-	$(MAKE) flash-image-zgemma-online
+ifeq ($(BOXTYPE), h7)
+	$(MAKE) flash-image-h7-online
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 	$(MAKE) flash-image-vu-online
@@ -67,8 +67,8 @@ diskimage:
 ifeq ($(BOXTYPE), hd51)
 	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-disk-image
 endif
-ifeq ($(BOXTYPE), zgemma)
-	$(MAKE) flash-image-zgemma-multi-disk flash-image-zgemma-disk-image
+ifeq ($(BOXTYPE), h7)
+	$(MAKE) flash-image-h7-multi-disk flash-image-h7-disk-image
 endif
 	$(TUXBOX_CUSTOMIZE)
 
@@ -285,16 +285,16 @@ flash-image-hd60-online:
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 
-### armbox ZGEMMA
+### armbox H/
 # general
-ZGEMMAH_IMAGE_NAME = disk
-ZGEMMAH_BOOT_IMAGE = boot.img
-ZGEMMAH_IMAGE_LINK = $(ZGEMMA_IMAGE_NAME).ext4
-ZGEMMAH_IMAGE_ROOTFS_SIZE = 294912
+H7_IMAGE_NAME = disk
+H7_BOOT_IMAGE = boot.img
+H7_IMAGE_LINK = $(H7_IMAGE_NAME).ext4
+H7_IMAGE_ROOTFS_SIZE = 294912
 
 # emmc image
 EMMC_IMAGE_SIZE = 3817472
-EMMC_IMAGE = $(IMAGE_BUILD_DIR)/$(ZGEMMA_IMAGE_NAME).img
+EMMC_IMAGE = $(IMAGE_BUILD_DIR)/$(H7_IMAGE_NAME).img
 
 # partition sizes
 BLOCK_SIZE = 512
@@ -325,18 +325,18 @@ SWAP_DATA_PARTITION_OFFSET = $(shell expr $(FOURTH_ROOTFS_PARTITION_OFFSET) \+ $
 SWAP_PARTITION_OFFSET = $(shell expr $(SWAP_DATA_PARTITION_OFFSET) \+ $(SWAP_DATA_PARTITION_SIZE))
 
 # create disk img
-flash-image-zgemma-multi-disk: $(D)/host_resize2fs
+flash-image-h7-multi-disk: $(D)/host_resize2fs
 	rm -rf $(IMAGE_BUILD_DIR)
 	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
 	# move kernel files from $(RELEASE_DIR)/boot to $(IMAGE_BUILD_DIR)
 	mv -f $(RELEASE_DIR)/boot/zImage* $(IMAGE_BUILD_DIR)/
 	# Create a sparse image block
-	dd if=/dev/zero of=$(IMAGE_BUILD_DIR)/$(ZGEMMA_IMAGE_LINK) seek=$(shell expr $(ZGEMMA_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR)) count=0 bs=$(BLOCK_SIZE)
-	$(HOST_DIR)/bin/mkfs.ext4 -F $(IMAGE_BUILD_DIR)/$(ZGEMMA_IMAGE_LINK) -d $(RELEASE_DIR)
+	dd if=/dev/zero of=$(IMAGE_BUILD_DIR)/$(H7_IMAGE_LINK) seek=$(shell expr $(H7_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR)) count=0 bs=$(BLOCK_SIZE)
+	$(HOST_DIR)/bin/mkfs.ext4 -F $(IMAGE_BUILD_DIR)/$(H7_IMAGE_LINK) -d $(RELEASE_DIR)
 	# move kernel files back to $(RELEASE_DIR)/boot
 	mv -f $(IMAGE_BUILD_DIR)/zImage* $(RELEASE_DIR)/boot/
 	# Error codes 0-3 indicate successfull operation of fsck (no errors or errors corrected)
-	$(HOST_DIR)/bin/fsck.ext4 -pvfD $(IMAGE_BUILD_DIR)/$(ZGEMMA_IMAGE_LINK) || [ $? -le 3 ]
+	$(HOST_DIR)/bin/fsck.ext4 -pvfD $(IMAGE_BUILD_DIR)/$(H7_IMAGE_LINK) || [ $? -le 3 ]
 	dd if=/dev/zero of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) count=0 seek=$(shell expr $(EMMC_IMAGE_SIZE) \* $(BLOCK_SECTOR))
 	parted -s $(EMMC_IMAGE) mklabel gpt
 	parted -s $(EMMC_IMAGE) unit KiB mkpart boot fat16 $(IMAGE_ROOTFS_ALIGNMENT) $(shell expr $(IMAGE_ROOTFS_ALIGNMENT) \+ $(BOOT_PARTITION_SIZE))
@@ -350,27 +350,27 @@ flash-image-zgemma-multi-disk: $(D)/host_resize2fs
 	parted -s $(EMMC_IMAGE) unit KiB mkpart rootfs4 ext4 $(FOURTH_ROOTFS_PARTITION_OFFSET) $(shell expr $(FOURTH_ROOTFS_PARTITION_OFFSET) \+ $(ROOTFS_PARTITION_SIZE_MULTI))
 	parted -s $(EMMC_IMAGE) unit KiB mkpart swap linux-swap $(SWAP_DATA_PARTITION_OFFSET) $(shell expr $(SWAP_DATA_PARTITION_OFFSET) \+ $(SWAP_DATA_PARTITION_SIZE))
 	parted -s $(EMMC_IMAGE) unit KiB mkpart swapdata ext4 $(SWAP_PARTITION_OFFSET) $(shell expr $(EMMC_IMAGE_SIZE) \- 1024)
-	dd if=/dev/zero of=$(IMAGE_BUILD_DIR)/$(ZGEMMA_BOOT_IMAGE) bs=$(BLOCK_SIZE) count=$(shell expr $(BOOT_PARTITION_SIZE) \* $(BLOCK_SECTOR))
-	mkfs.msdos -S 512 $(IMAGE_BUILD_DIR)/$(ZGEMMA_BOOT_IMAGE)
+	dd if=/dev/zero of=$(IMAGE_BUILD_DIR)/$(H7_BOOT_IMAGE) bs=$(BLOCK_SIZE) count=$(shell expr $(BOOT_PARTITION_SIZE) \* $(BLOCK_SECTOR))
+	mkfs.msdos -S 512 $(IMAGE_BUILD_DIR)/$(H7_BOOT_IMAGE)
 	echo "boot emmcflash0.kernel1 'root=/dev/mmcblk0p3 rw rootwait $(BOXTYPE)_4.boxmode=1'" > $(IMAGE_BUILD_DIR)/STARTUP
 	echo "boot emmcflash0.kernel1 'root=/dev/mmcblk0p3 rw rootwait $(BOXTYPE)_4.boxmode=1'" > $(IMAGE_BUILD_DIR)/STARTUP_1
 	echo "boot emmcflash0.kernel2 'root=/dev/mmcblk0p5 rw rootwait $(BOXTYPE)_4.boxmode=1'" > $(IMAGE_BUILD_DIR)/STARTUP_2
 	echo "boot emmcflash0.kernel3 'root=/dev/mmcblk0p7 rw rootwait $(BOXTYPE)_4.boxmode=1'" > $(IMAGE_BUILD_DIR)/STARTUP_3
 	echo "boot emmcflash0.kernel4 'root=/dev/mmcblk0p9 rw rootwait $(BOXTYPE)_4.boxmode=1'" > $(IMAGE_BUILD_DIR)/STARTUP_4
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMA_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP ::
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMA_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_1 ::
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMA_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_2 ::
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMA_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_3 ::
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMA_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_4 ::
-	dd conv=notrunc if=$(IMAGE_BUILD_DIR)/$(ZGEMMAH_BOOT_IMAGE) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(IMAGE_ROOTFS_ALIGNMENT) \* $(BLOCK_SECTOR))
+	mcopy -i $(IMAGE_BUILD_DIR)/$(H7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP ::
+	mcopy -i $(IMAGE_BUILD_DIR)/$(H7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_1 ::
+	mcopy -i $(IMAGE_BUILD_DIR)/$(H7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_2 ::
+	mcopy -i $(IMAGE_BUILD_DIR)/$(H7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_3 ::
+	mcopy -i $(IMAGE_BUILD_DIR)/$(H7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_4 ::
+	dd conv=notrunc if=$(IMAGE_BUILD_DIR)/$(H7_BOOT_IMAGE) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(IMAGE_ROOTFS_ALIGNMENT) \* $(BLOCK_SECTOR))
 	dd conv=notrunc if=$(RELEASE_DIR)/boot/zImage.dtb of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(KERNEL_PARTITION_OFFSET) \* $(BLOCK_SECTOR))
-	$(HOST_DIR)/bin/resize2fs $(IMAGE_BUILD_DIR)/$(ZGEMMA_IMAGE_LINK) $(ROOTFS_PARTITION_SIZE_MULTI)k
+	$(HOST_DIR)/bin/resize2fs $(IMAGE_BUILD_DIR)/$(H7_IMAGE_LINK) $(ROOTFS_PARTITION_SIZE_MULTI)k
 	# Truncate on purpose
-	dd if=$(IMAGE_BUILD_DIR)/$(ZGEMMA_IMAGE_LINK) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(ROOTFS_PARTITION_OFFSET) \* $(BLOCK_SECTOR)) count=$(shell expr $(ZGEMMA_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR))
+	dd if=$(IMAGE_BUILD_DIR)/$(H7_IMAGE_LINK) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(ROOTFS_PARTITION_OFFSET) \* $(BLOCK_SECTOR)) count=$(shell expr $(H7_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR))
 	mv $(IMAGE_BUILD_DIR)/disk.img $(IMAGE_BUILD_DIR)/$(BOXTYPE)/
 
 # disk image
-flash-image-zgemma-disk-image:
+flash-image-h7-disk-image:
 	# Create final USB-image
 	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
 	cd $(RELEASE_DIR); \
@@ -381,7 +381,7 @@ flash-image-zgemma-disk-image:
 	rm -rf $(IMAGE_BUILD_DIR)
 
 # ofgwrite + disk image
-flash-image-zgemma-multi-rootfs:
+flash-image-h7-multi-rootfs:
 	# Create final USB-image
 	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
 	cp $(RELEASE_DIR)/boot/zImage.dtb $(IMAGE_BUILD_DIR)/$(BOXTYPE)/kernel.bin
@@ -395,7 +395,7 @@ flash-image-zgemma-multi-rootfs:
 	rm -rf $(IMAGE_BUILD_DIR)
 
 # ofgwrite image
-flash-image-zgemma-online:
+flash-image-h7-online:
 	# Create final USB-image
 	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
 	cp $(RELEASE_DIR)/boot/zImage.dtb $(IMAGE_BUILD_DIR)/$(BOXTYPE)/kernel.bin

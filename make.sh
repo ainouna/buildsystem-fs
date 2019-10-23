@@ -126,7 +126,7 @@ case "$REPLY" in
 	54) BOXARCH="arm";BOXTYPE="vuultimo4k";;
 	55) BOXARCH="arm";BOXTYPE="vuuno4kse";;
 	56) BOXARCH="arm";BOXTYPE="vuuno4k";;
-	57) BOXARCH="arm";BOXTYPE="zgemma";;
+	57) BOXARCH="arm";BOXTYPE="h7";;
 	60) BOXARCH="arm";BOXTYPE="hd60";;
 
 	70) BOXARCH="mips";BOXTYPE="vuduo";;
