@@ -39,7 +39,7 @@ ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-multi-rootfs
 endif
 ifeq ($(BOXTYPE), zgemmah7)
-	$(MAKE) flash-image-zgemmah7-multi-rootfs
+	$(MAKE) flash-image-zgemmah7-multi-disk flash-image-zgemmah7-multi-rootfs
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 	$(MAKE) flash-image-vu-rootfs
@@ -66,6 +66,9 @@ disk \
 diskimage:
 ifeq ($(BOXTYPE), hd51)
 	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-disk-image
+endif
+ifeq ($(BOXTYPE), zgemmah7)
+	$(MAKE) flash-image-zgemmah7-multi-disk flash-image-zgemmah7-disk-image
 endif
 	$(TUXBOX_CUSTOMIZE)
 
@@ -321,6 +324,7 @@ SWAP_DATA_PARTITION_OFFSET = $(shell expr $(FOURTH_ROOTFS_PARTITION_OFFSET) \+ $
 
 SWAP_PARTITION_OFFSET = $(shell expr $(SWAP_DATA_PARTITION_OFFSET) \+ $(SWAP_DATA_PARTITION_SIZE))
 
+# create disk img
 flash-image-zgemmah7-multi-disk: $(D)/host_resize2fs
 	rm -rf $(IMAGE_BUILD_DIR)
 	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
@@ -353,19 +357,11 @@ flash-image-zgemmah7-multi-disk: $(D)/host_resize2fs
 	echo "boot emmcflash0.kernel2 'root=/dev/mmcblk0p5 rw rootwait $(BOXTYPE)_4.boxmode=1'" > $(IMAGE_BUILD_DIR)/STARTUP_2
 	echo "boot emmcflash0.kernel3 'root=/dev/mmcblk0p7 rw rootwait $(BOXTYPE)_4.boxmode=1'" > $(IMAGE_BUILD_DIR)/STARTUP_3
 	echo "boot emmcflash0.kernel4 'root=/dev/mmcblk0p9 rw rootwait $(BOXTYPE)_4.boxmode=1'" > $(IMAGE_BUILD_DIR)/STARTUP_4
-	echo "boot emmcflash0.kernel1 'brcm_cma=520M@248M brcm_cma=200M@768M root=/dev/mmcblk0p3 rw rootwait $(BOXTYPE)_4.boxmode=12'" > $(IMAGE_BUILD_DIR)/STARTUP_1_12
-	echo "boot emmcflash0.kernel2 'brcm_cma=520M@248M brcm_cma=200M@768M root=/dev/mmcblk0p5 rw rootwait $(BOXTYPE)_4.boxmode=12'" > $(IMAGE_BUILD_DIR)/STARTUP_2_12
-	echo "boot emmcflash0.kernel3 'brcm_cma=520M@248M brcm_cma=200M@768M root=/dev/mmcblk0p7 rw rootwait $(BOXTYPE)_4.boxmode=12'" > $(IMAGE_BUILD_DIR)/STARTUP_3_12
-	echo "boot emmcflash0.kernel4 'brcm_cma=520M@248M brcm_cma=200M@768M root=/dev/mmcblk0p9 rw rootwait $(BOXTYPE)_4.boxmode=12'" > $(IMAGE_BUILD_DIR)/STARTUP_4_12
 	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP ::
 	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_1 ::
 	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_2 ::
 	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_3 ::
 	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_4 ::
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_1_12 ::
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_2_12 ::
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_3_12 ::
-	mcopy -i $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) -v $(IMAGE_BUILD_DIR)/STARTUP_4_12 ::
 	dd conv=notrunc if=$(IMAGE_BUILD_DIR)/$(ZGEMMAH7_BOOT_IMAGE) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(IMAGE_ROOTFS_ALIGNMENT) \* $(BLOCK_SECTOR))
 	dd conv=notrunc if=$(RELEASE_DIR)/boot/zImage.dtb of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(KERNEL_PARTITION_OFFSET) \* $(BLOCK_SECTOR))
 	$(HOST_DIR)/bin/resize2fs $(IMAGE_BUILD_DIR)/$(ZGEMMAH7_IMAGE_LINK) $(ROOTFS_PARTITION_SIZE_MULTI)k
@@ -373,6 +369,18 @@ flash-image-zgemmah7-multi-disk: $(D)/host_resize2fs
 	dd if=$(IMAGE_BUILD_DIR)/$(ZGEMMAH7_IMAGE_LINK) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(ROOTFS_PARTITION_OFFSET) \* $(BLOCK_SECTOR)) count=$(shell expr $(ZGEMMAH7_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR))
 	mv $(IMAGE_BUILD_DIR)/disk.img $(IMAGE_BUILD_DIR)/$(BOXTYPE)/
 
+# disk image
+flash-image-zgemmah7-disk-image:
+	# Create final USB-image
+	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
+	cd $(RELEASE_DIR); \
+	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(IMAGE_BUILD_DIR)/$(BOXTYPE)/imageversion
+	cd $(IMAGE_BUILD_DIR) && \
+	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_disk_img_$(shell date '+%d.%m.%Y-%H.%M').zip $(BOXTYPE)/disk.img $(BOXTYPE)/imageversion
+	# cleanup
+	rm -rf $(IMAGE_BUILD_DIR)
+
+# ofgwrite + disk image
 flash-image-zgemmah7-multi-rootfs:
 	# Create final USB-image
 	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
@@ -382,10 +390,11 @@ flash-image-zgemmah7-multi-rootfs:
 	bzip2 $(IMAGE_BUILD_DIR)/$(BOXTYPE)/rootfs.tar
 	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(IMAGE_BUILD_DIR)/$(BOXTYPE)/imageversion
 	cd $(IMAGE_BUILD_DIR) && \
-	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').zip $(BOXTYPE)/rootfs.tar.bz2 $(BOXTYPE)/kernel.bin $(BOXTYPE)/disk.img $(BOXTYPE)/imageversion
+	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_disk_ofg_$(shell date '+%d.%m.%Y-%H.%M').zip $(BOXTYPE)/rootfs.tar.bz2 $(BOXTYPE)/kernel.bin $(BOXTYPE)/disk.img $(BOXTYPE)/imageversion
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 
+# ofgwrite image
 flash-image-zgemmah7-online:
 	# Create final USB-image
 	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
@@ -395,10 +404,9 @@ flash-image-zgemmah7-online:
 	bzip2 $(IMAGE_BUILD_DIR)/$(BOXTYPE)/rootfs.tar
 	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(IMAGE_BUILD_DIR)/$(BOXTYPE)/imageversion
 	cd $(IMAGE_BUILD_DIR)/$(BOXTYPE) && \
-	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 kernel.bin imageversion
+	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_ofg_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 kernel.bin imageversion
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
-
 
 ### armbox vu+
 # general
