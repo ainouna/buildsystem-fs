@@ -285,7 +285,7 @@ flash-image-hd60-online:
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 
-### armbox H/
+### armbox H7
 # general
 H7_IMAGE_NAME = disk
 H7_BOOT_IMAGE = boot.img
