@@ -80,6 +80,7 @@ flash-clean:
 	cd $(BASE_DIR)/flash/ufs913 && $(SUDOCMD) rm -rf ./tmp ./out
 	cd $(BASE_DIR)/flash/ufc960 && $(SUDOCMD) rm -rf ./tmp ./out
 	cd $(BASE_DIR)/flash/tf7700 && $(SUDOCMD) rm -rf ./tmp ./out
+	cd $(RELEASE_IMAGE_DIR) && rm -rf *
 	echo ""
 
 # general
