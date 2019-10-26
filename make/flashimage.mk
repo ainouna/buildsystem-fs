@@ -91,7 +91,7 @@ ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 h7))
 # general
 $(BOXTYPE)_IMAGE_NAME = disk
 $(BOXTYPE)_BOOT_IMAGE = boot.img
-$(BOXTYPE)_IMAGE_LINK = $($(BOXYTPE)_IMAGE_NAME).ext4
+$(BOXTYPE)_IMAGE_LINK = $($(BOXTYPE)_IMAGE_NAME).ext4
 $(BOXTYPE)_IMAGE_ROOTFS_SIZE = 294912
 
 ifeq ($(BOXTYPE), hd51)
@@ -213,7 +213,7 @@ flash-image-$(BOXTYPE)-online:
 	bzip2 $(IMAGE_BUILD_DIR)/$(BOXTYPE)/rootfs.tar
 	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(IMAGE_BUILD_DIR)/$(BOXTYPE)/imageversion
 	cd $(IMAGE_BUILD_DIR)/$(BOXTYPE) && \
-	tar -cvzf $(RELEASE_IMAGE_DIR)/$(IMAGEDIR)_multi_ofg_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 kernel.bin imageversion
+	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_ofg_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 kernel.bin imageversion
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 endif
