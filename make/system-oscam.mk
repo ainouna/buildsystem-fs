@@ -3,7 +3,7 @@
 #
 # -----------------------------------------------------------------------------
 
-OSCAM_FLAVOUR ?= oscam
+OSCAM_FLAVOUR ?= oscam-tango
 
 ifeq ($(OSCAM_FLAVOUR), oscam)
 OSCAM_FLAVOUR_URL = https://repo.or.cz/oscam.git
@@ -13,6 +13,10 @@ else ifeq ($(OSCAM_FLAVOUR), oscam-smod)
 OSCAM_FLAVOUR_URL = https://github.com/Schimmelreiter/oscam-smod.git
 OSCAM_FLAVOUR_DIR = oscam-smod.git
 OSCAM_SOURCE_DIR  = oscam-smod
+else ifeq ($(OSCAM_FLAVOUR), oscam-tango)
+OSCAM_FLAVOUR_URL = https://github.com/TangoCash/oscam.git
+OSCAM_FLAVOUR_DIR = oscam-tango.git
+OSCAM_SOURCE_DIR  = oscam-tango
 endif
 
 # -----------------------------------------------------------------------------
