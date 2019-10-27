@@ -1,7 +1,7 @@
 #
 # flashimage
 #
-
+mdo \
 flashimage:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), fortis_hdbox octagon1008 ufs910 ufs922 ipbox55 ipbox99 ipbox9900 cuberevo cuberevo_mini cuberevo_mini2 cuberevo_250hd cuberevo_2000hd cuberevo_3000hd))
 	cd $(BASE_DIR)/flash/nor_flash && echo "$(SUDOPASSWD)" | sudo -S ./make_flash.sh $(MAINTAINER)
@@ -9,14 +9,11 @@ endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), spark spark7162 atevio7500 ufs912 ufs913 ufc960 tf7700))
 	cd $(BASE_DIR)/flash/$(BOXTYPE) && $(SUDOCMD) ./$(BOXTYPE).sh $(MAINTAINER)
 endif
-ifeq ($(BOXTYPE), hd51)
-	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-multi-rootfs
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 h7))
+	$(MAKE) flash-image-$(BOXTYPE)-multi-disk flash-image-$(BOXTYPE)-multi-rootfs
 endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-multi-disk flash-image-hd60-multi-rootfs
-endif
-ifeq ($(BOXTYPE), h7)
-	$(MAKE) flash-image-h7-multi-disk flash-image-h7-multi-rootfs
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 ifeq ($(VU_MULTIBOOT), 1)
@@ -30,16 +27,13 @@ ifeq ($(BOXTYPE), vuduo)
 endif
 	$(TUXBOX_CUSTOMIZE)
 
-mdo \
-multi_disk_ofg:
-ifeq ($(BOXTYPE), hd51)
-	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-multi-rootfs
+ofg \
+ofgimage:
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 h7))
+	$(MAKE) flash-image-$(BOXTYPE)-multi-rootfs
 endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-multi-rootfs
-endif
-ifeq ($(BOXTYPE), h7)
-	$(MAKE) flash-image-h7-multi-disk flash-image-h7-multi-rootfs
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 	$(MAKE) flash-image-vu-rootfs
@@ -48,14 +42,11 @@ endif
 
 oi \
 online-image:
-ifeq ($(BOXTYPE), hd51)
-	$(MAKE) flash-image-hd51-online
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 h7))
+	$(MAKE) flash-image-$(BOXTYPE)-online
 endif
 ifeq ($(BOXTYPE), hd60)
 	$(MAKE) flash-image-hd60-online
-endif
-ifeq ($(BOXTYPE), h7)
-	$(MAKE) flash-image-h7-online
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 	$(MAKE) flash-image-vu-online
@@ -64,11 +55,8 @@ endif
 
 disk \
 diskimage:
-ifeq ($(BOXTYPE), hd51)
-	$(MAKE) flash-image-hd51-multi-disk flash-image-hd51-disk-image
-endif
-ifeq ($(BOXTYPE), h7)
-	$(MAKE) flash-image-h7-multi-disk flash-image-h7-disk-image
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 h7))
+	$(MAKE) flash-image-$(BOXTYPE)-multi-disk flash-image-$(BOXTYPE)-disk-image
 endif
 	$(TUXBOX_CUSTOMIZE)
 
