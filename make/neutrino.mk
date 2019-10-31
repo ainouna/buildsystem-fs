@@ -126,11 +126,11 @@ NEUTRINO_DEPS += $(D)/lcd4linux
 endif
 
 ifeq  ($(FLAVOUR), neutrino-mp-ddt)
-GIT_URL     ?= https://github.com/Duckbox-Developers
-NEUTRINO_MP  = neutrino-mp-ddt
-LIBSTB_HAL   = libstb-hal-ddt
-NMP_BRANCH  ?= master
-HAL_BRANCH  ?= master
+GIT_URL     ?= https://github.com/fs-basis
+NEUTRINO_MP  = neutrino-mp-fs
+LIBSTB_HAL   = libstb-hal-fs
+NMP_BRANCH  ?= nmp-ddt
+HAL_BRANCH  ?= libhal-ddt
 NMP_PATCHES  = $(NEUTRINO_MP_DDT_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_DDT_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-mp-fs)
