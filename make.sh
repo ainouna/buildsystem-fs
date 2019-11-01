@@ -255,11 +255,12 @@ echo "IMAGE=$IMAGE" >> config
 ##############################################
 
 case $6 in
-	[1-3]) REPLY=$6;;
+	[1-4]) REPLY=$6;;
 	*)	echo -e "\nWhich Neutrino variant do you want to build?:"
 		echo "   1)  neutrino-mp-ddt      [ arm/sh4 ]"
 		echo "   2)  neutrino-mp-fs       [ arm/sh4 ]"
 		echo "   3)  neutrino-mp-fs-lcd4l [ arm/sh4 ]"
+		echo "   4)  neutrino-mp-fs-test  [ arm/sh4 ] !! NO LCD4L GLCD SUPPORT"
 		read -p "Select Image to build   (1-3)? ";;
 esac
 
@@ -267,6 +268,7 @@ case "$REPLY" in
 	1) FLAVOUR="neutrino-mp-ddt";;
 	2) FLAVOUR="neutrino-mp-fs";;
 	3) FLAVOUR="neutrino-mp-fs-lcd4l";;
+	4) FLAVOUR="neutrino-mp-fs-test";;
 	*) FLAVOUR="neutrino-mp-fs";;
 esac
 echo "FLAVOUR=$FLAVOUR" >> config

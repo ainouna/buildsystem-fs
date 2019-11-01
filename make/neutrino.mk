@@ -149,6 +149,14 @@ NMP_BRANCH  ?= lcd4l
 HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_MP_FS_LCD4L_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
+else ifeq  ($(FLAVOUR), neutrino-mp-fs-test)
+GIT_URL      ?= https://github.com/fs-basis
+NEUTRINO_MP  = neutrino-mp-fs
+LIBSTB_HAL   = libstb-hal-fs
+NMP_BRANCH  ?= test
+HAL_BRANCH  ?= master
+NMP_PATCHES  = $(NEUTRINO_MP_FS_TEST_PATCHES)
+HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
 endif
 
 N_OBJDIR = $(BUILD_TMP)/$(NEUTRINO_MP)
