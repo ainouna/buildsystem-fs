@@ -261,7 +261,7 @@ case $6 in
 		echo "   2)  neutrino-mp-fs       [ arm/sh4 ]"
 		echo "   3)  neutrino-mp-fs-lcd4l [ arm/sh4 ]"
 		echo "   4)  neutrino-mp-fs-test  [ arm/sh4 ] !! NO LCD4L GLCD SUPPORT"
-		read -p "Select Image to build   (1-3)? ";;
+		read -p "Select Image to build   (1-4)? ";;
 esac
 
 case "$REPLY" in
