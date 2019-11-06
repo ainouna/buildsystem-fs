@@ -326,3 +326,4 @@ $(D)/netzkino: $(D)/bootstrap
 		cp -R $(BUILD_TMP)/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/netzkino
 	$(TOUCH)
+endif
