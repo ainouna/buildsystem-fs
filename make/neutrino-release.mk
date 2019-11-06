@@ -629,7 +629,7 @@ endif
 neutrino-mp-release-base:
 	rm -rf $(RELEASE_DIR) || true
 	install -d $(RELEASE_DIR)
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
 else
 	install -d $(RELEASE_DIR)/{bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
@@ -643,26 +643,26 @@ endif
 	install -d $(RELEASE_DIR)/mnt/{hdd,nfs,usb}
 	install -d $(RELEASE_DIR)/mnt/mnt{0..7}
 	install -d $(RELEASE_DIR)/usr/{bin,lib,sbin,share}
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 	install -d $(RELEASE_DIR)/usr/lib/tuxbox/{luaplugins,plugins}
 endif
 	install -d $(RELEASE_DIR)/usr/share/{fonts,tuxbox,udhcpc,zoneinfo,lua}
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/logo
 	install -d $(RELEASE_DIR)/usr/share/lua/5.2
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,logos,net,tuxbox,update}
 else
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
 endif
 	install -d $(RELEASE_DIR)/var/lib/{nfs,modules}
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 	install -d $(RELEASE_DIR)/var/net/epg
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
 else
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,plugins,themes}
 endif
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 	install -d $(RELEASE_DIR)/var/tuxbox/webtv
 	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
 else
@@ -861,7 +861,7 @@ endif
 #
 # fonts
 #
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 	if [ -e $(TARGET_DIR)/usr/share/fonts/ubuntu-l-webfont.ttf ]; then \
 		cp -aR $(TARGET_DIR)/usr/share/fonts $(RELEASE_DIR)/usr/share/; \
 	else \
@@ -1094,7 +1094,7 @@ $(D)/neutrino-mp-release: neutrino-mp-release-base neutrino-mp-release-$(BOXTYPE
 	ln -s /tmp $(RELEASE_DIR)/var/run
 	ln -s /tmp $(RELEASE_DIR)/var/tmp
 #
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/scan.jpg $(RELEASE_DIR)/var/boot/
 	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3.jpg $(RELEASE_DIR)/var/boot/
