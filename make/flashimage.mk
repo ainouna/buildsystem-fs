@@ -781,3 +781,6 @@ flash-image-vuduo:
 	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_usb_$(shell date '+%d.%m.%Y-%H.%M').zip $(VUDUO_PREFIX)*
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
+#
+endif
+#
