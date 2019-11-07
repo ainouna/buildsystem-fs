@@ -1,7 +1,10 @@
-#
-# Makefile to build NEUTRINO-PLUGINS
-#
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
+#
+########################################################################
+#
+# Makefile to build DD NEUTRINO-PLUGINS
+#
+########################################################################
 #
 # links
 #
@@ -221,11 +224,11 @@ $(D)/neutrino-mp-plugin-iptvplayer: $(D)/librtmp $(D)/python_twisted_small
 #
 else
 #
-# Makefile to own plugins
+########################################################################
 #
-
+# Makefile to build OWN NEUTRINO-PLUGINS
 #
-# own plugins
+########################################################################
 #
 NEUTRINO_PLUGINS  = $(D)/neutrino-mp-plugin
 NEUTRINO_PLUGINS += $(LOCAL_NEUTRINO_PLUGINS)
@@ -244,17 +247,17 @@ $(D)/neutrino-mp-plugin.do_prepare:
 		then cd $(ARCHIVE)/plugins.git; git pull; \
 		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins.git plugins.git; \
 		fi
-	cp -ra $(ARCHIVE)/plugins.git $(SOURCE_DIR)/plugins
-	cp -ra $(SOURCE_DIR)/plugins $(SOURCE_DIR)/plugins.org
+	cp -ra $(ARCHIVE)/plugins.git $(SOURCE_DIR)/neutrino-mp-plugins
+	cp -ra $(SOURCE_DIR)/neutrino-mp-plugins $(SOURCE_DIR)/neutrino-mp-plugins.org
 	@touch $@
 
 $(D)/neutrino-mp-plugin.config.status: $(D)/bootstrap
 	rm -rf $(NP_OBJDIR); \
 	test -d $(NP_OBJDIR) || mkdir -p $(NP_OBJDIR); \
 	cd $(NP_OBJDIR); \
-		$(SOURCE_DIR)/plugins/autogen.sh $(SILENT_OPT) && automake --add-missing $(SILENT_OPT); \
+		$(SOURCE_DIR)/neutrino-mp-plugins/autogen.sh $(SILENT_OPT) && automake --add-missing $(SILENT_OPT); \
 		$(BUILDENV) \
-		$(SOURCE_DIR)/plugins/configure $(SILENT_OPT) \
+		$(SOURCE_DIR)/neutrino-mp-plugins/configure $(SILENT_OPT) \
 			--host=$(TARGET) \
 			--build=$(BUILD) \
 			--prefix= \
