@@ -222,7 +222,7 @@ $(D)/neutrino-mp-plugin-iptvplayer: $(D)/librtmp $(D)/python_twisted_small
 	$(REMOVE)/iptvplayer
 	$(TOUCH)
 #
-else
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
 #
 ########################################################################
 #

@@ -390,7 +390,7 @@ flash-image-vuduo:
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 #
-else
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
 #
 ########################################################################
 #
