@@ -876,7 +876,7 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 			ln -s /usr/share/fonts/DejaVuLGCSansMono-Bold.ttf $(RELEASE_DIR)/usr/share/fonts/tuxtxt.ttf; \
 		fi; \
 	fi
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))s
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
 	if [ -e $(TARGET_DIR)/usr/share/fonts/ubuntu-l-webfont.ttf ]; then \
 		cp -aR $(TARGET_DIR)/usr/share/fonts $(RELEASE_DIR)/usr/share/; \
 	else \
