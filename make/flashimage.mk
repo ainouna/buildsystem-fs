@@ -1,7 +1,14 @@
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 #
+########################################################################
+#
+# Makefile to build DD Flashimage
+#
+########################################################################
+#
 # flashimage
 #
+
 flashimage:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), fortis_hdbox octagon1008 ufs910 ufs922 ipbox55 ipbox99 ipbox9900 cuberevo cuberevo_mini cuberevo_mini2 cuberevo_250hd cuberevo_2000hd cuberevo_3000hd))
 	cd $(BASE_DIR)/flash/nor_flash && echo "$(SUDOPASSWD)" | sudo -S ./make_flash.sh $(MAINTAINER)
@@ -385,8 +392,15 @@ flash-image-vuduo:
 #
 else
 #
-# own flashimage
+########################################################################
 #
+# Makefile to build FS Flashimage
+#
+########################################################################
+#
+# flashimage
+#
+
 mdo \
 flashimage:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), fortis_hdbox octagon1008 ufs910 ufs922 ipbox55 ipbox99 ipbox9900 cuberevo cuberevo_mini cuberevo_mini2 cuberevo_250hd cuberevo_2000hd cuberevo_3000hd))
