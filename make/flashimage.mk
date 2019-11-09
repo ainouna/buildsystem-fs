@@ -54,14 +54,12 @@ ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuu
 endif
 	$(TUXBOX_CUSTOMIZE)
 
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
 disk \
 diskimage:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 h7))
 	$(MAKE) flash-image-$(BOXTYPE)-multi-disk flash-image-$(BOXTYPE)-disk-image
 endif
 	$(TUXBOX_CUSTOMIZE)
-endif
 
 flash-clean:
 	cd $(BASE_DIR)/flash/nor_flash && $(SUDOCMD) rm -rf ./tmp ./out
@@ -214,7 +212,6 @@ flash-image-$(BOXTYPE)-online:
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
 # disk image
 flash-image-$(BOXTYPE)-disk-image:
 	# Create final USB-image
@@ -225,8 +222,6 @@ flash-image-$(BOXTYPE)-disk-image:
 	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_disk_img_$(shell date '+%d.%m.%Y-%H.%M').zip $(IMAGEDIR)/disk.img $(IMAGEDIR)/imageversion
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
-endif
-
 endif
 
 ### armbox hd60
