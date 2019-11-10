@@ -531,8 +531,8 @@ $(D)/timezone: $(D)/bootstrap find-zic $(ARCHIVE)/$(TZDATA_SOURCE)
 #
 # freetype
 #
-FREETYPE_VER = 2.9.1
-FREETYPE_SOURCE = freetype-$(FREETYPE_VER).tar.bz2
+FREETYPE_VER = 2.10.1
+FREETYPE_SOURCE = freetype-$(FREETYPE_VER).tar.xz
 FREETYPE_PATCH = freetype-$(FREETYPE_VER).patch
 
 $(ARCHIVE)/$(FREETYPE_SOURCE):
@@ -1481,7 +1481,7 @@ $(D)/libsoup: $(D)/bootstrap $(D)/sqlite $(D)/libxml2 $(D)/libglib2 $(ARCHIVE)/$
 #
 # libxml2
 #
-LIBXML2_VER = 2.9.8
+LIBXML2_VER = 2.9.10
 LIBXML2_SOURCE = libxml2-$(LIBXML2_VER).tar.gz
 LIBXML2_PATCH = libxml2-$(LIBXML2_VER).patch
 
