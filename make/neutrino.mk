@@ -2,7 +2,7 @@
 # Makefile to build NEUTRINO
 #
 $(TARGET_DIR)/.version:
-	echo "distro=`sed -n 's/\#define PACKAGE_NAME "//p' $(N_OBJDIR)/config.h | sed 's/"//'`" >> $@
+	echo "distro=$(FLAVOUR)" > $@
 	echo "imagename=`sed -n 's/\#define PACKAGE_NAME "//p' $(N_OBJDIR)/config.h | sed 's/"//'`" >> $@
 	echo "imageversion=`sed -n 's/\#define PACKAGE_VERSION "//p' $(N_OBJDIR)/config.h | sed 's/"//'`" >> $@
 	echo "homepage=https://github.com/fs-basis" >> $@
