@@ -2,13 +2,16 @@
 # Makefile to build NEUTRINO
 #
 $(TARGET_DIR)/.version:
-	echo "imagename=Neutrino HD" > $@
+	echo "distro=`sed -n 's/\#define PACKAGE_NAME "//p' $(N_OBJDIR)/config.h | sed 's/"//'`" >> $@
+	echo "imagename=`sed -n 's/\#define PACKAGE_NAME "//p' $(N_OBJDIR)/config.h | sed 's/"//'`" >> $@
+	echo "imageversion=`sed -n 's/\#define PACKAGE_VERSION "//p' $(N_OBJDIR)/config.h | sed 's/"//'`" >> $@
 	echo "homepage=https://github.com/fs-basis" >> $@
 	echo "creator=$(MAINTAINER)" >> $@
 	echo "docs=https://github.com/fs-basis" >> $@
 	echo "forum=https://github.com/fs-basis/neutrino-mp-fs" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
+	echo "imagedir=$(BOXTYPE)" >> $@
 
 # -----------------------------------------------------------------------------
 ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
