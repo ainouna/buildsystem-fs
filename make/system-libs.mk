@@ -1877,6 +1877,7 @@ $(D)/alsa_lib: $(D)/bootstrap $(ARCHIVE)/$(ALSA_LIB_SOURCE)
 			--disable-alisp \
 			--disable-hwdep \
 			--disable-python \
+			--disable-topology \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
