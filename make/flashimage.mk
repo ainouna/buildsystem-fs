@@ -59,9 +59,9 @@ flash-clean:
 	cd $(BASE_DIR)/flash/ufs912 && $(SUDOCMD) rm -rf ./tmp ./out
 	cd $(BASE_DIR)/flash/ufs913 && $(SUDOCMD) rm -rf ./tmp ./out
 	cd $(BASE_DIR)/flash/tf7700 && $(SUDOCMD) rm -rf ./tmp ./out
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
+#ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
 	cd $(RELEASE_IMAGE_DIR) && rm -rf *
-endif
+#endif
 	echo ""
 
 # general
