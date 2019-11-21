@@ -241,8 +241,8 @@ endif
 
 $(D)/neutrino-mp-plugin.do_prepare:
 	$(START_BUILD)
-	rm -rf $(SOURCE_DIR)/plugins
-	rm -rf $(SOURCE_DIR)/plugins.org
+	rm -rf $(SOURCE_DIR)/neutrino-mp-plugins
+	rm -rf $(SOURCE_DIR)/neutrino-mp-plugins.org
 	set -e; if [ -d $(ARCHIVE)/plugins.git ]; \
 		then cd $(ARCHIVE)/plugins.git; git pull; \
 		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins.git plugins.git; \
