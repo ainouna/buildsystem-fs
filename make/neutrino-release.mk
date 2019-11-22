@@ -236,6 +236,15 @@ neutrino-mp-release-tf7700:
 	$(MAKE) tfinstaller
 
 #
+# WWIO Bre2ze4k
+#
+neutrino-mp-release-bre2ze4k:
+	install -m 0755 $(SKEL_ROOT)/release/halt_hd51 $(RELEASE_DIR)/etc/init.d/halt
+	cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
+	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/extra/*.ko $(RELEASE_DIR)/lib/modules/
+	cp $(TARGET_DIR)/boot/zImage.dtb $(RELEASE_DIR)/boot/
+
+#
 # Mutant HD51
 #
 neutrino-mp-release-hd51:
