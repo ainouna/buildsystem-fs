@@ -47,7 +47,7 @@ endif
 
 disk \
 diskimage:
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), hd51 h7))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), bre2ze4k hd51 h7))
 	$(MAKE) flash-image-$(BOXTYPE)-multi-disk flash-image-$(BOXTYPE)-disk-image
 endif
 	$(TUXBOX_CUSTOMIZE)
