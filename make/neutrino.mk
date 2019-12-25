@@ -3,26 +3,12 @@
 #
 $(TARGET_DIR)/.version:
 	echo "imagename=Neutrino HD" > $@
-#	echo "distro=$(FLAVOUR)" > $@
-#	echo "imagename=`sed -n 's/\#define PACKAGE_NAME "//p' $(N_OBJDIR)/config.h | sed 's/"//'`" >> $@
-#	echo "imageversion=`sed -n 's/\#define PACKAGE_VERSION "//p' $(N_OBJDIR)/config.h | sed 's/"//'`" >> $@
 	echo "homepage=https://github.com/fs-basis" >> $@
 	echo "creator=$(MAINTAINER)" >> $@
 	echo "docs=https://github.com/fs-basis" >> $@
 	echo "forum=https://github.com/fs-basis/neutrino-mp-fs" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
-#	echo "imagedir=$(BOXTYPE)" >> $@
-
-# -----------------------------------------------------------------------------
-#ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
-#e2-multiboot:
-#	touch $(TARGET_DIR)/usr/bin/enigma2
-#	echo -e "$(FLAVOUR) `sed -n 's/\#define PACKAGE_VERSION "//p' $(N_OBJDIR)/config.h | sed 's/"//'` \\\n \\\l\n" > $(TARGET_DIR)/etc/issue
-#	touch $(TARGET_DIR)/var/lib/opkg/status
-#	cp -a $(TARGET_DIR)/.version $(TARGET_DIR)/etc/image-version
-#endif
-# -----------------------------------------------------------------------------
 
 AUDIODEC = ffmpeg
 
@@ -324,9 +310,6 @@ neutrino-mp: $(D)/neutrino-mp.do_prepare $(D)/neutrino-mp.config.status $(D)/neu
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/.version
-#ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
-#	make e2-multiboot
-#endif
 	touch $(D)/$(notdir $@)
 	make neutrino-mp-release
 	$(TUXBOX_CUSTOMIZE)
@@ -350,9 +333,6 @@ neutrino-mp-plugins: $(D)/neutrino-mp-plugins.do_prepare $(D)/neutrino-mp-plugin
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/.version
 	make $(NEUTRINO_PLUGINS)
-#ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
-#	make e2-multiboot
-#endif
 	touch $(D)/$(notdir $@)
 	make neutrino-mp-release
 	$(TUXBOX_CUSTOMIZE)
