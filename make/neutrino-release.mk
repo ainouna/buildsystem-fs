@@ -880,6 +880,7 @@ $(D)/neutrino-mp-release: neutrino-mp-release-base neutrino-mp-release-$(BOXTYPE
 #
 	cp -dpfr $(RELEASE_DIR)/etc $(RELEASE_DIR)/var
 	rm -fr $(RELEASE_DIR)/etc
+	#ln -sf /var/etc $(RELEASE_DIR)
 	ln -sf var/etc $(RELEASE_DIR)/etc
 #
 	ln -s /tmp $(RELEASE_DIR)/lib/init
