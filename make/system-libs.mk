@@ -472,7 +472,7 @@ $(D)/zlib: $(D)/bootstrap $(ARCHIVE)/$(ZLIB_SOURCE)
 #
 # bzip2
 #
-BZIP2_VER = 1.0.7
+BZIP2_VER = 1.0.8
 BZIP2_SOURCE = bzip2-$(BZIP2_VER).tar.gz
 BZIP2_Patch = bzip2-$(BZIP2_VER).patch
 
@@ -922,7 +922,7 @@ $(D)/libcurl: $(D)/bootstrap $(D)/zlib $(D)/openssl $(D)/ca-bundle $(ARCHIVE)/$(
 #
 # libfribidi
 #
-LIBFRIBIDI_VER = 1.0.7
+LIBFRIBIDI_VER = 1.0.8
 LIBFRIBIDI_SOURCE = fribidi-$(LIBFRIBIDI_VER).tar.bz2
 LIBFRIBIDI_PATCH = libfribidi-$(LIBFRIBIDI_VER).patch
 
