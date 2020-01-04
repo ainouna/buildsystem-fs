@@ -1602,11 +1602,11 @@ $(D)/libpopt: $(D)/bootstrap $(ARCHIVE)/$(LIBPOPT_SOURCE)
 #
 # libroxml
 #
-LIBROXML_VER = 2.3.0
+LIBROXML_VER = 3.0.2
 LIBROXML_SOURCE = libroxml-$(LIBROXML_VER).tar.gz
 
 $(ARCHIVE)/$(LIBROXML_SOURCE):
-	$(WGET) http://download.libroxml.net/pool/v2.x/$(LIBROXML_SOURCE)
+	$(WGET) http://download.libroxml.net/pool/v3.x/$(LIBROXML_SOURCE)
 
 $(D)/libroxml: $(D)/bootstrap $(ARCHIVE)/$(LIBROXML_SOURCE)
 	$(START_BUILD)
@@ -1629,7 +1629,7 @@ $(D)/libroxml: $(D)/bootstrap $(ARCHIVE)/$(LIBROXML_SOURCE)
 #
 # pugixml
 #
-PUGIXML_VER = 1.9
+PUGIXML_VER = 1.10
 PUGIXML_SOURCE = pugixml-$(PUGIXML_VER).tar.gz
 PUGIXML_PATCH = pugixml-$(PUGIXML_VER)-config.patch
 
