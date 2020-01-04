@@ -1618,6 +1618,7 @@ $(D)/libroxml: $(D)/bootstrap $(ARCHIVE)/$(LIBROXML_SOURCE)
 			--enable-shared \
 			--disable-static \
 			--disable-roxml \
+			--disable-rocat \
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
@@ -1982,6 +1983,7 @@ $(D)/librtmp: $(D)/bootstrap $(D)/zlib $(D)/openssl $(ARCHIVE)/$(LIBRTMP_SOURCE)
 		$(MAKE) install prefix=/usr DESTDIR=$(TARGET_DIR) MANDIR=$(TARGET_DIR)/.remove
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/librtmp.pc
 	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,rtmpgw rtmpsrv rtmpsuck)
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,rtmpdump)
 	$(REMOVE)/rtmpdump-git-$(LIBRTMP_VER)
 	$(TOUCH)
 
