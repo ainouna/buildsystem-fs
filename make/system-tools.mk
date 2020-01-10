@@ -403,9 +403,9 @@ $(D)/e2fsprogs: $(D)/bootstrap $(D)/util_linux $(ARCHIVE)/$(E2FSPROGS_SOURCE)
 #
 # util_linux
 #
-UTIL_LINUX_MAJOR = 2.26
-UTIL_LINUX_MINOR = 2
-UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR).$(UTIL_LINUX_MINOR)
+UTIL_LINUX_MAJOR = 2.35
+UTIL_LINUX_MINOR = -rc2
+UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR)$(UTIL_LINUX_MINOR)
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VER).tar.xz
 
 $(ARCHIVE)/$(UTIL_LINUX_SOURCE):
@@ -936,8 +936,59 @@ $(D)/sysstat: $(D)/bootstrap $(ARCHIVE)/$(SYSSTAT_SOURCE)
 	$(REMOVE)/sysstat-$(SYSSTAT_VER)
 	$(TOUCH)
 
+ifeq ($(BOXARCH), $(filter $(BOXARCH), FOR_LATER_USE))
+#($(BOXARCH), $(filter $(BOXARCH), arm mips))
 #
-# autofs
+# autofs (arm/mips)
+#
+AUTOFS_VER    = 5.1.5
+AUTOFS_DIR    = autofs-$(AUTOFS_VER)
+AUTOFS_SOURCE = autofs-$(AUTOFS_VER).tar.xz
+AUTOFS_URL    = https://www.kernel.org/pub/linux/daemons/autofs/v5
+
+$(ARCHIVE)/$(AUTOFS_SOURCE):
+	$(WGET) $(AUTOFS_URL)/$(AUTOFS_SOURCE)
+
+AUTOFS_PATCH  = \
+	autofs-$(AUTOFS_VER)-include-linux-nfs.h-directly-in-rpc_sub.patch \
+	autofs-$(AUTOFS_VER)-add-strictexpire-mount-option.patch \
+	autofs-$(AUTOFS_VER)-fix-hesiod-string-check-in-master_parse.patch \
+	autofs-$(AUTOFS_VER)-add-NULL-check-for-get_addr_string-return.patch \
+	autofs-$(AUTOFS_VER)-use-malloc-in-spawn_c.patch \
+	autofs-$(AUTOFS_VER)-add-mount_verbose-configuration-option.patch \
+	autofs-$(AUTOFS_VER)-optionally-log-mount-requestor-process-info.patch \
+	autofs-$(AUTOFS_VER)-log-mount-call-arguments-if-mount_verbose-is-set.patch \
+	autofs-$(AUTOFS_VER)-add-ignore-mount-option.patch \
+	autofs-$(AUTOFS_VER)-Fix-NFS-mount-from-IPv6-addresses.patch \
+	autofs-$(AUTOFS_VER)-remove-bashism.patch \
+	autofs-$(AUTOFS_VER)-cross.patch \
+	autofs-$(AUTOFS_VER)-fix_disable_ldap.patch \
+	autofs-$(AUTOFS_VER)-force-STRIP-to-emtpy.patch
+
+$(D)/autofs: $(D)/bootstrap $(D)/libnsl $(D)/e2fsprogs $(D)/openssl $(D)/libxml2 $(ARCHIVE)/$(AUTOFS_SOURCE)
+	$(START_BUILD)
+	$(REMOVE)/autofs-$(AUTOFS_VER)
+	$(UNTAR)/$(AUTOFS_SOURCE)
+	$(CHDIR)/autofs-$(AUTOFS_VER); \
+		$(call apply_patches, $(AUTOFS_PATCH)); \
+		cp aclocal.m4 acinclude.m4; \
+		autoconf; \
+		$(CONFIGURE) \
+			--prefix=/usr \
+		; \
+		$(MAKE) all CC=$(TARGET)-gcc STRIP=$(TARGET)-strip; \
+		$(MAKE) install INSTALLROOT=$(TARGET_DIR) SUBDIRS="lib daemon modules"
+	install -m 755 $(SKEL_ROOT)/etc/init.d/autofs $(TARGET_DIR)/etc/init.d/
+	install -m 644 $(SKEL_ROOT)/etc/auto.hotplug $(TARGET_DIR)/etc/
+	install -m 644 $(SKEL_ROOT)/etc/auto.master $(TARGET_DIR)/etc/
+	install -m 644 $(SKEL_ROOT)/etc/auto.misc $(TARGET_DIR)/etc/
+	install -m 644 $(SKEL_ROOT)/etc/auto.network $(TARGET_DIR)/etc/
+	ln -sf ../usr/sbin/automount $(TARGET_DIR)/sbin/automount
+	$(REMOVE)/autofs-$(AUTOFS_VER)
+	$(TOUCH)
+else
+#
+# autofs (sh4)
 #
 AUTOFS_VER = 4.1.4
 AUTOFS_SOURCE = autofs-$(AUTOFS_VER).tar.gz
@@ -967,6 +1018,7 @@ $(D)/autofs: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/$(AUTOFS_SOURCE)
 	ln -sf ../usr/sbin/automount $(TARGET_DIR)/sbin/automount
 	$(REMOVE)/autofs-$(AUTOFS_VER)
 	$(TOUCH)
+endif
 
 #
 # shairport
