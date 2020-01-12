@@ -46,6 +46,7 @@ printenv:
 	@echo "TARGET            : $(TARGET)"
 	@echo "BOXTYPE           : $(BOXTYPE)"
 	@echo "KERNEL_VERSION    : $(KERNEL_VER)"
+	@echo "GCC VERSION       : $(BS_GCC_VER)"
 	@echo "EXTERNAL_LCD      : $(EXTERNAL_LCD)"
 	@echo "MEDIAFW           : $(MEDIAFW)"
 	@echo -e "FLAVOUR           : $(TERM_YELLOW)$(FLAVOUR)$(TERM_NORMAL)"
@@ -102,13 +103,14 @@ include make/driver-sh4.mk
 endif
 ifeq ($(BOXARCH), arm)
 include make/linux-kernel-arm.mk
-include make/crosstool-arm.mk
 include make/driver-arm.mk
 endif
 ifeq ($(BOXARCH), mips)
 include make/linux-kernel-mips.mk
-include make/crosstool-mips.mk
 include make/driver-mips.mk
+endif
+ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
+include make/crosstool.mk
 endif
 include make/gstreamer.mk
 include make/root-etc.mk

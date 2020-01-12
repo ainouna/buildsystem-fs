@@ -1,25 +1,31 @@
 #
-# libnsl
+# cortex-strings
 #
-LIBNSL_VER = 1.2.0
-LIBNSL_SOURCE = libnsl-$(LIBNSL_VER).tar.gz
+CORTEX_STRINGS_VER = 48fd30c
+CORTEX_STRINGS_SOURCE = cortex-strings-git-$(CORTEX_STRINGS_VER).tar.bz2
+CORTEX_STRINGS_URL = http://git.linaro.org/git-ro/toolchain/cortex-strings.git
 
-$(ARCHIVE)/$(LIBNSL_SOURCE):
-	$(WGET) https://github.com/thkukuk/libnsl/archive/v1.2.0/$(LIBNSL_SOURCE)
+$(ARCHIVE)/$(CORTEX_STRINGS_SOURCE):
+	$(SCRIPTS_DIR)/get-git-archive.sh $(CORTEX_STRINGS_URL) $(CORTEX_STRINGS_VER) $(notdir $@) $(ARCHIVE)
 
-$(D)/libnsl: $(D)/bootstrap $(ARCHIVE)/$(LIBNSL_SOURCE)
+$(D)/cortex_strings: $(D)/directories $(ARCHIVE)/$(CORTEX_STRINGS_SOURCE)
 	$(START_BUILD)
-	$(REMOVE)/libnsl-$(LIBNSL_VER)
-	$(UNTAR)/$(LIBNSL_SOURCE)
-	$(CHDIR)/libnsl-$(LIBNSL_VER); \
-		$(CONFIGURE) \
+	$(REMOVE)/cortex-strings-git-$(CORTEX_STRINGS_VER)
+	$(UNTAR)/$(CORTEX_STRINGS_SOURCE)
+	$(CHDIR)/cortex-strings-git-$(CORTEX_STRINGS_VER); \
+		./autogen.sh  $(SILENT_OPT); \
+		$(MAKE_OPTS) \
+		./configure $(SILENT_OPT)\
+			--build=$(BUILD) \
+			--host=$(TARGET) \
 			--prefix=/usr \
-			; \
-		$(MAKE) all; \
+			--disable-shared \
+			--enable-static \
+		; \
+		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
-		$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libnsl.pc
-		$(REWRITE_LIBTOOL)/libnsl.la
-	$(REMOVE)/libnsl-$(LIBNSL_VER)
+	$(REWRITE_LIBTOOL)/libcortex-strings.la
+	$(REMOVE)/cortex-strings-git-$(CORTEX_STRINGS_VER)
 	$(TOUCH)
 
 #
