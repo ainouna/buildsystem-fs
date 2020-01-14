@@ -30,6 +30,7 @@ VUDUO_PATCHES = \
 		mipsbox/kernel-add-support-for-gcc7.patch \
 		mipsbox/kernel-add-support-for-gcc8.patch \
 		mipsbox/kernel-add-support-for-gcc9.patch \
+		mipsbox/gcc9_backport.patch \
 		mipsbox/rtl8712-fix-warnings.patch \
 		mipsbox/rtl8187se-fix-warnings.patch \
 		mipsbox/0001-Support-TBS-USB-drivers-3.9.patch \
@@ -38,6 +39,8 @@ VUDUO_PATCHES = \
 		mipsbox/0001-stv090x-optimized-TS-sync-control.patch \
 		mipsbox/blindscan2.patch \
 		mipsbox/genksyms_fix_typeof_handling.patch \
+		mipsbox/0002-log2-give-up-on-gcc-constant-optimizations.patch \
+		mipsbox/0003-cp1emu-do-not-use-bools-for-arithmetic.patch \
 		mipsbox/test.patch \
 		mipsbox/01-10-si2157-Silicon-Labs-Si2157-silicon-tuner-driver.patch \
 		mipsbox/02-10-si2168-Silicon-Labs-Si2168-DVB-T-T2-C-demod-driver.patch \
