@@ -435,7 +435,11 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l neutrino-mp-fs-test))
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
 endif
+ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
+	install -d $(RELEASE_DIR)/var/lib/{nfs,modules,opkg}
+else
 	install -d $(RELEASE_DIR)/var/lib/{nfs,modules}
+endif
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-ddt))
 	install -d $(RELEASE_DIR)/var/net/epg
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
@@ -456,7 +460,7 @@ endif
 	ln -s ../init.d/sendsigs $(RELEASE_DIR)/etc/rc.d/rc6.d/S20sendsigs
 	ln -s ../init.d/umountfs $(RELEASE_DIR)/etc/rc.d/rc6.d/S40umountfs
 	ln -s ../init.d/reboot $(RELEASE_DIR)/etc/rc.d/rc6.d/S90reboot
-	ln -sf /usr/share $(RELEASE_DIR)/share
+	ln -sf usr/share $(RELEASE_DIR)/share
 	ln -sf /usr/share/tuxbox/neutrino/icons/logo $(RELEASE_DIR)/logos
 	ln -sf /usr/share/tuxbox/neutrino/icons/logo $(RELEASE_DIR)/var/httpd/logos
 	ln -sf /var/tuxbox/plugins $(RELEASE_DIR)/var/plugins
@@ -723,6 +727,18 @@ ifeq ($(EXTERNAL_LCD), $(filter $(EXTERNAL_LCD), lcd4linux both))
 		cp -aR $(SKEL_ROOT)/var/tuxbox/lcd $(RELEASE_DIR)/var/tuxbox
 		ln -s /var/tuxbox/lcd $(RELEASE_DIR)/usr/share/tuxbox/lcd
 endif
+#
+# e2-multiboot
+#
+ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
+	if [ -e $(TARGET_DIR)/var/lib/opkg/status ]; then \
+		cp -af $(TARGET_DIR)/etc/image-version $(RELEASE_DIR)/etc; \
+		cp -af $(TARGET_DIR)/etc/issue $(RELEASE_DIR)/etc; \
+		cp -af $(TARGET_DIR)/usr/bin/enigma2 $(RELEASE_DIR)/usr/bin; \
+		cp -af $(TARGET_DIR)/var/lib/opkg/status $(RELEASE_DIR)/var/lib/opkg; \
+	fi
+endif
+#
 # alsa
 #
 	if [ -e $(TARGET_DIR)/usr/share/alsa ]; then \
@@ -864,7 +880,7 @@ $(D)/neutrino-mp-release: neutrino-mp-release-base neutrino-mp-release-$(BOXTYPE
 #
 	cp -dpfr $(RELEASE_DIR)/etc $(RELEASE_DIR)/var
 	rm -fr $(RELEASE_DIR)/etc
-	ln -sf /var/etc $(RELEASE_DIR)
+	ln -sf var/etc $(RELEASE_DIR)/etc
 #
 	ln -s /tmp $(RELEASE_DIR)/lib/init
 	ln -s /tmp $(RELEASE_DIR)/var/lib/urandom
