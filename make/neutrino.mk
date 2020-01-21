@@ -92,6 +92,7 @@ endif
 
 N_CONFIG_OPTS  = $(LOCAL_NEUTRINO_BUILD_OPTIONS)
 N_CONFIG_OPTS += --with-boxtype=$(BOXTYPE)
+LH_CONFIG_OPTS += --with-boxtype=$(BOXTYPE)
 N_CONFIG_OPTS += --enable-freesatepg
 #N_CONFIG_OPTS += --enable-pip
 #N_CONFIG_OPTS += --disable-webif
@@ -214,7 +215,6 @@ $(D)/libstb-hal.config.status: | $(NEUTRINO_DEPS)
 			\
 			--with-target=cdk \
 			--with-targetprefix=/usr \
-			--with-boxtype=$(BOXTYPE) \
 			$(LH_CONFIG_OPTS) \
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
