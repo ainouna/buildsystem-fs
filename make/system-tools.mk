@@ -439,7 +439,7 @@ $(D)/e2fsprogs: $(D)/bootstrap $(D)/util_linux $(ARCHIVE)/$(E2FSPROGS_SOURCE)
 # util_linux
 #
 UTIL_LINUX_MAJOR = 2.35
-UTIL_LINUX_MINOR = -rc2
+UTIL_LINUX_MINOR = .1
 UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR)$(UTIL_LINUX_MINOR)
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VER).tar.xz
 
@@ -684,7 +684,7 @@ $(D)/ntfs_3g: $(D)/bootstrap $(ARCHIVE)/$(NTFS_3G_SOURCE)
 #
 # mc
 #
-MC_VER = 4.8.23
+MC_VER = 4.8.24
 MC_SOURCE = mc-$(MC_VER).tar.xz
 MC_PATCH = mc-$(MC_VER).patch
 
@@ -1262,7 +1262,7 @@ $(D)/smartmontools: $(D)/bootstrap $(ARCHIVE)/$(SMARTMONTOOLS_SOURCE)
 #
 # nfs_utils
 #
-NFS_UTILS_VER = 2.4.2
+NFS_UTILS_VER = 2.4.3
 NFS_UTILS_SOURCE = nfs-utils-$(NFS_UTILS_VER).tar.bz2
 NFS_UTILS_PATCH = nfs-utils-$(NFS_UTILS_VER).patch
 

@@ -1879,11 +1879,14 @@ $(D)/libusb_compat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/$(LIBUSB_COMPAT_SOURCE
 #
 # alsa-lib
 #
-ALSA_LIB_VER = 1.2.1.2
+ALSA_LIB_VER = 1.2.2
 ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VER).tar.bz2
 ALSA_LIB_PATCH  = alsa-lib-$(ALSA_LIB_VER).patch
 ALSA_LIB_PATCH += alsa-lib-$(ALSA_LIB_VER)-link_fix.patch
 ALSA_LIB_PATCH += alsa-lib-$(ALSA_LIB_VER)-header.patch
+ifeq ($(BOXARCH), sh4)
+ALSA_LIB_PATCH += alsa-lib-$(ALSA_LIB_VER)-sh4_kernel_long_t-fix.patch
+endif
 
 $(ARCHIVE)/$(ALSA_LIB_SOURCE):
 	$(DOWNLOAD) https://www.alsa-project.org/files/pub/lib/$(ALSA_LIB_SOURCE)
@@ -1922,7 +1925,7 @@ $(D)/alsa_lib: $(D)/bootstrap $(ARCHIVE)/$(ALSA_LIB_SOURCE)
 #
 # alsa-utils
 #
-ALSA_UTILS_VER = 1.2.1
+ALSA_UTILS_VER = 1.2.2
 ALSA_UTILS_SOURCE = alsa-utils-$(ALSA_UTILS_VER).tar.bz2
 ALSA_UTILS_PATCH = alsa-utils-$(ALSA_UTILS_VER).patch
 
