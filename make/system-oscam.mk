@@ -3,7 +3,7 @@
 #
 # -----------------------------------------------------------------------------
 
-OSCAM_FLAVOUR ?= oscam-tango
+OSCAM_FLAVOUR ?= oscam-smod
 
 ifeq ($(OSCAM_FLAVOUR), oscam)
 OSCAM_FLAVOUR_URL = https://repo.or.cz/oscam.git
@@ -57,6 +57,7 @@ $(D)/oscam.do_prepare:
 			WITH_EMU \
 			WITH_LB \
 			WITH_NEUTRINO \
+			WITH_SSL \
 			\
 			MODULE_CAMD35 \
 			MODULE_CAMD35_TCP \
