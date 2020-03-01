@@ -7,11 +7,12 @@ warn:
 	@echo "You are running as root. Do not do this, it is dangerous."
 	@echo "Aborting the build. Log in as a regular user and retry."
 else
+include make/buildenv.mk
+ifeq ($(MAINTAINER), $(MAIN_ID))
+else
 LC_ALL:=C
 LANG:=C
 export TOPDIR LC_ALL LANG
-
-include make/buildenv.mk
 
 PARALLEL_JOBS := $(shell echo $$((1 + `getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`)))
 override MAKE = make $(if $(findstring j,$(filter-out --%,$(MAKEFLAGS))),,-j$(PARALLEL_JOBS))
@@ -253,4 +254,5 @@ PHONY += check check-self
 # parallel, which is useful on multi-processor / multi-core machines
 .NOTPARALLEL:
 
+endif
 endif
