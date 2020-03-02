@@ -53,6 +53,7 @@ $(D)/oscam.do_prepare:
 			TOUCH \
 			WEBIF_JQUERY \
 			WEBIF_LIVELOG \
+			WITH_CARDLIST \
 			WITH_DEBUG \
 			WITH_EMU \
 			WITH_LB \
