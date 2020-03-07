@@ -173,11 +173,11 @@ HAL_BRANCH  ?= master
 NMP_PATCHES  = $(NEUTRINO_FS_TEST_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
 else ifeq  ($(FLAVOUR), neutrino-ddt-youtube)
-GIT_URL     ?= https://github.com/Duckbox-Developers
+GIT_URL     ?= https://github.com/fs-basis
 NEUTRINO  = neutrino-fs
-LIBSTB_HAL   = libhal-ddt
+LIBSTB_HAL   = libhal-fs
 NMP_BRANCH  ?= youtube
-HAL_BRANCH  ?= master
+HAL_BRANCH  ?= libhal-ddt
 NMP_PATCHES  = $(NEUTRINO_DDT_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_LIBSTB_DDT_PATCHES)
 endif
