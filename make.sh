@@ -232,21 +232,21 @@ echo "IMAGE=$IMAGE" >> config
 case $6 in
 	[1-5]) REPLY=$6;;
 	*)	echo -e "\nWhich Neutrino variant do you want to build?:"
-		echo "   1)  neutrino-mp-ddt               [ arm/sh4 ]"
-		echo "   2)  neutrino-mp-fs                [ arm/sh4 ]"
-		echo "   3)  neutrino-mp-fs-lcd4l          [ arm/sh4 ]"
-		echo "   4)  neutrino-mp-fs-test           [ arm/sh4 ] !! NO LCD4L GLCD SUPPORT"
-		echo "   5)  neutrino-mp-ddt with youtube  [ arm/sh4 ]"
+		echo "   1)  neutrino-ddt               [ arm/sh4 ]"
+		echo "   2)  neutrino-fs                [ arm/sh4 ]"
+		echo "   3)  neutrino-fs-lcd4l          [ arm/sh4 ]"
+		echo "   4)  neutrino-fs-test           [ arm/sh4 ] !! NO LCD4L GLCD SUPPORT"
+		echo "   5)  neutrino-ddt with youtube  [ arm/sh4 ]"
 		read -p "Select Image to build   (1-5)? ";;
 esac
 
 case "$REPLY" in
-	1) FLAVOUR="neutrino-mp-ddt";;
-	2) FLAVOUR="neutrino-mp-fs";;
-	3) FLAVOUR="neutrino-mp-fs-lcd4l";;
-	4) FLAVOUR="neutrino-mp-fs-test";;
-	5) FLAVOUR="neutrino-mp-ddt-youtube";;
-	*) FLAVOUR="neutrino-mp-fs";;
+	1) FLAVOUR="neutrino-ddt";;
+	2) FLAVOUR="neutrino-fs";;
+	3) FLAVOUR="neutrino-fs-lcd4l";;
+	4) FLAVOUR="neutrino-fs-test";;
+	5) FLAVOUR="neutrino-ddt-youtube";;
+	*) FLAVOUR="neutrino-fs";;
 esac
 echo "FLAVOUR=$FLAVOUR" >> config
 
@@ -322,9 +322,9 @@ make printenv
 ##############################################
 echo "Your next step could be:"
 case "$FLAVOUR" in
-	neutrino-mp*)
-		echo "  make neutrino-mp"
-		echo "  make neutrino-mp-plugins";;
+	neutrino*)
+		echo "  make neutrino"
+		echo "  make neutrino-plugins";;
 	*)
 		echo "  make flashimage"
 		echo "  make ofgimage";;

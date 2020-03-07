@@ -1778,7 +1778,7 @@ ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuultimo4k vusolo4k))
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_vu.conf $(TARGET_DIR)/etc/lcd4linux.conf
 else
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux.conf $(TARGET_DIR)/etc/lcd4linux.conf
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-mp-fs neutrino-mp-fs-lcd4l))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l))
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_fs.conf $(TARGET_DIR)/etc/lcd4linux.conf
 endif
 endif

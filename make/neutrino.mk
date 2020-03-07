@@ -8,7 +8,7 @@ $(TARGET_DIR)/.version:
 	echo "homepage=https://github.com/fs-basis" >> $@
 	echo "creator=$(MAINTAINER)" >> $@
 	echo "docs=https://github.com/fs-basis" >> $@
-	echo "forum=https://github.com/fs-basis/neutrino-mp-fs" >> $@
+	echo "forum=https://github.com/fs-basis/neutrino-fs" >> $@
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
 	echo "imagedir=$(BOXTYPE)" >> $@
@@ -130,7 +130,7 @@ endif
 ifeq ($(EXTERNAL_LCD), lcd4linux)
 N_CONFIG_OPTS += --enable-lcd4linux
 NEUTRINO_DEPS += $(D)/lcd4linux
-#NEUTRINO_DEPS += $(D)/neutrino-mp-plugin-l4l-skins
+#NEUTRINO_DEPS += $(D)/neutrino-plugin-l4l-skins
 endif
 
 ifeq ($(EXTERNAL_LCD), both)
@@ -140,49 +140,49 @@ N_CONFIG_OPTS += --enable-lcd4linux
 NEUTRINO_DEPS += $(D)/lcd4linux
 endif
 
-ifeq  ($(FLAVOUR), neutrino-mp-ddt)
+ifeq  ($(FLAVOUR), neutrino-ddt)
 GIT_URL     ?= https://github.com/fs-basis
-NEUTRINO_MP  = neutrino-mp-fs
+NEUTRINO  = neutrino-fs
 LIBSTB_HAL   = libstb-hal-fs
 NMP_BRANCH  ?= nmp-ddt
 HAL_BRANCH  ?= libhal-ddt
-NMP_PATCHES  = $(NEUTRINO_MP_DDT_PATCHES)
-HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_DDT_PATCHES)
-else ifeq  ($(FLAVOUR), neutrino-mp-fs)
+NMP_PATCHES  = $(NEUTRINO_DDT_PATCHES)
+HAL_PATCHES  = $(NEUTRINO_LIBSTB_DDT_PATCHES)
+else ifeq  ($(FLAVOUR), neutrino-fs)
 GIT_URL      ?= https://github.com/fs-basis
-NEUTRINO_MP  = neutrino-mp-fs
+NEUTRINO  = neutrino-fs
 LIBSTB_HAL   = libstb-hal-fs
 NMP_BRANCH  ?= master
 HAL_BRANCH  ?= master
-NMP_PATCHES  = $(NEUTRINO_MP_FS_PATCHES)
+NMP_PATCHES  = $(NEUTRINO_FS_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
-else ifeq  ($(FLAVOUR), neutrino-mp-fs-lcd4l)
+else ifeq  ($(FLAVOUR), neutrino-fs-lcd4l)
 GIT_URL      ?= https://github.com/fs-basis
-NEUTRINO_MP  = neutrino-mp-fs
+NEUTRINO  = neutrino-fs
 LIBSTB_HAL   = libstb-hal-fs
 NMP_BRANCH  ?= lcd4l
 HAL_BRANCH  ?= master
-NMP_PATCHES  = $(NEUTRINO_MP_FS_LCD4L_PATCHES)
+NMP_PATCHES  = $(NEUTRINO_FS_LCD4L_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
-else ifeq  ($(FLAVOUR), neutrino-mp-fs-test)
+else ifeq  ($(FLAVOUR), neutrino-fs-test)
 GIT_URL      ?= https://github.com/fs-basis
-NEUTRINO_MP  = neutrino-mp-fs
+NEUTRINO  = neutrino-fs
 LIBSTB_HAL   = libstb-hal-fs
 NMP_BRANCH  ?= test
 HAL_BRANCH  ?= master
-NMP_PATCHES  = $(NEUTRINO_MP_FS_TEST_PATCHES)
+NMP_PATCHES  = $(NEUTRINO_FS_TEST_PATCHES)
 HAL_PATCHES  = $(LIBSTB_HAL_FS_PATCHES)
-else ifeq  ($(FLAVOUR), neutrino-mp-ddt-youtube)
+else ifeq  ($(FLAVOUR), neutrino-ddt-youtube)
 GIT_URL     ?= https://github.com/Duckbox-Developers
-NEUTRINO_MP  = neutrino-mp-ddt
-LIBSTB_HAL   = libstb-hal-ddt
+NEUTRINO  = neutrino-fs
+LIBSTB_HAL   = libhal-ddt
 NMP_BRANCH  ?= youtube
 HAL_BRANCH  ?= master
-NMP_PATCHES  = $(NEUTRINO_MP_DDT_PATCHES)
-HAL_PATCHES  = $(NEUTRINO_MP_LIBSTB_DDT_PATCHES)
+NMP_PATCHES  = $(NEUTRINO_DDT_PATCHES)
+HAL_PATCHES  = $(NEUTRINO_LIBSTB_DDT_PATCHES)
 endif
 
-N_OBJDIR = $(BUILD_TMP)/$(NEUTRINO_MP)
+N_OBJDIR = $(BUILD_TMP)/$(NEUTRINO)
 LH_OBJDIR = $(BUILD_TMP)/$(LIBSTB_HAL)
 
 ################################################################################
@@ -255,33 +255,33 @@ libstb-hal-distclean:
 
 ################################################################################
 #
-# neutrino-mp
+# neutrino
 #
-$(D)/neutrino-mp-plugins.do_prepare \
-$(D)/neutrino-mp.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
+$(D)/neutrino-plugins.do_prepare \
+$(D)/neutrino.do_prepare: | $(NEUTRINO_DEPS) $(D)/libstb-hal
 	$(START_BUILD)
-	rm -rf $(SOURCE_DIR)/$(NEUTRINO_MP)
-	rm -rf $(SOURCE_DIR)/$(NEUTRINO_MP).org
+	rm -rf $(SOURCE_DIR)/$(NEUTRINO)
+	rm -rf $(SOURCE_DIR)/$(NEUTRINO).org
 	rm -rf $(N_OBJDIR)
-	[ -d "$(ARCHIVE)/$(NEUTRINO_MP).git" ] && \
-	(cd $(ARCHIVE)/$(NEUTRINO_MP).git; git pull;); \
-	[ -d "$(ARCHIVE)/$(NEUTRINO_MP).git" ] || \
-	git clone $(GIT_URL)/$(NEUTRINO_MP).git $(ARCHIVE)/$(NEUTRINO_MP).git; \
-	cp -ra $(ARCHIVE)/$(NEUTRINO_MP).git $(SOURCE_DIR)/$(NEUTRINO_MP); \
-	(cd $(SOURCE_DIR)/$(NEUTRINO_MP); git checkout $(NMP_BRANCH);); \
-	cp -ra $(SOURCE_DIR)/$(NEUTRINO_MP) $(SOURCE_DIR)/$(NEUTRINO_MP).org
-	set -e; cd $(SOURCE_DIR)/$(NEUTRINO_MP); \
+	[ -d "$(ARCHIVE)/$(NEUTRINO).git" ] && \
+	(cd $(ARCHIVE)/$(NEUTRINO).git; git pull;); \
+	[ -d "$(ARCHIVE)/$(NEUTRINO).git" ] || \
+	git clone $(GIT_URL)/$(NEUTRINO).git $(ARCHIVE)/$(NEUTRINO).git; \
+	cp -ra $(ARCHIVE)/$(NEUTRINO).git $(SOURCE_DIR)/$(NEUTRINO); \
+	(cd $(SOURCE_DIR)/$(NEUTRINO); git checkout $(NMP_BRANCH);); \
+	cp -ra $(SOURCE_DIR)/$(NEUTRINO) $(SOURCE_DIR)/$(NEUTRINO).org
+	set -e; cd $(SOURCE_DIR)/$(NEUTRINO); \
 		$(call apply_patches, $(NMP_PATCHES))
 	@touch $@
 
-$(D)/neutrino-mp.config.status \
-$(D)/neutrino-mp-plugins.config.status:
+$(D)/neutrino.config.status \
+$(D)/neutrino-plugins.config.status:
 	rm -rf $(N_OBJDIR)
 	test -d $(N_OBJDIR) || mkdir -p $(N_OBJDIR)
 	cd $(N_OBJDIR); \
-		$(SOURCE_DIR)/$(NEUTRINO_MP)/autogen.sh $(SILENT_OPT); \
+		$(SOURCE_DIR)/$(NEUTRINO)/autogen.sh $(SILENT_OPT); \
 		$(BUILDENV) \
-		$(SOURCE_DIR)/$(NEUTRINO_MP)/configure $(SILENT_OPT) \
+		$(SOURCE_DIR)/$(NEUTRINO)/configure $(SILENT_OPT) \
 			--host=$(TARGET) \
 			--build=$(BUILD) \
 			--prefix=/usr \
@@ -301,17 +301,17 @@ $(D)/neutrino-mp-plugins.config.status:
 			PKG_CONFIG=$(PKG_CONFIG) \
 			PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 			CFLAGS="$(N_CFLAGS)" CXXFLAGS="$(N_CFLAGS)" CPPFLAGS="$(N_CPPFLAGS)"
-		+make $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h
+		+make $(SOURCE_DIR)/$(NEUTRINO)/src/gui/version.h
 	@touch $@
 
-$(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h:
+$(SOURCE_DIR)/$(NEUTRINO)/src/gui/version.h:
 	@rm -f $@
 	echo '#define BUILT_DATE "'`date`'"' > $@
 	@if test -d $(SOURCE_DIR)/$(LIBSTB_HAL); then \
 		pushd $(SOURCE_DIR)/$(LIBSTB_HAL); \
 		HAL_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
-		pushd $(SOURCE_DIR)/$(NEUTRINO_MP); \
+		pushd $(SOURCE_DIR)/$(NEUTRINO); \
 		NMP_REV=$$(git log | grep "^commit" | wc -l); \
 		popd; \
 		pushd $(BASE_DIR); \
@@ -320,14 +320,14 @@ $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h:
 		echo '#define VCS "BS-rev'$$BS_REV'_HAL-rev'$$HAL_REV'_NMP-rev'$$NMP_REV'"' >> $@; \
 	fi
 
-$(D)/neutrino-mp-plugins.do_compile \
-$(D)/neutrino-mp.do_compile:
+$(D)/neutrino-plugins.do_compile \
+$(D)/neutrino.do_compile:
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 	$(MAKE) -C $(N_OBJDIR) all DESTDIR=$(TARGET_DIR)
 	@touch $@
 
 mp \
-neutrino-mp: $(D)/neutrino-mp.do_prepare $(D)/neutrino-mp.config.status $(D)/neutrino-mp.do_compile
+neutrino: $(D)/neutrino.do_prepare $(D)/neutrino.config.status $(D)/neutrino.do_compile
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/.version
@@ -335,24 +335,24 @@ ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 	make e2-multiboot
 endif
 	touch $(D)/$(notdir $@)
-	make neutrino-mp-release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 mp-clean \
-neutrino-mp-clean:
-	rm -f $(D)/neutrino-mp
-	rm -f $(D)/neutrino-mp.config.status
-	rm -f $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h
+neutrino-clean:
+	rm -f $(D)/neutrino
+	rm -f $(D)/neutrino.config.status
+	rm -f $(SOURCE_DIR)/$(NEUTRINO)/src/gui/version.h
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
 mp-distclean \
-neutrino-mp-distclean:
+neutrino-distclean:
 	rm -rf $(N_OBJDIR)
-	rm -f $(D)/neutrino-mp*
+	rm -f $(D)/neutrino*
 
 mpp \
-neutrino-mp-plugins: $(D)/neutrino-mp-plugins.do_prepare $(D)/neutrino-mp-plugins.config.status $(D)/neutrino-mp-plugins.do_compile
+neutrino-plugins: $(D)/neutrino-plugins.do_prepare $(D)/neutrino-plugins.config.status $(D)/neutrino-plugins.do_compile
 	PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) \
 	$(MAKE) -C $(N_OBJDIR) install DESTDIR=$(TARGET_DIR)
 	make $(TARGET_DIR)/.version
@@ -361,23 +361,23 @@ ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 	make e2-multiboot
 endif
 	touch $(D)/$(notdir $@)
-	make neutrino-mp-release
+	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
 mpp-clean \
-neutrino-mp-plugins-clean:
-	rm -f $(D)/neutrino-mp-plugins
-	rm -f $(D)/neutrino-mp-plugins.config.status
-	rm -f $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h
-	make neutrino-mp-plugin-clean
+neutrino-plugins-clean:
+	rm -f $(D)/neutrino-plugins
+	rm -f $(D)/neutrino-plugins.config.status
+	rm -f $(SOURCE_DIR)/$(NEUTRINO)/src/gui/version.h
+	make neutrino-plugin-clean
 	cd $(N_OBJDIR); \
 		$(MAKE) -C $(N_OBJDIR) distclean
 
 mpp-distclean \
-neutrino-mp-plugins-distclean:
+neutrino-plugins-distclean:
 	rm -rf $(N_OBJDIR)
-	rm -f $(D)/neutrino-mp-plugins*
-	make neutrino-mp-plugin-distclean
+	rm -f $(D)/neutrino-plugins*
+	make neutrino-plugin-distclean
 
 PHONY += $(TARGET_DIR)/.version
-PHONY += $(SOURCE_DIR)/$(NEUTRINO_MP)/src/gui/version.h
+PHONY += $(SOURCE_DIR)/$(NEUTRINO)/src/gui/version.h
