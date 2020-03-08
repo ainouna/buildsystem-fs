@@ -368,16 +368,33 @@ $(D)/neutrino-plugin-settings-update:
 #
 $(D)/spiegel-tv:
 	$(START_BUILD)
-	$(REMOVE)/spiegel-tv
-	set -e; if [ -d $(ARCHIVE)/spiegel-tv.git ]; \
-		then cd $(ARCHIVE)/spiegel-tv.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/fs-basis/spiegel-tv.git spiegel-tv.git; \
+	$(REMOVE)/plugins-lua
+	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
+		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
 		fi
-	cp -ra $(ARCHIVE)/spiegel-tv.git $(BUILD_TMP)/spiegel-tv
+	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/spiegel-tv
 	$(CHDIR)/spiegel-tv; \
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/spiegel-tv/* $(TARGET_DIR)/var/tuxbox/plugins/
+		cp -R $(BUILD_TMP)/spiegel-tv/spiegel-tv-doc/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/spiegel-tv
+	$(TOUCH)
+
+#
+# tierwelt-tv
+#
+$(D)/tierwelt-tv:
+	$(START_BUILD)
+	$(REMOVE)/plugins-lua
+	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
+		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
+		fi
+	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/tierwelt-tv
+	$(CHDIR)/tierwelt-tv; \
+		install -d $(TARGET_DIR)/var/tuxbox/plugins
+		cp -R $(BUILD_TMP)/tierwelt-tv/tierwelt-tv/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/tierwelt-tv
 	$(TOUCH)
 #
 endif
