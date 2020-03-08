@@ -317,18 +317,18 @@ neutrino-plugin-distclean:
 #
 $(D)/mediathek:
 	$(START_BUILD)
-	$(REMOVE)/mediathek
-	set -e; if [ -d $(ARCHIVE)/mediathek.git ]; \
-		then cd $(ARCHIVE)/mediathek.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/fs-basis/mediathek.git mediathek.git; \
+	$(REMOVE)/plugins-lua
+	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
+		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
 		fi
-	cp -ra $(ARCHIVE)/mediathek.git $(BUILD_TMP)/mediathek
+	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
 	install -d $(TARGET_DIR)/var/tuxbox/plugins
-	$(CHDIR)/mediathek; \
-		cp -a plugins/* $(TARGET_DIR)/var/tuxbox/plugins/; \
+	$(CHDIR)/plugins-lua; \
+		cp -a mediathek/plugins/* $(TARGET_DIR)/var/tuxbox/plugins/; \
 #		cp -a share $(TARGET_DIR)/usr/
 		rm -f $(TARGET_DIR)/var/tuxbox/plugins/neutrino-mediathek/livestream.lua
-	$(REMOVE)/mediathek
+	$(REMOVE)/plugins-lua
 	$(TOUCH)
 
 #
@@ -336,16 +336,16 @@ $(D)/mediathek:
 #
 $(D)/netzkino: $(D)/bootstrap
 	$(START_BUILD)
-	$(REMOVE)/netzkino
-	set -e; if [ -d $(ARCHIVE)/netzkino.git ]; \
-		then cd $(ARCHIVE)/netzkino.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/fs-basis/netzkino.git netzkino.git; \
+	$(REMOVE)/plugins-lua
+	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
+		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
 		fi
-	cp -ra $(ARCHIVE)/netzkino.git $(BUILD_TMP)/netzkino
-	$(CHDIR)/netzkino; \
+	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
+	$(CHDIR)/plugins-lua; \
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
-	$(REMOVE)/netzkino
+		cp -R $(BUILD_TMP)/plugins-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/plugins-lua
 	$(TOUCH)
 
 #
@@ -373,11 +373,11 @@ $(D)/spiegel-tv:
 		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
 		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
 		fi
-	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/spiegel-tv
-	$(CHDIR)/spiegel-tv; \
+	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
+	$(CHDIR)/plugins-lua; \
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/spiegel-tv/spiegel-tv-doc/* $(TARGET_DIR)/var/tuxbox/plugins/
-	$(REMOVE)/spiegel-tv
+		cp -R $(BUILD_TMP)/plugins-lua/spiegel-tv-doc/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/plugins-lua
 	$(TOUCH)
 
 #
@@ -390,11 +390,11 @@ $(D)/tierwelt-tv:
 		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
 		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
 		fi
-	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/tierwelt-tv
-	$(CHDIR)/tierwelt-tv; \
-		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/tierwelt-tv/tierwelt-tv/* $(TARGET_DIR)/var/tuxbox/plugins/
-	$(REMOVE)/tierwelt-tv
+	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
+	$(CHDIR)/plugins-lua; \
+		install -d $(TARGET_DIR)/var/tuxbox/pluginsmake
+		cp -R $(BUILD_TMP)/plugins-lua/tierwelt-tv/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/plugins-lua
 	$(TOUCH)
 #
 endif
