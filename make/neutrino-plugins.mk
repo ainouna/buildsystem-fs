@@ -392,7 +392,7 @@ $(D)/tierwelt-tv:
 		fi
 	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
 	$(CHDIR)/plugins-lua; \
-		install -d $(TARGET_DIR)/var/tuxbox/pluginsmake
+		install -d $(TARGET_DIR)/var/tuxbox/plugins
 		cp -R $(BUILD_TMP)/plugins-lua/tierwelt-tv/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
