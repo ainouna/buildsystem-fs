@@ -362,6 +362,23 @@ $(D)/neutrino-plugin-settings-update:
 	cp -R $(BUILD_TMP)/settings-update/lua/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/settings-update
 	$(TOUCH)
+
+#
+# spiegel-tv
+#
+$(D)/spiegel-tv:
+	$(START_BUILD)
+	$(REMOVE)/spiegel-tv
+	set -e; if [ -d $(ARCHIVE)/spiegel-tv.git ]; \
+		then cd $(ARCHIVE)/spiegel-tv.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/spiegel-tv.git spiegel-tv.git; \
+		fi
+	cp -ra $(ARCHIVE)/spiegel-tv.git $(BUILD_TMP)/spiegel-tv
+	$(CHDIR)/spiegel-tv; \
+		install -d $(TARGET_DIR)/var/tuxbox/plugins
+		cp -R $(BUILD_TMP)/spiegel-tv/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/spiegel-tv
+	$(TOUCH)
 #
 endif
 #
