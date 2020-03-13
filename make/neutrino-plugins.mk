@@ -224,6 +224,7 @@ $(D)/neutrino-plugin-iptvplayer: $(D)/librtmp $(D)/python_twisted_small
 	cp -R $(BUILD_TMP)/iptvplayer/addon4neutrino/neutrinoIPTV/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/iptvplayer
 	$(TOUCH)
+
 #
 # annie's settingsupdater
 #
@@ -430,3 +431,6 @@ $(D)/tierwelt-tv:
 		cp -R $(BUILD_TMP)/plugins-lua/tierwelt-tv/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
+# END FS PLUGINS
+endif
+#
