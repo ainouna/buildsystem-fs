@@ -72,7 +72,7 @@ $(D)/neutrino-plugin.do_prepare:
 	rm -rf $(SOURCE_DIR)/neutrino-plugins.org
 	set -e; if [ -d $(ARCHIVE)/neutrino-plugins.git ]; \
 		then cd $(ARCHIVE)/neutrino-plugins.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/neutrino-mp-plugins.git neutrino-plugins.git; \
+		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/neutrino-ddt-plugins.git neutrino-plugins.git; \
 		fi
 	cp -ra $(ARCHIVE)/neutrino-plugins.git $(SOURCE_DIR)/neutrino-plugins
 ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
