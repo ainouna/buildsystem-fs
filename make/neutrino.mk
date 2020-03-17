@@ -144,7 +144,7 @@ ifeq  ($(FLAVOUR), neutrino-ddt)
 GIT_URL     ?= https://github.com/fs-basis
 NEUTRINO  = neutrino-fs
 LIBSTB_HAL   = libstb-hal-fs
-NMP_BRANCH  ?= ddt
+NMP_BRANCH  ?= neutrino-ddt
 HAL_BRANCH  ?= libhal-ddt
 NMP_PATCHES  = $(NEUTRINO_DDT_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_LIBSTB_DDT_PATCHES)
@@ -176,7 +176,7 @@ else ifeq  ($(FLAVOUR), neutrino-ddt-youtube)
 GIT_URL     ?= https://github.com/fs-basis
 NEUTRINO  = neutrino-fs
 LIBSTB_HAL   = libhal-fs
-NMP_BRANCH  ?= youtube
+NMP_BRANCH  ?= neutrino-ddt-youtube
 HAL_BRANCH  ?= libhal-ddt
 NMP_PATCHES  = $(NEUTRINO_DDT_PATCHES)
 HAL_PATCHES  = $(NEUTRINO_LIBSTB_DDT_PATCHES)
