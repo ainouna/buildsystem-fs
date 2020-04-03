@@ -214,18 +214,6 @@ flash-image-$(BOXTYPE)-disk-image:
 	rm -rf $(IMAGE_BUILD_DIR)
 endif
 
-# disk image
-flash-image-$(BOXTYPE)-disk-image:
-	# Create final USB-image
-	mkdir -p $(IMAGE_BUILD_DIR)/$(IMAGEDIR)
-	cd $(RELEASE_DIR); \
-	echo $(BOXTYPE)_DDT_usb_$(shell date '+%d%m%Y-%H%M%S') > $(IMAGE_BUILD_DIR)/$(IMAGEDIR)/imageversion
-	cd $(IMAGE_BUILD_DIR) && \
-	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_multi_disk_img_$(shell date '+%d.%m.%Y-%H.%M').zip $(IMAGEDIR)/disk.img $(IMAGEDIR)/imageversion
-	# cleanup
-	rm -rf $(IMAGE_BUILD_DIR)
-endif
-
 ### armbox vu+
 # general
 ifeq ($(BOXTYPE), vuduo4k)
