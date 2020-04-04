@@ -348,6 +348,21 @@ neutrino-plugin-distclean:
 	rm -f $(D)/neutrino-plugin*
 
 #
+# annie's settingsupdater
+#
+$(D)/neutrino-plugin-settings-update:
+	$(START_BUILD)
+	$(REMOVE)/settings-update
+	set -e; if [ -d $(ARCHIVE)/settings-update.git ]; \
+		then cd $(ARCHIVE)/settings-update.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/horsti58/lua-data.git settings-update.git; \
+		fi
+	cp -ra $(ARCHIVE)/settings-update.git $(BUILD_TMP)/settings-update
+	cp -R $(BUILD_TMP)/settings-update/lua/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/settings-update
+	$(TOUCH)
+
+#
 # mediathek
 #
 $(D)/mediathek:
@@ -360,8 +375,8 @@ $(D)/mediathek:
 	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
 	install -d $(TARGET_DIR)/var/tuxbox/plugins
 	$(CHDIR)/plugins-lua; \
-		cp -a mediathek/plugins/* $(TARGET_DIR)/var/tuxbox/plugins/; \
-#		cp -a share $(TARGET_DIR)/usr/
+		install -d $(TARGET_DIR)/var/tuxbox/plugins
+		cp -R $(BUILD_TMP)/plugins-lua/mediathek/* $(TARGET_DIR)/var/tuxbox/plugins/
 		rm -f $(TARGET_DIR)/var/tuxbox/plugins/neutrino-mediathek/livestream.lua
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
@@ -381,21 +396,6 @@ $(D)/netzkino: $(D)/bootstrap
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
 		cp -R $(BUILD_TMP)/plugins-lua/netzkino/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/plugins-lua
-	$(TOUCH)
-
-#
-# annie's settingsupdater
-#
-$(D)/neutrino-plugin-settings-update:
-	$(START_BUILD)
-	$(REMOVE)/settings-update
-	set -e; if [ -d $(ARCHIVE)/settings-update.git ]; \
-		then cd $(ARCHIVE)/settings-update.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/horsti58/lua-data.git settings-update.git; \
-		fi
-	cp -ra $(ARCHIVE)/settings-update.git $(BUILD_TMP)/settings-update
-	cp -R $(BUILD_TMP)/settings-update/lua/* $(TARGET_DIR)/var/tuxbox/plugins/
-	$(REMOVE)/settings-update
 	$(TOUCH)
 
 #
