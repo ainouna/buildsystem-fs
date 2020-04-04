@@ -10,4 +10,3 @@
 #r8712u									# Realtek RTL8712U USB WLAN
 pl2303									# Prolific PL-2303 USB-to-serial
 ftdi_sio								# FTDI_SIO USB-to-serial
-

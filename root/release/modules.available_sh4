@@ -18,4 +18,3 @@ usbserial ftdi_sio  # FTDI_SIO USB-to-serial
 #cifs                # CIFS network driver
 #jfs                # JFS file system driver
 #ntfs               # NTFS file system driver (ro)
-
