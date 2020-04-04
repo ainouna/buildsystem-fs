@@ -417,9 +417,22 @@ neutrino-release-base:
 	install -d $(RELEASE_DIR)
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
 	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
+	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
+	install -d $(RELEASE_DIR)/lib/tuxbox/plugins
+	install -d $(RELEASE_DIR)/usr/lib/tuxbox/{luaplugins,plugins}
+	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,logos,net,tuxbox,update}
+	install -d $(RELEASE_DIR)/var/net/epg
+	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
+	install -d $(RELEASE_DIR)/var/tuxbox/webtv
+	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
 else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
 	install -d $(RELEASE_DIR)/{bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
+	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware}
+	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
+	install -d $(RELEASE_DIR)/var/tuxbox/{config,plugins,themes,webtv}
+	install -d $(RELEASE_DIR)/var/tuxbox/config/zapit
 endif
+#
 	install -d $(RELEASE_DIR)/etc/{init.d,network,mdev,ssl}
 	install -d $(RELEASE_DIR)/etc/network/if-{post-{up,down},pre-{up,down},up,down}.d
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware}
@@ -428,37 +441,18 @@ endif
 	install -d $(RELEASE_DIR)/mnt/{hdd,nfs,usb}
 	install -d $(RELEASE_DIR)/mnt/mnt{0..7}
 	install -d $(RELEASE_DIR)/usr/{bin,lib,sbin,share}
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
-	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
-	install -d $(RELEASE_DIR)/lib/tuxbox/plugins
-	install -d $(RELEASE_DIR)/usr/lib/tuxbox/{luaplugins,plugins}
-endif
+
 	install -d $(RELEASE_DIR)/usr/share/{fonts,tuxbox,udhcpc,zoneinfo,lua}
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino
 	install -d $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/logo
 	install -d $(RELEASE_DIR)/usr/share/lua/5.2
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
-	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,logos,net,tuxbox,update}
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
-	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
-endif
+#
 ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 	install -d $(RELEASE_DIR)/var/lib/{nfs,modules,opkg}
 else
 	install -d $(RELEASE_DIR)/var/lib/{nfs,modules}
 endif
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
-	install -d $(RELEASE_DIR)/var/net/epg
-	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
-	install -d $(RELEASE_DIR)/var/tuxbox/{config,plugins,themes}
-endif
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
-	install -d $(RELEASE_DIR)/var/tuxbox/webtv
-	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
-	install -d $(RELEASE_DIR)/var/tuxbox/config/zapit
-endif
+#
 	mkdir -p $(RELEASE_DIR)/etc/rc.d/rc0.d
 	ln -s ../init.d/sendsigs $(RELEASE_DIR)/etc/rc.d/rc0.d/S20sendsigs
 	ln -s ../init.d/umountfs $(RELEASE_DIR)/etc/rc.d/rc0.d/S40umountfs
