@@ -422,14 +422,15 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutri
 endif
 	install -d $(RELEASE_DIR)/etc/{init.d,network,mdev,ssl}
 	install -d $(RELEASE_DIR)/etc/network/if-{post-{up,down},pre-{up,down},up,down}.d
-	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
-	install -d $(RELEASE_DIR)/lib/tuxbox/plugins
+	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware}
 	install -d $(RELEASE_DIR)/media/{dvd,nfs,usb,sda1,sdb1}
 	ln -sf /hdd $(RELEASE_DIR)/media/hdd
 	install -d $(RELEASE_DIR)/mnt/{hdd,nfs,usb}
 	install -d $(RELEASE_DIR)/mnt/mnt{0..7}
 	install -d $(RELEASE_DIR)/usr/{bin,lib,sbin,share}
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
+	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
+	install -d $(RELEASE_DIR)/lib/tuxbox/plugins
 	install -d $(RELEASE_DIR)/usr/lib/tuxbox/{luaplugins,plugins}
 endif
 	install -d $(RELEASE_DIR)/usr/share/{fonts,tuxbox,udhcpc,zoneinfo,lua}
