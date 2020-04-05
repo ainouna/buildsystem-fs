@@ -429,7 +429,7 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutri
 	install -d $(RELEASE_DIR)/{bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware}
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
-	install -d $(RELEASE_DIR)/var/tuxbox/{config,plugins,themes,webtv}
+	install -d $(RELEASE_DIR)/var/tuxbox/{config,control,plugins,themes,webtv}
 	install -d $(RELEASE_DIR)/var/tuxbox/config/zapit
 endif
 #
@@ -701,9 +701,12 @@ endif
 #		cp $(TARGET_DIR)/usr/local/bin/udpstreampes $(RELEASE_DIR)/usr/local/bin/; \
 #	fi
 #
-# channellist / tuxtxt
+# channellist / tuxtxt /control
 #
 	cp -aR $(TARGET_DIR)/var/tuxbox/config/* $(RELEASE_DIR)/var/tuxbox/config
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+	cp -aR $(TARGET_DIR)/var/tuxbox/control/* $(RELEASE_DIR)/var/tuxbox/control
+fi
 #
 # copy root_neutrino
 #
