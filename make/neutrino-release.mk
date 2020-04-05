@@ -706,7 +706,7 @@ endif
 	cp -aR $(TARGET_DIR)/var/tuxbox/config/* $(RELEASE_DIR)/var/tuxbox/config
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
 	cp -aR $(TARGET_DIR)/var/tuxbox/control/* $(RELEASE_DIR)/var/tuxbox/control
-fi
+endif
 #
 # copy root_neutrino
 #
