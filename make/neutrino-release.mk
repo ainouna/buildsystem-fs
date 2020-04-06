@@ -917,6 +917,12 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutri
 	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/shutdown.jpg
 	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/radiomode.jpg
 	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/start.jpg
+#
+	ln -sf /var/tuxbox/plugins $(RELEASE_DIR)/var/plugins
+	ln -sf /var/tuxbox/plugins $(RELEASE_DIR)/var/tuxbox/luaplugins
+	ln -sf /var/tuxbox/webtv $(RELEASE_DIR)/var/tuxbox/config/webtv
+	ln -sf /var/tuxbox $(RELEASE_DIR)/lib/tuxbox
+	ln -sf /var/tuxbox $(RELEASE_DIR)/usr/lib/tuxbox
 endif
 
 #
