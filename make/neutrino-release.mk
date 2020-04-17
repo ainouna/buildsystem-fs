@@ -677,6 +677,9 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutri
 	if [ -e $(TARGET_DIR)/usr/share/fonts/ubuntu-l-webfont.ttf ]; then \
 		cp -aR $(TARGET_DIR)/usr/share/fonts $(RELEASE_DIR)/usr/share/; \
 	else \
+		if [ -e $(TARGET_DIR)/usr/share/fonts/HandelGotD.ttf ]; then \
+			cp -aR $(TARGET_DIR)/usr/share/fonts/HandelGotD.ttf $(RELEASE_DIR)/usr/share/fonts; \
+		fi; \
 		if [ -e $(TARGET_DIR)/usr/share/fonts/neutrino.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/neutrino.ttf $(RELEASE_DIR)/usr/share/fonts; \
 		fi; \
