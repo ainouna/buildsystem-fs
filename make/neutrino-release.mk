@@ -427,7 +427,7 @@ endif
 neutrino-release-base:
 	rm -rf $(RELEASE_DIR) || true
 	install -d $(RELEASE_DIR)
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
 	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
 	install -d $(RELEASE_DIR)/lib/tuxbox/plugins
@@ -658,7 +658,7 @@ endif
 #
 # fonts
 #
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
 	if [ -e $(TARGET_DIR)/usr/share/fonts/ubuntu-l-webfont.ttf ]; then \
 		cp -aR $(TARGET_DIR)/usr/share/fonts $(RELEASE_DIR)/usr/share/; \
 	else \
@@ -904,7 +904,7 @@ $(D)/neutrino-release: neutrino-release-base neutrino-release-$(BOXTYPE)
 	ln -s /tmp $(RELEASE_DIR)/var/run
 	ln -s /tmp $(RELEASE_DIR)/var/tmp
 #
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/scan.jpg $(RELEASE_DIR)/var/boot/
 	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3.jpg $(RELEASE_DIR)/var/boot/

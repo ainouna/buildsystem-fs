@@ -1,4 +1,4 @@
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt neutrino-ddt-youtube))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
 #
 ########################################################################
 #
