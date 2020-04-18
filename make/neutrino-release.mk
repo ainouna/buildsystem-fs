@@ -683,12 +683,8 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutri
 		if [ -e $(TARGET_DIR)/usr/share/fonts/neutrino.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/neutrino.ttf $(RELEASE_DIR)/usr/share/fonts; \
 		fi; \
-		if [ -e $(TARGET_DIR)/usr/share/fonts/micron.ttf ]; then \
-			cp -aR $(TARGET_DIR)/usr/share/fonts/micron.ttf $(RELEASE_DIR)/usr/share/fonts; \
-		fi; \
 		if [ -e $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf ]; then \
 			cp -aR $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts; \
-			ln -s /usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf; \
 		fi; \
 	fi
 endif
