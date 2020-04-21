@@ -1767,7 +1767,7 @@ $(D)/udpxy: $(D)/bootstrap $(ARCHIVE)/$(UDPXY_SOURCE)
 #
 # openvpn
 #
-OPENVPN_VER = 2.4.8
+OPENVPN_VER = 2.4.9
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VER).tar.xz
 
 $(ARCHIVE)/$(OPENVPN_SOURCE):
@@ -1806,7 +1806,7 @@ $(D)/openvpn: $(D)/bootstrap $(D)/openssl $(D)/lzo $(ARCHIVE)/$(OPENVPN_SOURCE)
 #
 # openssh
 #
-OPENSSH_VER = 7.7p1
+OPENSSH_VER = 8.2p1
 OPENSSH_SOURCE = openssh-$(OPENSSH_VER).tar.gz
 
 $(ARCHIVE)/$(OPENSSH_SOURCE):
