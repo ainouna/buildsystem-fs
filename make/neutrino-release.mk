@@ -670,15 +670,15 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
 		ln -s /usr/share/fonts/DejaVuLGCSansMono-Bold.ttf $(RELEASE_DIR)/usr/share/fonts/tuxtxt.ttf; \
 	fi
 else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
-		if [ -e $(TARGET_DIR)/usr/share/fonts/HandelGotD.ttf ]; then \
-			cp -aR $(TARGET_DIR)/usr/share/fonts/HandelGotD.ttf $(RELEASE_DIR)/usr/share/fonts; \
-		fi
-		if [ -e $(TARGET_DIR)/usr/share/fonts/neutrino.ttf ]; then \
-			cp -aR $(TARGET_DIR)/usr/share/fonts/neutrino.ttf $(RELEASE_DIR)/usr/share/fonts; \
-		fi
-		if [ -e $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf ]; then \
-			cp -aR $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts; \
-		fi
+	if [ -e $(TARGET_DIR)/usr/share/fonts/HandelGotD.ttf ]; then \
+		cp -aR $(TARGET_DIR)/usr/share/fonts/HandelGotD.ttf $(RELEASE_DIR)/usr/share/fonts; \
+	fi
+	if [ -e $(TARGET_DIR)/usr/share/fonts/neutrino.ttf ]; then \
+		cp -aR $(TARGET_DIR)/usr/share/fonts/neutrino.ttf $(RELEASE_DIR)/usr/share/fonts; \
+	fi
+	if [ -e $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf ]; then \
+		cp -aR $(TARGET_DIR)/usr/share/fonts/tuxtxt.ttf $(RELEASE_DIR)/usr/share/fonts; \
+	fi
 endif
 
 #
