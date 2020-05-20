@@ -531,7 +531,7 @@ $(D)/util_linux: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/$(UTIL_LINUX_SOURCE)
 #
 # gptfdisk
 #
-GPTFDISK_VER = 1.0.4
+GPTFDISK_VER = 1.0.5
 GPTFDISK_SOURCE = gptfdisk-$(GPTFDISK_VER).tar.gz
 
 $(ARCHIVE)/$(GPTFDISK_SOURCE):
@@ -835,7 +835,7 @@ $(D)/curlftpfs: $(D)/bootstrap $(D)/libcurl $(D)/fuse $(D)/libglib2 $(ARCHIVE)/$
 #
 # sdparm
 #
-SDPARM_VER = 1.10
+SDPARM_VER = 1.11
 SDPARM_SOURCE = sdparm-$(SDPARM_VER).tgz
 
 $(ARCHIVE)/$(SDPARM_SOURCE):
@@ -952,7 +952,7 @@ $(D)/fbshot: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/$(FBSHOT_SOURCE)
 #
 # sysstat
 #
-SYSSTAT_VER = 11.5.7
+SYSSTAT_VER = 12.3.3
 SYSSTAT_SOURCE = sysstat-$(SYSSTAT_VER).tar.bz2
 
 $(ARCHIVE)/$(SYSSTAT_SOURCE):
@@ -1242,7 +1242,7 @@ $(D)/coreutils: $(D)/bootstrap $(D)/openssl $(ARCHIVE)/$(COREUTILS_SOURCE)
 #
 # smartmontools
 #
-SMARTMONTOOLS_VER = 7.0
+SMARTMONTOOLS_VER = 7.1
 SMARTMONTOOLS_SOURCE = smartmontools-$(SMARTMONTOOLS_VER).tar.gz
 
 $(ARCHIVE)/$(SMARTMONTOOLS_SOURCE):
@@ -1381,7 +1381,7 @@ $(D)/vsftpd: $(D)/bootstrap $(D)/openssl $(ARCHIVE)/$(VSFTPD_SOURCE)
 #
 # procps_ng
 #
-PROCPS_NG_VER = 3.3.12
+PROCPS_NG_VER = 3.3.16
 PROCPS_NG_SOURCE = procps-ng-$(PROCPS_NG_VER).tar.xz
 
 $(ARCHIVE)/$(PROCPS_NG_SOURCE):
@@ -1598,7 +1598,7 @@ $(D)/samba: $(D)/bootstrap $(ARCHIVE)/$(SAMBA_SOURCE)
 #
 # ntp
 #
-NTP_VER = 4.2.8p10
+NTP_VER = 4.2.8p14
 NTP_SOURCE = ntp-$(NTP_VER).tar.gz
 NTP_PATCH = ntp-$(NTP_VER).patch
 
@@ -1614,6 +1614,11 @@ $(D)/ntp: $(D)/bootstrap $(ARCHIVE)/$(NTP_SOURCE)
 		$(CONFIGURE) \
 			--target=$(TARGET) \
 			--prefix=/usr \
+			--mandir=/.remove \
+			--infodir=/.remove \
+			--docdir=/.remove \
+			--localedir=/.remove \
+			--htmldir=/.remove \
 			--disable-tick \
 			--disable-tickadj \
 			--with-yielding-select=yes \
