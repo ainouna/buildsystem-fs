@@ -101,7 +101,7 @@ N_CONFIG_OPTS += --disable-upnp
 
 ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 N_CONFIG_OPTS += --enable-reschange
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE),bre2ze4k, h7, hd51, vuduo4k vuuno4k vuuno4kse vuultimo4k vusolo4k vuzero4k))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), bre2ze4k h7 hd51 vuduo4k vuuno4k vuuno4kse vuultimo4k vusolo4k vuzero4k))
 N_CONFIG_OPTS += --enable-arm-acc
 endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo))
