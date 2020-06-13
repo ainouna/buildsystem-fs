@@ -68,7 +68,7 @@ $(D)/bash: $(D)/bootstrap $(ARCHIVE)/$(BASH_SOURCE)
 	$(REMOVE)/bash-$(BASH_VER)
 	$(UNTAR)/$(BASH_SOURCE)
 	$(CHDIR)/bash-$(BASH_VER); \
-		$(call apply_patches, $(BASH_PATCH), p0); \
+		$(call apply_patches, $(BASH_PATCH),p0); \
 		$(CONFIGURE) \
 			--prefix=/usr \
 			--mandir=/.remove \
@@ -440,8 +440,8 @@ $(D)/e2fsprogs: $(D)/bootstrap $(D)/util_linux $(ARCHIVE)/$(E2FSPROGS_SOURCE)
 #
 # util_linux
 #
-UTIL_LINUX_MAJOR = 2.35
-UTIL_LINUX_MINOR = .2
+UTIL_LINUX_MAJOR = 2.36
+UTIL_LINUX_MINOR = -rc1
 UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR)$(UTIL_LINUX_MINOR)
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VER).tar.xz
 
@@ -1443,7 +1443,7 @@ $(D)/htop: $(D)/bootstrap $(D)/ncurses $(ARCHIVE)/$(HTOP_SOURCE)
 #
 # ethtool
 #
-ETHTOOL_VER = 5.6
+ETHTOOL_VER = 5.7
 ETHTOOL_PATCH = ethtool-$(ETHTOOL_VER).patch
 ETHTOOL_SOURCE = ethtool-$(ETHTOOL_VER).tar.xz
 
