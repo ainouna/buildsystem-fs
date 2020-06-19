@@ -498,9 +498,7 @@ TOOLS  = $(D)/tools-aio-grab
 TOOLS += $(D)/tools-msgbox
 TOOLS += $(D)/tools-satfind
 TOOLS += $(D)/tools-showiframe
-==== BASE ====
-ifneq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910 ufs922))
-==== BASE ====
+#TOOLS += $(D)/tools-tuxcal
 TOOLS += $(D)/tools-tuxcom
 ifeq ($(BOXARCH), sh4)
 TOOLS += $(D)/tools-devinit
