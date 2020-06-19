@@ -10,6 +10,7 @@ tools-clean:
 	-$(MAKE) -C $(TOOLS_DIR)/satfind distclean
 	-$(MAKE) -C $(TOOLS_DIR)/showiframe-$(BOXARCH) distclean
 	-$(MAKE) -C $(TOOLS_DIR)/spf_tool distclean
+	-$(MAKE) -C $(TOOLS_DIR)/tuxcal distclean
 	-$(MAKE) -C $(TOOLS_DIR)/tuxcom distclean
 	-$(MAKE) -C $(TOOLS_DIR)/read-edid distclean
 ifeq ($(BOXARCH), sh4)
@@ -408,6 +409,21 @@ $(D)/tools-turnoff_power: $(D)/bootstrap
 	$(TOUCH)
 
 #
+# tuxcal
+#
+$(D)/tools-tuxcal: $(D)/bootstrap $(D)/freetype
+	$(START_BUILD)
+	set -e; cd $(TOOLS_DIR)/tuxcal; \
+		$(CONFIGURE_TOOLS) \
+			--prefix= \
+			--with-boxmodel=$(BOXTYPE) \
+			--with-boxtype=$(BOXTYPE) \
+		; \
+		$(MAKE); \
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
+	$(TOUCH)
+
+#
 # tuxcom
 #
 $(D)/tools-tuxcom: $(D)/bootstrap $(D)/freetype
@@ -482,6 +498,9 @@ TOOLS  = $(D)/tools-aio-grab
 TOOLS += $(D)/tools-msgbox
 TOOLS += $(D)/tools-satfind
 TOOLS += $(D)/tools-showiframe
+==== BASE ====
+ifneq ($(BOXTYPE), $(filter $(BOXTYPE), ufs910 ufs922))
+==== BASE ====
 TOOLS += $(D)/tools-tuxcom
 ifeq ($(BOXARCH), sh4)
 TOOLS += $(D)/tools-devinit
