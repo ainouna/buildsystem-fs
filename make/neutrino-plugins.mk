@@ -382,6 +382,23 @@ $(D)/mediathek:
 	$(TOUCH)
 
 #
+# n24-doku
+#
+$(D)/n24-doku: $(D)/bootstrap
+	$(START_BUILD)
+	$(REMOVE)/plugins-lua
+	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
+		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
+		fi
+	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
+	$(CHDIR)/plugins-lua; \
+		install -d $(TARGET_DIR)/var/tuxbox/plugins
+		cp -R $(BUILD_TMP)/plugins-lua/n24-doku/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/plugins-lua
+	$(TOUCH)
+
+#
 # netzkino
 #
 $(D)/netzkino: $(D)/bootstrap
