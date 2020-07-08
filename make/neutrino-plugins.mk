@@ -274,7 +274,7 @@ $(D)/tierwelt-tv:
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
 # END DDT-PLUGINS
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l))
 #
 ########################################################################
 #
