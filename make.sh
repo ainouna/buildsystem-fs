@@ -222,10 +222,10 @@ case $5 in
 esac
 
 case "$REPLY" in
-	1) FLAVOUR="neutrino-ddt";;
-	2) FLAVOUR="neutrino-fs";;
-	3) FLAVOUR="neutrino-fs-lcd4l";;
-	4) FLAVOUR="neutrino-ddt";;
+	1) FLAVOUR="neutrino-fs";;
+	2) FLAVOUR="neutrino-fs-lcd4l";;
+	3) FLAVOUR="neutrino-fs-test";;
+	4) FLAVOUR="neutrino-fs-ddt";;
 	*) FLAVOUR="neutrino-fs";;
 esac
 echo "FLAVOUR=$FLAVOUR" >> config
