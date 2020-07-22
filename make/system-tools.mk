@@ -689,7 +689,6 @@ $(D)/ntfs_3g: $(D)/bootstrap $(ARCHIVE)/$(NTFS_3G_SOURCE)
 MC_VER = 4.8.25
 MC_SOURCE = mc-$(MC_VER).tar.xz
 MC_PATCH  = mc-$(MC_VER).patch
-#MC_PATCH += mc-$(MC_VER)_fix-mouse-handling-newer-terminfo.patch
 
 $(ARCHIVE)/$(MC_SOURCE):
 	$(DOWNLOAD) ftp.midnight-commander.org/$(MC_SOURCE)
@@ -714,7 +713,7 @@ $(D)/mc: $(D)/bootstrap $(D)/ncurses $(D)/libglib2 $(ARCHIVE)/$(MC_SOURCE)
 			--disable-nls \
 			--disable-maintainer-mode \
 			--disable-dependency-tracking \
-			AWK=awk \
+			  AWK=awk \
 			--disable-rpath \
 			--disable-static \
 			--disable-silent-rules \

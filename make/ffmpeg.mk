@@ -67,7 +67,6 @@ ifeq ($(FFMPEG_EXPERIMENTAL), 1)
 FFMPEG_CONF_OPTS  += --enable-libxml2
 FFMPEG_CONF_OPTS  += --enable-libfreetype
 FFMPEG_CONF_OPTS  += --disable-x86asm
-#FFMPEG_CONF_OPTS  += --enable-decoder=pcm_zork
 else
 FFMPEG_CONF_OPTS  += --disable-yasm
 FFMPEG_CONF_OPTS  += --disable-ffserver
