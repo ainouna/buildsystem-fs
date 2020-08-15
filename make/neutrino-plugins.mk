@@ -382,6 +382,24 @@ $(D)/mediathek:
 	$(TOUCH)
 
 #
+# mtv
+#
+$(D)/mtv:
+	$(START_BUILD)
+	$(REMOVE)/plugins-lua
+	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
+		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
+		fi
+	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
+	install -d $(TARGET_DIR)/var/tuxbox/plugins
+	$(CHDIR)/plugins-lua; \
+		install -d $(TARGET_DIR)/var/tuxbox/plugins
+		cp -R $(BUILD_TMP)/plugins-lua/mtv/* $(TARGET_DIR)/var/tuxbox/plugins/
+	$(REMOVE)/plugins-lua
+	$(TOUCH)
+
+#
 # n24-doku
 #
 $(D)/n24-doku: $(D)/bootstrap
