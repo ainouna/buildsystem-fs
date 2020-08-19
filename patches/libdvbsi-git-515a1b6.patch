@@ -15,17 +15,6 @@
  #define r64(p)		bswap_64(*(const uint64_t * const)p)
  #define w16(p,v)	do { *(uint16_t * const)(p) = bswap_16((const uint16_t)v) } while (0)
  #define w32(p,v)	do { *(uint32_t * const)(p) = bswap_32((const uint32_t)v) } while (0)
---- a/src/time_date_section.cpp
-+++ b/src/time_date_section.cpp
-@@ -15,7 +15,7 @@
- 
- TimeAndDateSection::TimeAndDateSection(const uint8_t * const buffer) : ShortSection(buffer)
- {
--	if (sectionLength > 8) {
-+	if (sectionLength >= 5) {
- 		utcTimeMjd = UINT16(&buffer[3]);
- 		utcTimeBcd = (buffer[5] << 16) | UINT16(&buffer[6]);
- 	}
 --- a/include/dvbsi++/network_information_section.h
 +++ b/include/dvbsi++/network_information_section.h
 @@ -37,6 +37,7 @@ typedef TransportStreamInfoList::const_iterator TransportStreamInfoConstIterator
@@ -66,25 +55,6 @@
  const TransportStreamInfoList *NetworkInformationSection::getTsInfo(void) const
  {
  	return &tsInfo;
---- a/src/ac3_descriptor.cpp
-+++ b/src/ac3_descriptor.cpp
-@@ -31,6 +31,16 @@ Ac3Descriptor::Ac3Descriptor(const uint8_t * const buffer) : Descriptor(buffer)
- 	asvcFlag = (buffer[2] >> 4) & 0x01;
- 
- 	size_t headerLength = 1 + ac3TypeFlag + bsidFlag + mainidFlag + asvcFlag;
-+
-+	// broadcasters got it wrong again...
-+	if (headerLength > descriptorLength) {
-+		ac3TypeFlag = 0;
-+		bsidFlag = 0;
-+		mainidFlag = 0;
-+		asvcFlag = 0;
-+		return;
-+	}
-+
- 	ASSERT_MIN_DLEN(headerLength);
- 
- 	size_t i = 3;
 --- a/src/descriptor.cpp
 +++ b/src/descriptor.cpp
 @@ -16,6 +16,9 @@ Descriptor::Descriptor(const uint8_t * const buffer)
