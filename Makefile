@@ -8,8 +8,6 @@ warn:
 	@echo "Aborting the build. Log in as a regular user and retry."
 else
 include make/buildenv.mk
-ifeq ($(MAINTAINER), $(MAIN_ID))
-else
 LC_ALL:=C
 LANG:=C
 export TOPDIR LC_ALL LANG
@@ -253,5 +251,4 @@ PHONY += check check-self
 # parallel, which is useful on multi-processor / multi-core machines
 .NOTPARALLEL:
 
-endif
 endif
