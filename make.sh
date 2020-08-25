@@ -149,20 +149,20 @@ case $2 in
 esac
 
 case "$REPLY" in
-	1)  OPTIMIZATIONS="size"
-	    OPTIMIZE_PICS="0";;
-	2)  OPTIMIZATIONS="normal"
-	    OPTIMIZE_PICS="0";;
-	3)  OPTIMIZATIONS="size"
-	    OPTIMIZE_PICS="1";;
-	4)  OPTIMIZATIONS="normal"
-	    OPTIMIZE_PICS="1";;
-	5)  OPTIMIZATIONS="kerneldebug"
-	    OPTIMIZE_PICS="0";;
-	6)  OPTIMIZATIONS="debug"
-	    OPTIMIZE_PICS="0";;
-	*)  OPTIMIZATIONS="size"
-	    OPTIMIZE_PICS="0";;
+	1) OPTIMIZATIONS="size"
+	   OPTIMIZE_PICS="0";;
+	2) OPTIMIZATIONS="normal"
+	   OPTIMIZE_PICS="0";;
+	3) OPTIMIZATIONS="size"
+	   OPTIMIZE_PICS="1";;
+	4) OPTIMIZATIONS="normal"
+	   OPTIMIZE_PICS="1";;
+	5) OPTIMIZATIONS="kerneldebug"
+	   OPTIMIZE_PICS="0";;
+	6) OPTIMIZATIONS="debug"
+	   OPTIMIZE_PICS="0";;
+	*) OPTIMIZATIONS="size"
+	   OPTIMIZE_PICS="0";;
 esac
 echo "OPTIMIZATIONS=$OPTIMIZATIONS" >> config
 echo "OPTIMIZE_PICS=$OPTIMIZE_PICS" >> config
@@ -235,12 +235,12 @@ if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
 	esac
 
 	case "$REPLY" in
-		1)  BS_GCC_VER="6.5.0";;
-		2)  BS_GCC_VER="7.5.0";;
-		3)  BS_GCC_VER="8.3.0";;
-		4)  BS_GCC_VER="8.4.0";;
-		5)  BS_GCC_VER="9.2.0";;
-		*)  BS_GCC_VER="6.5.0";;
+		1) BS_GCC_VER="6.5.0";;
+		2) BS_GCC_VER="7.5.0";;
+		3) BS_GCC_VER="8.3.0";;
+		4) BS_GCC_VER="8.4.0";;
+		5) BS_GCC_VER="9.2.0";;
+		*) BS_GCC_VER="6.5.0";;
 	esac
 	echo "BS_GCC_VER=$BS_GCC_VER" >> config
 fi
@@ -258,9 +258,9 @@ if [ $BOXTYPE == 'vusolo4k' -o $BOXTYPE == 'vuduo4k' -o $BOXTYPE == 'vuultimo4k'
 	esac
 
 	case "$REPLY" in
-		1)  VU_MULTIBOOT="0";;
-		2)  VU_MULTIBOOT="1";;
-		*)  VU_MULTIBOOT="0";;
+		1) VU_MULTIBOOT="0";;
+		2) VU_MULTIBOOT="1";;
+		*) VU_MULTIBOOT="0";;
 	esac
 	echo "VU_MULTIBOOT=$VU_MULTIBOOT" >> config
 fi
