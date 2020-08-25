@@ -15,9 +15,9 @@ fi
 if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 1           : Target system (1-70)"
 	echo "Parameter 2           : Optimization (1-6)"
-	echo "Parameter 3           : Neutrino variant (1-5)"
-	echo "Parameter 4           : External LCD support (1-4)"
-	echo "Parameter 5 (ARM/MIPS): GCC Version (1-5)"
+	echo "Parameter 3           : External LCD support (1-4)"
+	echo "Parameter 4           : Neutrino variant (1-5)"
+	echo "Parameter 5 (ARM/MIPS): GCC Version (1-6)"
 	echo "Parameter 6 (ARM VU+) : Single/Multiboot (1-2)"
 	echo "Parameter 7 (ARM VU+) : old/actual kernel modules (1-2)"
 	exit
@@ -56,14 +56,14 @@ case $1 in
 		echo
 		echo "  arm-based receivers"
 		echo "  AX/Mut@nt            VU+"
-		echo "   51)  HD51            50) VU+ Solo 4K     54) VU+ Ultimo 4K"
-		echo "                        52) VU+ Duo 4K      55) VU+ Uno 4K SE"
-		echo "                        53) VU+ Zero 4K     56) VU+ Uno 4K"
+		echo -e "   \033[01;32m51)  HD51\033[00m            50)  VU+ Solo 4K     54)  VU+ Ultimo 4K"
+		echo "                        52)  VU+ Duo 4K      55)  VU+ Uno 4K SE"
+		echo "                        53)  VU+ Zero 4K     56)  VU+ Uno 4K"
 		echo "  Air Digital"
 		echo "   57)  ZGEMMA H7"
 		echo
 		echo "  WWIO"
-		echo "   58) WWIO BRE2ZE 4K"
+		echo "   58)  WWIO BRE2ZE 4K"
 		echo
 		echo "  mips-based receivers"
 		echo "   70)  VU+ Duo"
@@ -139,7 +139,7 @@ fi
 case $2 in
 	[1-6]) REPLY=$2;;
 	*)	echo -e "\nOptimization:"
-		echo "   1)  optimization for size"
+		echo -e "   \033[01;32m1)  optimization for size\033[00m"
 		echo "   2)  optimization normal (current only SH4 or ARM/MIPS with GCC 6)"
 		echo "   3)  optimization for size, incl. PNG/JPG"
 		echo "   4)  optimization normal (current only SH4 or ARM/MIPS with GCC 6), incl. PNG/JPG"
@@ -170,7 +170,28 @@ echo "OPTIMIZE_PICS=$OPTIMIZE_PICS" >> config
 ##############################################
 
 case $3 in
-	[1-5]) REPLY=$3;;
+	[1-4]) REPLY=$3;;
+	*)	echo -e "\nExternal LCD support:"
+		echo -e "   \033[01;32m1)  No external LCD\033[00m"
+		echo "   2)  graphlcd for external LCD"
+		echo "   3)  lcd4linux for external LCD"
+		echo "   4)  graphlcd and lcd4linux for external LCD (both)"
+		read -p "Select external LCD support (1-4)? ";;
+esac
+
+case "$REPLY" in
+	1) EXTERNAL_LCD="none";;
+	2) EXTERNAL_LCD="graphlcd";;
+	3) EXTERNAL_LCD="lcd4linux";;
+	4) EXTERNAL_LCD="both";;
+	*) EXTERNAL_LCD="none";;
+esac
+echo "EXTERNAL_LCD=$EXTERNAL_LCD" >> config
+
+##############################################
+
+case $4 in
+	[1-5]) REPLY=$4;;
 	*)	echo -e "\nWhich Neutrino variant do you want to build?:"
 		echo "   1)  neutrino-fs               [ arm/sh4 ]"
 		echo "   2)  neutrino-fs-lcd4l         [ arm/sh4 ]"
@@ -199,37 +220,17 @@ echo "IMAGE=$IMAGE" >> config
 
 ##############################################
 
-case $4 in
-	[1-4]) REPLY=$4;;
-	*)	echo -e "\nExternal LCD support:"
-		echo "   1)  No external LCD"
-		echo "   2)  graphlcd for external LCD"
-		echo "   3)  lcd4linux for external LCD"
-		echo "   4)  graphlcd and lcd4linux for external LCD (both)"
-		read -p "Select external LCD support (1-4)? ";;
-esac
-
-case "$REPLY" in
-	1) EXTERNAL_LCD="none";;
-	2) EXTERNAL_LCD="graphlcd";;
-	3) EXTERNAL_LCD="lcd4linux";;
-	4) EXTERNAL_LCD="both";;
-	*) EXTERNAL_LCD="none";;
-esac
-echo "EXTERNAL_LCD=$EXTERNAL_LCD" >> config
-
-##############################################
-
 # gcc version for ARM/MIPS
 if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
 	case $5 in
 		[1-5]) REPLY=$5;;
 		*)	echo -e "\nSelect GCC version:"
-			echo "   1)  GCC version 6.5.0 (default)"
+			echo -e "   \033[01;32m1)  GCC version 6.5.0\033[00m"
 			echo "   2)  GCC version 7.5.0"
 			echo "   3)  GCC version 8.3.0"
 			echo "   4)  GCC version 8.4.0"
 			echo "   5)  GCC version 9.2.0"
+#			echo "   6)  GCC version 9.3.0"
 			read -p "Select modul version (1-5)? "
 			REPLY="${REPLY:-1}";;
 	esac
@@ -240,6 +241,7 @@ if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
 		3) BS_GCC_VER="8.3.0";;
 		4) BS_GCC_VER="8.4.0";;
 		5) BS_GCC_VER="9.2.0";;
+#		6) BS_GCC_VER="9.3.0";;
 		*) BS_GCC_VER="6.5.0";;
 	esac
 	echo "BS_GCC_VER=$BS_GCC_VER" >> config
@@ -252,9 +254,9 @@ if [ $BOXTYPE == 'vusolo4k' -o $BOXTYPE == 'vuduo4k' -o $BOXTYPE == 'vuultimo4k'
 	case $6 in
 		[1-2]) REPLY=$6;;
 		*)	echo -e "\nNormal or MultiBoot:"
-			echo "   1)  Normal    (default)"
+			echo -e "   \033[01;32m1)  Normal\033[00m"
 			echo "   2)  Multiboot"
-			read -p "Select mode (1-2)? ";;
+			read -p "Select boot mode (1-2)? ";;
 	esac
 
 	case "$REPLY" in
@@ -272,15 +274,15 @@ if [ $BOXTYPE == 'vuduo4k' -o $BOXTYPE == 'vuultimo4k' -o $BOXTYPE == 'vuuno4k' 
 	case $7 in
 		[1-2]) REPLY=$7;;
 		*)	echo -e "\nOld or actual kernel modules:"
-			echo "   1)  OLD kernel modules    (default)"
+			echo -e "   \033[01;32m1)  OLD kernel modules\033[00m"
 			echo "   2)  ACTUAL kernel modules"
 			read -p "Select modul version (1-2)? ";;
 	esac
 
 	case "$REPLY" in
-		1)  VU_NEW_MODULES="0";;
-		2)  VU_NEW_MODULES="1";;
-		*)  VU_NEW_MODULES="0";;
+		1) VU_NEW_MODULES="0";;
+		2) VU_NEW_MODULES="1";;
+		*) VU_NEW_MODULES="0";;
 	esac
 	echo "VU_NEW_MODULES=$VU_NEW_MODULES" >> config
 fi
