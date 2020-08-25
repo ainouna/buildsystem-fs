@@ -191,7 +191,8 @@ case "$REPLY" in
 	   IMAGE="neutrino";;
 	5) FLAVOUR="neutrino-ddt"
 	   IMAGE="neutrino-wlandriver";;
-	*) FLAVOUR="neutrino-fs";;
+	*) FLAVOUR="neutrino-fs"
+       IMAGE="neutrino";;
 esac
 echo "FLAVOUR=$FLAVOUR" >> config
 echo "IMAGE=$IMAGE" >> config
