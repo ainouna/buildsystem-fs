@@ -21,7 +21,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 4           : Image Neutrino (1-2)"
 	echo "Parameter 5           : Neutrino variant (1-4)"
 	echo "Parameter 6           : External LCD support (1-4)"
-	echo "Parameter 7 (ARM/MIPS): GCC Version (1-4)"
+	echo "Parameter 7 (ARM/MIPS): GCC Version (1-5)"
 	echo "Parameter 8 (ARM VU+) : old/actual kernel modules (1-2)"
 	exit
 fi
@@ -261,7 +261,7 @@ if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
 			echo "   3)  GCC version 8.3.0"
 			echo "   4)  GCC version 9.2.0"
 			echo "   5)  GCC version 8.4.0"
-			read -p "Select modul version (1-5)? [1] "
+			read -p "Select modul version (1-5)? "
 			REPLY="${REPLY:-1}";;
 	esac
 
