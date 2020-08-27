@@ -187,7 +187,7 @@ case "$REPLY" in
 	   IMAGE="neutrino";;
 	3) FLAVOUR="neutrino-fs-test"
 	   IMAGE="neutrino";;
-	4) FLAVOUR="neutrino-ddt";;
+	4) FLAVOUR="neutrino-ddt"
 	   IMAGE="neutrino";;
 	5) FLAVOUR="neutrino-ddt"
 	   IMAGE="neutrino-wlandriver";;
