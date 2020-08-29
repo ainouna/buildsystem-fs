@@ -402,9 +402,9 @@ $(D)/mtv:
 	$(TOUCH)
 
 #
-# n24-doku
+# n24
 #
-$(D)/n24-doku: $(D)/bootstrap
+$(D)/n24: $(D)/bootstrap
 	$(START_BUILD)
 	$(REMOVE)/plugins-lua
 	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
@@ -414,7 +414,8 @@ $(D)/n24-doku: $(D)/bootstrap
 	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
 	$(CHDIR)/plugins-lua; \
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/plugins-lua/n24-doku/* $(TARGET_DIR)/var/tuxbox/plugins/
+		cp -R $(BUILD_TMP)/plugins-lua/n24/* $(TARGET_DIR)/var/tuxbox/plugins/
+		rm -rf $(TARGET_DIR)/var/tuxbox/plugins//N24\ DOKU.png
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
 
@@ -436,9 +437,9 @@ $(D)/netzkino: $(D)/bootstrap
 	$(TOUCH)
 
 #
-# spiegel-tv
+# spiegel
 #
-$(D)/spiegel-tv:
+$(D)/spiegel:
 	$(START_BUILD)
 	$(REMOVE)/plugins-lua
 	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
@@ -448,14 +449,15 @@ $(D)/spiegel-tv:
 	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
 	$(CHDIR)/plugins-lua; \
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/plugins-lua/spiegel-tv-doc/* $(TARGET_DIR)/var/tuxbox/plugins/
+		cp -R $(BUILD_TMP)/plugins-lua/spiegel/* $(TARGET_DIR)/var/tuxbox/plugins/
+		rm -rf $(TARGET_DIR)/var/tuxbox/plugins/SpiegelTV.png
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
 
 #
-# tierwelt-tv
+# tierwelt
 #
-$(D)/tierwelt-tv:
+$(D)/tierwelt:
 	$(START_BUILD)
 	$(REMOVE)/plugins-lua
 	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
@@ -465,7 +467,8 @@ $(D)/tierwelt-tv:
 	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
 	$(CHDIR)/plugins-lua; \
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/plugins-lua/tierwelt-tv/* $(TARGET_DIR)/var/tuxbox/plugins/
+		cp -R $(BUILD_TMP)/plugins-lua/tierwelt/* $(TARGET_DIR)/var/tuxbox/plugins/
+		rm -rf $(TARGET_DIR)/var/tuxbox/plugins/Tierwelt\ TV.png
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
 # END FS PLUGINS
