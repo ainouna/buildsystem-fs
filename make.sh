@@ -17,7 +17,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 2           : Optimization (1-6)"
 	echo "Parameter 3           : Neutrino variant (1-4)"
 	echo "Parameter 4           : External LCD support (1-4)"
-	echo "Parameter 5 (ARM/MIPS): GCC Version (1-5)"
+	echo "Parameter 5 (ARM/MIPS): GCC Version (1-7)"
 	echo "Parameter 6 (ARM VU+) : Single/Multiboot (1-2)"
 	echo "Parameter 7 (ARM VU+) : old/actual kernel modules (1-2)"
 	exit
@@ -241,7 +241,8 @@ if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
 		3) BS_GCC_VER="8.3.0";;
 		4) BS_GCC_VER="8.4.0";;
 		5) BS_GCC_VER="9.2.0";;
-#		6) BS_GCC_VER="9.3.0";;
+		6) BS_GCC_VER="9.3.0";;
+		7) BS_GCC_VER="10.2.0";;
 		*) BS_GCC_VER="6.5.0";;
 	esac
 	echo "BS_GCC_VER=$BS_GCC_VER" >> config
