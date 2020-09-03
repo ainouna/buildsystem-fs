@@ -1,4 +1,4 @@
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 #
 ########################################################################
 #
@@ -276,7 +276,7 @@ $(D)/tierwelt:
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
 # END DDT-PLUGINS
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 #
 ########################################################################
 #

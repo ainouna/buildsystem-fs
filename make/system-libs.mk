@@ -1780,9 +1780,9 @@ $(D)/lcd4linux: $(D)/bootstrap $(D)/libusb_compat $(D)/gd $(D)/libusb $(D)/libdp
 	install -m 755 $(SKEL_ROOT)/etc/init.d/lcd4linux $(TARGET_DIR)/etc/init.d/
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuultimo4k vusolo4k))
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_vu.conf $(TARGET_DIR)/etc/lcd4linux.conf
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux.conf $(TARGET_DIR)/etc/lcd4linux.conf
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L))
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_fs.conf $(TARGET_DIR)/etc/lcd4linux.conf
 endif
 	$(REMOVE)/lcd4linux-git-$(LCD4LINUX_VER)

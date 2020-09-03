@@ -8,17 +8,17 @@ libstb-hal%-patch:
 # keeping all patches together in one file
 # uncomment if needed
 #
-# Neutrino DDT
-NEUTRINO_DDT_PATCHES =
-NEUTRINO_LIBSTB_DDT_PATCHES =
-
-#Neutrino FS
+# Neutrino FS
 NEUTRINO_FS_PATCHES =
 LIBSTB_HAL_FS_PATCHES =
 #
 NEUTRINO_FS_LCD4L_PATCHES =
 #
 NEUTRINO_FS_TEST_PATCHES =
+
+# Neutrino DDT
+NEUTRINO_DDT_PATCHES =
+NEUTRINO_LIBSTB_DDT_PATCHES =
 
 # Oscam patch
 OSCAM_LOCAL_PATCH =

@@ -172,7 +172,7 @@ echo "OPTIMIZE_PICS=$OPTIMIZE_PICS" >> config
 case $3 in
 	[1-5]) REPLY=$3;;
 	*)	echo -e "\nWhich Neutrino variant do you want to build?:"
-		echo "   1)  neutrino-fs               [ arm/sh4 ]"
+		echo "   1)  neutrino-fs-master        [ arm/sh4 ]"
 		echo "   2)  neutrino-fs-lcd4l         [ arm/sh4 ]"
 		echo "   3)  neutrino-fs-test          [ arm/sh4 ] !! NO LCD4L GLCD SUPPORT"
 		echo "   4)  neutrino-ddt              [ arm/sh4 ]"
@@ -181,17 +181,17 @@ case $3 in
 esac
 
 case "$REPLY" in
-	1) FLAVOUR="neutrino-fs"
+	1) FLAVOUR="FS_MASTER"
 	   IMAGE="neutrino";;
-	2) FLAVOUR="neutrino-fs-lcd4l"
+	2) FLAVOUR="FS_LCD4L"
 	   IMAGE="neutrino";;
-	3) FLAVOUR="neutrino-fs-test"
+	3) FLAVOUR="FS_TEST"
 	   IMAGE="neutrino";;
-	4) FLAVOUR="neutrino-ddt"
+	4) FLAVOUR="DDT"
 	   IMAGE="neutrino";;
-	5) FLAVOUR="neutrino-ddt"
+	5) FLAVOUR="DDT"
 	   IMAGE="neutrino-wlandriver";;
-	*) FLAVOUR="neutrino-fs"
+	*) FLAVOUR="FS_MASTER"
        IMAGE="neutrino";;
 esac
 echo "FLAVOUR=$FLAVOUR" >> config

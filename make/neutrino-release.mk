@@ -241,7 +241,7 @@ neutrino-release-tf7700:
 neutrino-release-bre2ze4k:
 	install -m 0755 $(SKEL_ROOT)/release/halt_hd51 $(RELEASE_DIR)/etc/init.d/halt
 	install -m 0755 $(SKEL_ROOT)/etc/init.d/mmcblk-by-name_hd51 $(RELEASE_DIR)/etc/init.d/mmcblk-by-name
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 	cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
 else
 	cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
@@ -255,7 +255,7 @@ endif
 neutrino-release-hd51:
 	install -m 0755 $(SKEL_ROOT)/release/halt_hd51 $(RELEASE_DIR)/etc/init.d/halt
 	install -m 0755 $(SKEL_ROOT)/etc/init.d/mmcblk-by-name_hd51 $(RELEASE_DIR)/etc/init.d/mmcblk-by-name
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 	cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
 else
 	cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
@@ -269,7 +269,7 @@ endif
 neutrino-release-h7:
 	install -m 0755 $(SKEL_ROOT)/release/halt_hd51 $(RELEASE_DIR)/etc/init.d/halt
 	install -m 0755 $(SKEL_ROOT)/etc/init.d/mmcblk-by-name_hd51 $(RELEASE_DIR)/etc/init.d/mmcblk-by-name
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 	cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
 else
 	cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
@@ -427,7 +427,7 @@ endif
 neutrino-release-base:
 	rm -rf $(RELEASE_DIR) || true
 	install -d $(RELEASE_DIR)
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 	install -d $(RELEASE_DIR)/{autofs,bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
 	install -d $(RELEASE_DIR)/lib/tuxbox/plugins
@@ -437,7 +437,7 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
 	install -d $(RELEASE_DIR)/var/tuxbox/{config,fonts,locale,plugins,themes}
 	install -d $(RELEASE_DIR)/var/tuxbox/webtv
 	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 	install -d $(RELEASE_DIR)/{bin,boot,dev,dev.static,etc,hdd,lib,media,mnt,proc,ram,root,sbin,swap,sys,tmp,usr,var}
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware}
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,tuxbox}
@@ -658,7 +658,7 @@ endif
 #
 # fonts
 #
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 	if [ -e $(TARGET_DIR)/usr/share/fonts/neutrino.ttf ]; then \
 		cp -aR $(TARGET_DIR)/usr/share/fonts/neutrino.ttf $(RELEASE_DIR)/usr/share/fonts; \
 	fi
@@ -669,7 +669,7 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
 		cp -aR $(TARGET_DIR)/usr/share/fonts/DejaVuLGCSansMono-Bold.ttf $(RELEASE_DIR)/usr/share/fonts; \
 		ln -s /usr/share/fonts/DejaVuLGCSansMono-Bold.ttf $(RELEASE_DIR)/usr/share/fonts/tuxtxt.ttf; \
 	fi
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 	if [ -e $(TARGET_DIR)/usr/share/fonts/HandelGotD.ttf ]; then \
 		cp -aR $(TARGET_DIR)/usr/share/fonts/HandelGotD.ttf $(RELEASE_DIR)/usr/share/fonts; \
 	fi
@@ -707,7 +707,7 @@ endif
 # channellist / tuxtxt /control
 #
 	cp -aR $(TARGET_DIR)/var/tuxbox/config/* $(RELEASE_DIR)/var/tuxbox/config
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 	cp -aR $(TARGET_DIR)/var/tuxbox/control/* $(RELEASE_DIR)/var/tuxbox/control
 endif
 #
@@ -895,7 +895,7 @@ $(D)/neutrino-release: neutrino-release-base neutrino-release-$(BOXTYPE)
 	ln -s /tmp $(RELEASE_DIR)/var/run
 	ln -s /tmp $(RELEASE_DIR)/var/tmp
 #
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/scan.jpg $(RELEASE_DIR)/var/boot/
 	ln -s /var/boot/scan.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3.jpg $(RELEASE_DIR)/var/boot/
@@ -907,7 +907,7 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-ddt))
 	ln -s /var/boot/radiomode.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
 	mv -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/start.jpg $(RELEASE_DIR)/var/boot/
 	ln -s /var/boot/start.jpg $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), neutrino-fs neutrino-fs-lcd4l neutrino-fs-test))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 	rm -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3-?.jpg
 	rm -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/mp3.jpg
 	rm -f $(RELEASE_DIR)/usr/share/tuxbox/neutrino/icons/shutdown.jpg
