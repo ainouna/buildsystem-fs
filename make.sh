@@ -192,7 +192,7 @@ case "$REPLY" in
 	5)  FLAVOUR="DDT"
 	    IMAGE="neutrino-wlandriver";;
 	*)  FLAVOUR="FS_MASTER"
-        IMAGE="neutrino";;
+	    IMAGE="neutrino";;
 esac
 echo "FLAVOUR=$FLAVOUR" >> config
 echo "IMAGE=$IMAGE" >> config
