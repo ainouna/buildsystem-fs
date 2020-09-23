@@ -13,7 +13,7 @@ endif
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), bre2ze4k hd51 h7))
 	$(MAKE) flash-image-$(BOXTYPE)-multi-disk flash-image-$(BOXTYPE)-multi-rootfs
 endif
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuduo4kse vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 ifeq ($(VU_MULTIBOOT), 1)
 	$(MAKE) flash-image-vu-multi-rootfs
 else
@@ -30,7 +30,7 @@ ofgimage:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), bre2ze4k hd51 h7))
 	$(MAKE) flash-image-$(BOXTYPE)-multi-rootfs
 endif
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuduo4kse vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 	$(MAKE) flash-image-vu-rootfs
 endif
 	$(TUXBOX_CUSTOMIZE)
@@ -40,7 +40,7 @@ online-image:
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), bre2ze4k hd51 h7))
 	$(MAKE) flash-image-$(BOXTYPE)-online
 endif
-ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuduo4kse vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
 	$(MAKE) flash-image-vu-online
 endif
 	$(TUXBOX_CUSTOMIZE)
@@ -217,6 +217,11 @@ endif
 ifeq ($(BOXTYPE), vuduo4k)
 VU_PREFIX = vuplus/duo4k
 VU_INITRD = vmlinuz-initrd-7278b1
+VU_FR = echo This file forces a reboot after the update. > $(IMAGE_BUILD_DIR)/$(VU_PREFIX)/reboot.update
+endif
+ifeq ($(BOXTYPE), vuduo4kse)
+VU_PREFIX = vuplus/duo4kse
+VU_INITRD = vmlinuz-initrd-7445d0
 VU_FR = echo This file forces a reboot after the update. > $(IMAGE_BUILD_DIR)/$(VU_PREFIX)/reboot.update
 endif
 ifeq ($(BOXTYPE), vuuno4kse)
