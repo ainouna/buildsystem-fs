@@ -17,9 +17,10 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 2           : Optimization (1-6)"
 	echo "Parameter 3           : Neutrino variant (1-4)"
 	echo "Parameter 4           : External LCD support (1-4)"
-	echo "Parameter 5 (ARM/MIPS): GCC Version (1-7)"
-	echo "Parameter 6 (ARM VU+) : Single/Multiboot (1-2)"
-	echo "Parameter 7 (ARM VU+) : old/actual kernel modules (1-2)"
+	echo "Parameter 5 (ARM/MIPS): Swap Data and Linux Swap ( 1-2)"
+	echo "Parameter 6 (ARM/MIPS): GCC Version (1-7)"
+	echo "Parameter 7 (ARM VU+) : Single/Multiboot (1-2)"
+	echo "Parameter 8 (ARM VU+) : old/actual kernel modules (1-2)"
 	exit
 fi
 
@@ -219,11 +220,30 @@ esac
 echo "EXTERNAL_LCD=$EXTERNAL_LCD" >> config
 
 ##############################################
+# dataswap linuxswap
+
+if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
+	case $5 in
+		[1-2]) REPLY=$5;;
+		*)	echo -e "\nSelect Swap Data and Linux Swap:"
+			echo -e "   \033[01;32m1)  Swap OFF\033[00m"
+			echo -e "   2)  Swap ON"
+			read -p "Select SWAP support (1-2)? ";;
+	esac
+
+case "$REPLY" in
+	1) SWAPDATA="off";;
+	2) SWAPDATA="on";;
+	*) SWAPDATA="off";;
+esac
+echo "SWAPDATA=$SWAPDATA" >> config
+fi
+##############################################
 
 # gcc version for ARM/MIPS
 if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
-	case $5 in
-		[1-7]) REPLY=$5;;
+	case $6 in
+		[1-7]) REPLY=$6;;
 		*)	echo -e "\nSelect GCC version:"
 			echo -e "   \033[01;32m1)  GCC version 6.5.0\033[00m"
 			echo "   2)  GCC version 7.5.0"
@@ -253,8 +273,8 @@ fi
 
 # Multiboot for VUPLUS_ARM
 if [ $BOXTYPE == 'vusolo4k' -o $BOXTYPE == 'vuduo4k' -o $BOXTYPE == 'vuduo4kse' -o $BOXTYPE == 'vuultimo4k' -o $BOXTYPE == 'vuuno4k' -o $BOXTYPE == 'vuuno4kse' -o $BOXTYPE == 'vuzero4k' ]; then
-	case $6 in
-		[1-2]) REPLY=$6;;
+	case $7 in
+		[1-2]) REPLY=$7;;
 		*)	echo -e "\nNormal or MultiBoot:"
 			echo -e "   \033[01;32m1)  Normal\033[00m"
 			echo "   2)  Multiboot"
@@ -273,8 +293,8 @@ fi
 
 # old/actual kernel modules for VUPLUS_ARM
 if [ $BOXTYPE == 'vuduo4k' -o $BOXTYPE == 'vuultimo4k' -o $BOXTYPE == 'vuuno4k' -o $BOXTYPE == 'vuuno4kse' ]; then
-	case $7 in
-		[1-2]) REPLY=$7;;
+	case $8 in
+		[1-2]) REPLY=$8;;
 		*)	echo -e "\nOld or actual kernel modules:"
 			echo -e "   \033[01;32m1)  OLD kernel modules\033[00m"
 			echo "   2)  ACTUAL kernel modules"
