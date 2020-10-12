@@ -220,7 +220,8 @@ esac
 echo "EXTERNAL_LCD=$EXTERNAL_LCD" >> config
 
 ##############################################
-# dataswap linuxswap
+
+# dataswap linuxswap hd51/h7/bre2ze4k
 
 if [ $BOXTYPE == 'hd51' -o $BOXTYPE == 'h7' -o $BOXTYPE == 'bre2ze4k' ]; then
 	case $5 in
