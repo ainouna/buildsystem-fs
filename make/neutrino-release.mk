@@ -242,9 +242,17 @@ neutrino-release-bre2ze4k:
 	install -m 0755 $(SKEL_ROOT)/release/halt_hd51 $(RELEASE_DIR)/etc/init.d/halt
 	install -m 0755 $(SKEL_ROOT)/etc/init.d/mmcblk-by-name_hd51 $(RELEASE_DIR)/etc/init.d/mmcblk-by-name
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
-	cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
-else
-	cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
+		ifeq ($(SWAPDATA), $(filter $(SWAPDATA), off))
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_fs_swap_off $(RELEASE_DIR)/etc/fstab
+		else
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
+		endif
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
+		ifeq ($(SWAPDATA), $(filter $(SWAPDATA), off))
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_swap_off $(RELEASE_DIR)/etc/fstab
+		else
+			cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
+		endif
 endif
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/extra/*.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGET_DIR)/boot/zImage.dtb $(RELEASE_DIR)/boot/
@@ -256,12 +264,20 @@ neutrino-release-hd51:
 	install -m 0755 $(SKEL_ROOT)/release/halt_hd51 $(RELEASE_DIR)/etc/init.d/halt
 	install -m 0755 $(SKEL_ROOT)/etc/init.d/mmcblk-by-name_hd51 $(RELEASE_DIR)/etc/init.d/mmcblk-by-name
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
-	cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
-else
-	cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
+		ifeq ($(SWAPDATA), $(filter $(SWAPDATA), off))
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_fs_swap_off $(RELEASE_DIR)/etc/fstab
+		else
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
+		endif
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
+		ifeq ($(SWAPDATA), $(filter $(SWAPDATA), off))
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_swap_off $(RELEASE_DIR)/etc/fstab
+		else
+			cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
+		endif
 endif
-	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/extra/*.ko $(RELEASE_DIR)/lib/modules/
-	cp $(TARGET_DIR)/boot/zImage.dtb $(RELEASE_DIR)/boot/
+		cp $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/extra/*.ko $(RELEASE_DIR)/lib/modules/
+		cp $(TARGET_DIR)/boot/zImage.dtb $(RELEASE_DIR)/boot/
 
 #
 # Zgemma H7
@@ -270,9 +286,17 @@ neutrino-release-h7:
 	install -m 0755 $(SKEL_ROOT)/release/halt_hd51 $(RELEASE_DIR)/etc/init.d/halt
 	install -m 0755 $(SKEL_ROOT)/etc/init.d/mmcblk-by-name_hd51 $(RELEASE_DIR)/etc/init.d/mmcblk-by-name
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
-	cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
-else
-	cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
+		ifeq ($(SWAPDATA), $(filter $(SWAPDATA), off))
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_fs_swap_off $(RELEASE_DIR)/etc/fstab
+		else
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
+		endif
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
+		ifeq ($(SWAPDATA), $(filter $(SWAPDATA), off))
+			cp -f $(SKEL_ROOT)/release/fstab_hd51_swap_off $(RELEASE_DIR)/etc/fstab
+		else
+			cp -f $(SKEL_ROOT)/release/fstab_hd51 $(RELEASE_DIR)/etc/fstab
+		endif
 endif
 	cp $(TARGET_DIR)/lib/modules/$(KERNEL_VER)/extra/*.ko $(RELEASE_DIR)/lib/modules/
 	cp $(TARGET_DIR)/boot/zImage.dtb $(RELEASE_DIR)/boot/
