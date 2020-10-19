@@ -36,8 +36,6 @@ GIT_NAME_FLASH       ?= fs-basis
 
 GIT_CHECK             = git checkout -f
 
-GIT_CHECK             = git checkout -f
-
 TUFSBOX_DIR           = $(BASE_DIR)/tufsbox
 CROSS_BASE            = $(BASE_DIR)/cross/$(BOXARCH)-$(CROSSTOOL_GCC_VER)-kernel-$(KERNEL_VER)
 
