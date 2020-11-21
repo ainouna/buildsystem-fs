@@ -566,7 +566,7 @@ $(D)/timezone: $(D)/bootstrap find-zic $(ARCHIVE)/$(TZDATA_SOURCE)
 #
 # freetype
 #
-FREETYPE_VER = 2.10.2
+FREETYPE_VER = 2.10.4
 FREETYPE_SOURCE = freetype-$(FREETYPE_VER).tar.xz
 FREETYPE_PATCH = freetype-$(FREETYPE_VER).patch
 
@@ -705,7 +705,7 @@ endif
 #
 # libjpeg_turbo2
 #
-LIBJPEG_TURBO2_VER = 2.0.5
+LIBJPEG_TURBO2_VER = 2.0.6
 LIBJPEG_TURBO2_SOURCE = libjpeg-turbo-$(LIBJPEG_TURBO2_VER).tar.gz
 LIBJPEG_TURBO2_PATCH = libjpeg-turbo-tiff-ojpeg.patch
 
@@ -904,7 +904,7 @@ $(D)/ca-bundle: $(ARCHIVE)/$(CA-BUNDLE_SOURCE)
 ifeq ($(BOXARCH), sh4)
 LIBCURL_VER = 7.61.1
 else
-LIBCURL_VER = 7.72.0
+LIBCURL_VER = 7.73.0
 endif
 LIBCURL_SOURCE = curl-$(LIBCURL_VER).tar.bz2
 LIBCURL_PATCH = libcurl-$(LIBCURL_VER).patch
@@ -1885,7 +1885,7 @@ $(D)/libusb_compat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/$(LIBUSB_COMPAT_SOURCE
 #
 # alsa-lib
 #
-ALSA_LIB_VER = 1.2.3.2
+ALSA_LIB_VER = 1.2.4
 ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VER).tar.bz2
 ALSA_LIB_PATCH  = alsa-lib-$(ALSA_LIB_VER).patch
 ALSA_LIB_PATCH += alsa-lib-$(ALSA_LIB_VER)-link_fix.patch
@@ -1932,7 +1932,7 @@ $(D)/alsa_lib: $(D)/bootstrap $(ARCHIVE)/$(ALSA_LIB_SOURCE)
 #
 # alsa-utils
 #
-ALSA_UTILS_VER = 1.2.3
+ALSA_UTILS_VER = 1.2.4
 ALSA_UTILS_SOURCE = alsa-utils-$(ALSA_UTILS_VER).tar.bz2
 ALSA_UTILS_PATCH = alsa-utils-$(ALSA_UTILS_VER).patch
 
