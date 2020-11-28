@@ -290,7 +290,7 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 ifeq ($(SWAPDATA), 1)
 	cp -f $(SKEL_ROOT)/release/fstab_hd51_fs $(RELEASE_DIR)/etc/fstab
 else
-		cp -f $(SKEL_ROOT)/release/fstab_hd51_fs_swap_off $(RELEASE_DIR)/etc/fstab
+	cp -f $(SKEL_ROOT)/release/fstab_hd51_fs_swap_off $(RELEASE_DIR)/etc/fstab
 endif
 else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 ifeq ($(SWAPDATA), 1)
