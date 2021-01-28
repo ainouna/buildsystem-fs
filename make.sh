@@ -17,7 +17,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 2                   : Optimization (1-6)"
 	echo "Parameter 3                   : Neutrino variant (1-4)"
 	echo "Parameter 4                   : External LCD support (1-4)"
-	echo "Parameter 5 (HD51/H7/BRE2ZE4K): Swap Data and Linux Swap ( 1-2)"
+	echo "Parameter 5 (HD51/H7/BRE2ZE4K): Swap Data and Linux Swap (1-2)"
 	echo "Parameter 6 (ARM/MIPS)        : GCC Version (1-7)"
 	echo "Parameter 7 (ARM VU+)         : Single/Multiboot (1-2)"
 	exit
@@ -245,12 +245,12 @@ if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
 	case $6 in
 		[1-7]) REPLY=$6;;
 		*)	echo -e "\nSelect GCC version:"
-			echo -e "   \033[01;32m1)  GCC version 6.5.0\033[00m"
-			echo "   2)  GCC version 7.5.0"
-			echo "   3)  GCC version 8.3.0"
-			echo "   4)  GCC version 8.4.0"
-			echo "   5)  GCC version 9.2.0"
-			echo "   6)  GCC version 9.3.0"
+			echo -e "   \033[01;32m1)  GCC version  6.5.0\033[00m"
+			echo "   2)  GCC version  7.5.0"
+			echo "   3)  GCC version  8.3.0"
+			echo "   4)  GCC version  8.4.0"
+			echo "   5)  GCC version  9.2.0"
+			echo "   6)  GCC version  9.3.0"
 			echo "   7)  GCC version 10.2.0"
 			read -p "Select GCC version (1-7)? "
 			REPLY="${REPLY:-1}";;
