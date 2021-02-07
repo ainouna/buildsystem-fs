@@ -522,7 +522,7 @@ $(D)/bzip2: $(D)/bootstrap $(ARCHIVE)/$(BZIP2_SOURCE)
 		mv Makefile-libbz2_so Makefile; \
 		$(MAKE) all CC=$(TARGET)-gcc AR=$(TARGET)-ar RANLIB=$(TARGET)-ranlib; \
 		$(MAKE) install PREFIX=$(TARGET_DIR)/usr
-ifneq ($(BOXTYPE), $(filter $(BOXTYPE), bre2ze4k hd51 h7 vuduo vuduo4k vuduo4kse vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k))
+ifneq ($(BOXTYPE), $(filter $(BOXTYPE), bre2ze4k hd51 h7 vuduo vuduo4k vuduo4kse vuuno4kse vuzero4k vuultimo4k vuuno4k vusolo4k dm8000))
 	cd $(TARGET_DIR) && rm -f usr/bin/bzip2
 endif
 	$(REMOVE)/bzip2-$(BZIP2_VER)
@@ -904,7 +904,7 @@ $(D)/ca-bundle: $(ARCHIVE)/$(CA-BUNDLE_SOURCE)
 ifeq ($(BOXARCH), sh4)
 LIBCURL_VER = 7.61.1
 else
-LIBCURL_VER = 7.74.0
+LIBCURL_VER = 7.75.0
 endif
 LIBCURL_SOURCE = curl-$(LIBCURL_VER).tar.bz2
 LIBCURL_PATCH = libcurl-$(LIBCURL_VER).patch
@@ -1706,6 +1706,9 @@ GRAPHLCD_PATCH = graphlcd-git-$(GRAPHLCD_VER).patch
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuduo4kse vuuno4kse vuultimo4k vusolo4k))
 GRAPHLCD_PATCH += graphlcd-vuplus4k.patch
 endif
+ifeq ($(BOXTYPE), $(filter $(BOXTYPE), dm8000))
+GRAPHLCD_PATCH += graphlcd-dm8000.patch
+endif
 
 $(ARCHIVE)/$(GRAPHLCD_SOURCE):
 	$(SCRIPTS_DIR)/get-git-archive.sh $(GRAPHLCD_URL) $(GRAPHLCD_VER) $(notdir $@) $(ARCHIVE)
@@ -1760,6 +1763,9 @@ LCD4LINUX_PATCH =
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuduo4kse vuuno4kse vuultimo4k vusolo4k))
 LCD4LINUX_DRV = ,VUPLUS4K
 endif
+#ifeq ($(BOXTYPE), $(filter $(BOXTYPE), dm8000))
+#LCD4LINUX_DRV = ,DM8000
+#endif
 
 $(ARCHIVE)/$(LCD4LINUX_SOURCE):
 	$(SCRIPTS_DIR)/get-git-archive.sh $(LCD4LINUX_URL) $(LCD4LINUX_VER) $(notdir $@) $(ARCHIVE)
@@ -1783,9 +1789,17 @@ $(D)/lcd4linux: $(D)/bootstrap $(D)/libusb_compat $(D)/gd $(D)/libusb $(D)/libdp
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuduo4kse vuuno4kse vuultimo4k vusolo4k))
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_vu.conf $(TARGET_DIR)/etc/lcd4linux.conf
 else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
+#ifeq ($(BOXTYPE), $(filter $(BOXTYPE), dm8000))
+#	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_dm8000.conf $(TARGET_DIR)/etc/lcd4linux.conf
+#else
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux.conf $(TARGET_DIR)/etc/lcd4linux.conf
+##endif
 else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L))
+#ifeq ($(BOXTYPE), $(filter $(BOXTYPE), dm8000))
+#	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_dm8000.conf $(TARGET_DIR)/etc/lcd4linux.conf
+#else
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_fs.conf $(TARGET_DIR)/etc/lcd4linux.conf
+##endif
 endif
 	$(REMOVE)/lcd4linux-git-$(LCD4LINUX_VER)
 	$(TOUCH)
