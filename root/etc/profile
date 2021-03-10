@@ -33,6 +33,7 @@ alias ..='cd ..'
 alias mc='mc -u'
 alias sc='setconsole'
 alias sr='setconsole -r'
+alias cmdl='cat /proc/cmdline'
 #END
 
 # export
