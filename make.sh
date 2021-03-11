@@ -260,7 +260,7 @@ if [ $BOXARCH == 'arm' -o $BOXARCH == 'mips' ]; then
 			echo "   1)  GCC version  6.5.0"
 			echo "   2)  GCC version  7.5.0"
 			echo "   3)  GCC version  8.3.0"
-			echo -e "   \033[01;32m5)  GCC version  8.4.0\033[00m"
+			echo -e "   \033[01;32m4)  GCC version  8.4.0\033[00m"
 			echo "   5)  GCC version  9.2.0"
 			echo "   6)  GCC version  9.3.0"
 			echo "   7)  GCC version 10.2.0"
