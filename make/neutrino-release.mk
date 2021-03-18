@@ -1003,8 +1003,8 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
 	ln -sf /var/tuxbox/plugins $(RELEASE_DIR)/var/plugins
 #	ln -sf /var/tuxbox/plugins $(RELEASE_DIR)/var/tuxbox/luaplugins
 	ln -sf /var/tuxbox/webtv $(RELEASE_DIR)/var/tuxbox/config/webtv
-#	ln -sf /var/tuxbox $(RELEASE_DIR)/lib/tuxbox
-#	ln -sf /var/tuxbox $(RELEASE_DIR)/usr/lib/tuxbox
+	ln -sf /var/tuxbox $(RELEASE_DIR)/lib/tuxbox
+	ln -sf /var/tuxbox $(RELEASE_DIR)/usr/lib/tuxbox
 endif
 
 #
