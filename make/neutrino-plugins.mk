@@ -276,7 +276,7 @@ $(D)/tierwelt:
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
 # END DDT-PLUGINS
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L FS_TEST))
 #
 ########################################################################
 #

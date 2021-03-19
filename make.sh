@@ -193,7 +193,7 @@ case $3 in
 esac
 
 case "$REPLY" in
-	1)  FLAVOUR="FS_MASTER"
+	1)  FLAVOUR="FS"
 	    IMAGE="neutrino";;
 	2)  FLAVOUR="FS_LCD4L"
 	    IMAGE="neutrino";;
@@ -203,7 +203,7 @@ case "$REPLY" in
 	    IMAGE="neutrino";;
 	5)  FLAVOUR="DDT"
 	    IMAGE="neutrino-wlandriver";;
-	*)  FLAVOUR="FS_MASTER"
+	*)  FLAVOUR="FS"
 	    IMAGE="neutrino";;
 esac
 echo "FLAVOUR=$FLAVOUR" >> config

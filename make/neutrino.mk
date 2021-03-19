@@ -139,7 +139,7 @@ N_CONFIG_OPTS += --enable-lcd4linux
 NEUTRINO_DEPS += $(D)/lcd4linux
 endif
 
-ifeq  ($(FLAVOUR), FS_MASTER)
+ifeq  ($(FLAVOUR), FS)
 GIT_URL      ?= https://github.com/fs-basis
 NEUTRINO  = neutrino-fs
 LIBSTB_HAL   = libstb-hal-fs

@@ -180,7 +180,7 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 	$(HOST_DIR)/bin/resize2fs $(IMAGE_BUILD_DIR)/$($(BOXTYPE)_IMAGE_LINK) $(ROOTFS_PARTITION_SIZE_MULTI)k
 	# Truncate on purpose
 	dd if=$(IMAGE_BUILD_DIR)/$($(BOXTYPE)_IMAGE_LINK) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(ROOTFS_PARTITION_OFFSET) \* $(BLOCK_SECTOR)) count=$(shell expr $($(BOXTYPE)_IMAGE_ROOTFS_SIZE) \* $(BLOCK_SECTOR))
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L FS_TEST))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L FS_TEST))
 	$(HOST_DIR)/bin/resize2fs $(IMAGE_BUILD_DIR)/$($(BOXTYPE)_IMAGE_LINK) 131072k
 	# Truncate on purpose
 	dd if=$(IMAGE_BUILD_DIR)/$($(BOXTYPE)_IMAGE_LINK) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(ROOTFS_PARTITION_OFFSET) \* $(BLOCK_SECTOR))

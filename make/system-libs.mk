@@ -1795,7 +1795,7 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 #else
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux.conf $(TARGET_DIR)/etc/lcd4linux.conf
 ##endif
-else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS_MASTER FS_LCD4L))
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L))
 #ifeq ($(BOXTYPE), $(filter $(BOXTYPE), dm8000))
 #	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_dm8000.conf $(TARGET_DIR)/etc/lcd4linux.conf
 #else
