@@ -2244,7 +2244,7 @@ $(D)/libupnp: $(D)/bootstrap $(ARCHIVE)/$(LIBUPNP_SOURCE)
 			--includedir=$(TARGET_INCLUDE_DIR) \
 		; \
 		$(MAKE) all; \
-		$(MAKE) install DESTDIR=$(TARGET_DIR)
+		$(MAKE) install
 	$(REWRITE_PKGCONF) $(PKG_CONFIG_PATH)/libupnp.pc
 	$(REWRITE_LIBTOOL)/libixml.la
 	$(REWRITE_LIBTOOL)/libthreadutil.la
