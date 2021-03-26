@@ -2240,6 +2240,8 @@ $(D)/libupnp: $(D)/bootstrap $(ARCHIVE)/$(LIBUPNP_SOURCE)
 	$(CHDIR)/libupnp-$(LIBUPNP_VER); \
 		$(CONFIGURE) \
 			--prefix=/usr \
+			--libdir=$(TARGET_LIB_DIR) \
+			--includedir=$(TARGET_DIR)/usr/include \
 		; \
 		$(MAKE) all; \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
