@@ -306,6 +306,9 @@ $(D)/neutrino-plugin.do_prepare:
 		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins.git plugins.git; \
 		fi
 	cp -ra $(ARCHIVE)/plugins.git $(SOURCE_DIR)/neutrino-plugins
+ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
+	sed -i -e 's#getrc fx2#getrc#g' $(SOURCE_DIR)/neutrino-plugins/Makefile.am
+endif
 	cp -ra $(SOURCE_DIR)/neutrino-plugins $(SOURCE_DIR)/neutrino-plugins.org
 	set -e; cd $(SOURCE_DIR)/neutrino-plugins; \
 		$(call apply_patches, $(NMPP_PATCHES))
