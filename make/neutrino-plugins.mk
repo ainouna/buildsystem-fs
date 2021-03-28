@@ -59,6 +59,7 @@ NEUTRINO_PLUGINS += $(D)/neutrino-plugin-mediathek
 NEUTRINO_PLUGINS += $(D)/neutrino-plugin-xupnpd
 #NEUTRINO_PLUGINS += $(D)/neutrino-plugin-settings-update
 NEUTRINO_PLUGINS += $(LOCAL_NEUTRINO_PLUGINS)
+NMPP_PATCHES  = $(NEUTRINO_PLUGINS_PATCHES)
 
 NP_OBJDIR = $(BUILD_TMP)/neutrino-plugins
 
@@ -79,6 +80,8 @@ ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 	sed -i -e 's#shellexec fx2#shellexec#g' $(SOURCE_DIR)/neutrino-plugins/Makefile.am
 endif
 	cp -ra $(SOURCE_DIR)/neutrino-plugins $(SOURCE_DIR)/neutrino-plugins.org
+	set -e; cd $(SOURCE_DIR)/neutrino-plugins; \
+		$(call apply_patches, $(NMPP_PATCHES))
 	@touch $@
 
 $(D)/neutrino-plugin.config.status: $(D)/bootstrap
@@ -286,6 +289,7 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L FS_TEST))
 #
 NEUTRINO_PLUGINS  = $(D)/neutrino-plugin
 NEUTRINO_PLUGINS += $(LOCAL_NEUTRINO_PLUGINS)
+NMPP_PATCHES  = $(NEUTRINO_PLUGINS_PATCHES)
 
 NP_OBJDIR = $(BUILD_TMP)/neutrino-plugins
 
@@ -303,6 +307,8 @@ $(D)/neutrino-plugin.do_prepare:
 		fi
 	cp -ra $(ARCHIVE)/plugins.git $(SOURCE_DIR)/neutrino-plugins
 	cp -ra $(SOURCE_DIR)/neutrino-plugins $(SOURCE_DIR)/neutrino-plugins.org
+	set -e; cd $(SOURCE_DIR)/neutrino-plugins; \
+		$(call apply_patches, $(NMPP_PATCHES))
 	@touch $@
 
 $(D)/neutrino-plugin.config.status: $(D)/bootstrap
@@ -380,24 +386,6 @@ $(D)/mediathek:
 		install -d $(TARGET_DIR)/var/tuxbox/plugins
 		cp -R $(BUILD_TMP)/plugins-lua/mediathek/* $(TARGET_DIR)/var/tuxbox/plugins/
 		rm -f $(TARGET_DIR)/var/tuxbox/plugins/neutrino-mediathek/livestream.lua
-	$(REMOVE)/plugins-lua
-	$(TOUCH)
-
-#
-# mtv
-#
-$(D)/mtv:
-	$(START_BUILD)
-	$(REMOVE)/plugins-lua
-	set -e; if [ -d $(ARCHIVE)/plugins-lua.git ]; \
-		then cd $(ARCHIVE)/plugins-lua.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/fs-basis/plugins-lua.git plugins-lua.git; \
-		fi
-	cp -ra $(ARCHIVE)/plugins-lua.git $(BUILD_TMP)/plugins-lua
-	install -d $(TARGET_DIR)/var/tuxbox/plugins
-	$(CHDIR)/plugins-lua; \
-		install -d $(TARGET_DIR)/var/tuxbox/plugins
-		cp -R $(BUILD_TMP)/plugins-lua/mtv/* $(TARGET_DIR)/var/tuxbox/plugins/
 	$(REMOVE)/plugins-lua
 	$(TOUCH)
 
