@@ -10,10 +10,12 @@ $(TARGET_DIR)/lib/libc.so.6:
 #
 ifeq ($(BS_GCC_VER), $(filter $(BS_GCC_VER), 8.4.0 9.3.0 10.2.0))
 CROSSTOOL_NG_VER     = 4e5bc436
-elifeq ($(BS_GCC_VER), $(filter $(BS_GCC_VER), 10.3.0))
+else
+ifeq ($(BS_GCC_VER), $(filter $(BS_GCC_VER), 10.3.0))
 CROSSTOOL_NG_VER     = f582f1c2
-elif
+else
 CROSSTOOL_NG_VER     = 7bd6bb00
+endif
 endif
 CROSSTOOL_NG_DIR     = crosstool-ng.git
 CROSSTOOL_NG_SOURCE  = $(CROSSTOOL_NG_DIR)
