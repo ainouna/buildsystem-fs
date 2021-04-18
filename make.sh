@@ -28,7 +28,7 @@ if [ "$1" == -h ] || [ "$1" == --help ]; then
 	echo "Parameter 3                   : Neutrino variant (1-4)"
 	echo "Parameter 4                   : External LCD support (1-4)"
 	echo "Parameter 5 (HD51/H7/BRE2ZE4K): Swap Data and Linux Swap (1-2)"
-	echo "Parameter 6 (ARM/MIPS)        : GCC Version (1-7)"
+	echo "Parameter 6 (ARM/MIPS)        : GCC Version (1-8)"
 	echo "Parameter 7 (ARM VU+)         : Single/Multiboot (1-2)"
 	exit
 fi
