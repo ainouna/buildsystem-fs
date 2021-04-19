@@ -186,17 +186,23 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L FS_TEST))
 	dd if=$(IMAGE_BUILD_DIR)/$($(BOXTYPE)_IMAGE_LINK) of=$(EMMC_IMAGE) bs=$(BLOCK_SIZE) seek=$(shell expr $(ROOTFS_PARTITION_OFFSET) \* $(BLOCK_SECTOR))
 endif
 	mv $(IMAGE_BUILD_DIR)/disk.img $(IMAGE_BUILD_DIR)/$(IMAGEDIR)/
+	cd $(IMAGE_BUILD_DIR)/$(IMAGEDIR); \
+	md5sum -b disk.img | awk -F " " '{print $$1}' > disk.img.md5; \
 
 flash-image-$(BOXTYPE)-multi-rootfs:
 	# Create final USB-image
 	mkdir -p $(IMAGE_BUILD_DIR)/$(IMAGEDIR)
 	cp $(RELEASE_DIR)/boot/zImage.dtb $(IMAGE_BUILD_DIR)/$(IMAGEDIR)/kernel.bin
+	cd $(IMAGE_BUILD_DIR)/$(IMAGEDIR); \
+	md5sum -b kernel.bin | awk -F " " '{print $$1}' > kernel.bin.md5; \
 	cd $(RELEASE_DIR); \
 	tar -cvf $(IMAGE_BUILD_DIR)/$(IMAGEDIR)/rootfs.tar --exclude=zImage* . > /dev/null 2>&1; \
 	bzip2 $(IMAGE_BUILD_DIR)/$(IMAGEDIR)/rootfs.tar
+	cd $(IMAGE_BUILD_DIR)/$(IMAGEDIR); \
+	md5sum -b rootfs.tar.bz2 | awk -F " " '{print $$1}' > rootfs.tar.bz2.md5; \
 	echo $(BOXTYPE)_$(FLAVOUR)_multi_usb_$(shell date '+%d%m%Y-%H%M%S') > $(IMAGE_BUILD_DIR)/$(IMAGEDIR)/imageversion
 	cd $(IMAGE_BUILD_DIR) && \
-	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(FLAVOUR)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').zip $(IMAGEDIR)/rootfs.tar.bz2 $(IMAGEDIR)/kernel.bin $(IMAGEDIR)/disk.img $(IMAGEDIR)/imageversion
+	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(FLAVOUR)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').zip $(IMAGEDIR)/rootfs.tar.bz2 $(IMAGEDIR)/rootfs.tar.bz2.md5 $(IMAGEDIR)/kernel.bin $(IMAGEDIR)/kernel.bin.md5 $(IMAGEDIR)/disk.img $(IMAGEDIR)/disk.img.md5 $(IMAGEDIR)/imageversion
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 
@@ -204,12 +210,16 @@ flash-image-$(BOXTYPE)-online:
 	# Create final USB-image
 	mkdir -p $(IMAGE_BUILD_DIR)/$(BOXTYPE)
 	cp $(RELEASE_DIR)/boot/zImage.dtb $(IMAGE_BUILD_DIR)/$(BOXTYPE)/kernel.bin
+	cd $(IMAGE_BUILD_DIR)/$(BOXTYPE); \
+	md5sum -b kernel.bin | awk -F " " '{print $$1}' > kernel.bin.md5; \
 	cd $(RELEASE_DIR); \
 	tar -cvf $(IMAGE_BUILD_DIR)/$(BOXTYPE)/rootfs.tar --exclude=zImage* . > /dev/null 2>&1; \
 	bzip2 $(IMAGE_BUILD_DIR)/$(BOXTYPE)/rootfs.tar
+	cd $(IMAGE_BUILD_DIR)/$(BOXTYPE); \
+	md5sum -b rootfs.tar.bz2 | awk -F " " '{print $$1}' > rootfs.tar.bz2.md5; \
 	echo $(BOXTYPE)_$(FLAVOUR)_flash_$(shell date '+%d%m%Y-%H%M%S') > $(IMAGE_BUILD_DIR)/$(BOXTYPE)/imageversion
 	cd $(IMAGE_BUILD_DIR)/$(BOXTYPE) && \
-	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(FLAVOUR)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 kernel.bin imageversion
+	tar -cvzf $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(FLAVOUR)_multi_usb_$(shell date '+%d.%m.%Y-%H.%M').tgz rootfs.tar.bz2 rootfs.tar.bz2.md5 kernel.bin kernel.bin.md5 imageversion
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 
@@ -220,7 +230,7 @@ flash-image-$(BOXTYPE)-disk-image:
 	cd $(RELEASE_DIR); \
 	echo $(BOXTYPE)_$(FLAVOUR)_usb_$(shell date '+%d%m%Y-%H%M%S') > $(IMAGE_BUILD_DIR)/$(IMAGEDIR)/imageversion
 	cd $(IMAGE_BUILD_DIR) && \
-	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(FLAVOUR)_multi_disk_img_$(shell date '+%d.%m.%Y-%H.%M').zip $(IMAGEDIR)/disk.img $(IMAGEDIR)/imageversion
+	zip -r $(RELEASE_IMAGE_DIR)/$(BOXTYPE)_$(FLAVOUR)_multi_disk_img_$(shell date '+%d.%m.%Y-%H.%M').zip $(IMAGEDIR)/disk.img $(IMAGEDIR)/disk.img.md5 $(IMAGEDIR)/imageversion
 	# cleanup
 	rm -rf $(IMAGE_BUILD_DIR)
 endif
