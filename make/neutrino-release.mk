@@ -715,7 +715,11 @@ endif
 #
 # modules.available
 #
+ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L FS_TEST))
 	cp -aR $(SKEL_ROOT)/release/modules.available_$(BOXARCH) $(RELEASE_DIR)/etc/modules.available
+else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
+	cp -aR $(SKEL_ROOT)/release/modules.available_$(BOXARCH)_DD $(RELEASE_DIR)/etc/modules.available
+endif
 #
 # lib usr/lib
 #
