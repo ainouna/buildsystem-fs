@@ -25,6 +25,22 @@ FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-corrupt-h264-frames.patch
 FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-FFmpeg-devel-amfenc-Add-support-for-pict_type-field.patch
 FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-INT64-fix.patch
 else
+ifeq ($(FFMPEG_EXPERIMENTAL), 1)
+FFMPEG_VER = 4.3.2
+FFMPEG_SNAP = -$(FFMPEG_VER)
+FFMPEG_PATCH = ffmpeg-$(FFMPEG_VER)-aac.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-allow_to_choose_rtmp_impl_at_runtime.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-buffer-size.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-fix-edit-list-parsing.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-fix-hls.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-fix_mpegts.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-hls_replace_key_uri.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-mips64_cpu_detection.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-corrupt-h264-frames.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-FFmpeg-devel-amfenc-Add-support-for-pict_type-field.patch
+FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-INT64-fix.patch
+FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VER).tar.xz
+else
 FFMPEG_VER = 4.3.2
 FFMPEG_SNAP = -$(FFMPEG_VER)
 FFMPEG_PATCH = ffmpeg-$(FFMPEG_VER)-aac.patch
@@ -40,6 +56,7 @@ FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-FFmpeg-devel-amfenc-Add-support-for-pict_ty
 FFMPEG_PATCH += ffmpeg-$(FFMPEG_VER)-INT64-fix.patch
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VER).tar.xz
 endif
+endif
 
 FFMPEG_DEPS = $(D)/librtmp
 FFMPEG_CONF_OPTS  = --enable-librtmp
@@ -50,10 +67,17 @@ FFMPEG_CONF_OPTS  += --disable-x86asm
 FFMPEG_CONF_OPTS  += --enable-decoder=adpcm_zork
 FFMPEG_CONF_OPTS  += --enable-encoder=speedhq
 else
+ifeq ($(FFMPEG_EXPERIMENTAL), 1)
 FFMPEG_CONF_OPTS  += --enable-libxml2
 FFMPEG_CONF_OPTS  += --enable-libfreetype
 FFMPEG_CONF_OPTS  += --disable-x86asm
 #FFMPEG_CONF_OPTS  += --enable-decoder=pcm_zork
+else
+FFMPEG_CONF_OPTS  += --enable-libxml2
+FFMPEG_CONF_OPTS  += --enable-libfreetype
+FFMPEG_CONF_OPTS  += --disable-x86asm
+#FFMPEG_CONF_OPTS  += --enable-decoder=pcm_zork
+endif
 endif
 
 ifeq ($(BOXARCH), arm)
