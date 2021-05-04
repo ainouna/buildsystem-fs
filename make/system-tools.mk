@@ -445,8 +445,8 @@ $(D)/e2fsprogs: $(D)/bootstrap $(D)/util_linux $(ARCHIVE)/$(E2FSPROGS_SOURCE)
 #
 # util_linux
 #
-UTIL_LINUX_MAJOR = 2.36
-UTIL_LINUX_MINOR = .2
+UTIL_LINUX_MAJOR = 2.37
+UTIL_LINUX_MINOR = -rc1
 UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR)$(UTIL_LINUX_MINOR)
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VER).tar.xz
 
@@ -1481,7 +1481,7 @@ $(D)/htop: $(D)/bootstrap $(D)/ncurses $(ARCHIVE)/$(HTOP_SOURCE)
 #
 # ethtool
 #
-ETHTOOL_VER = 5.10
+ETHTOOL_VER = 5.12
 ETHTOOL_PATCH = ethtool-$(ETHTOOL_VER).patch
 ETHTOOL_SOURCE = ethtool-$(ETHTOOL_VER).tar.xz
 
@@ -1815,7 +1815,7 @@ $(D)/udpxy: $(D)/bootstrap $(ARCHIVE)/$(UDPXY_SOURCE)
 #
 # openvpn
 #
-OPENVPN_VER = 2.5.1
+OPENVPN_VER = 2.5.2
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VER).tar.xz
 
 $(ARCHIVE)/$(OPENVPN_SOURCE):
@@ -1891,7 +1891,7 @@ $(D)/vpnc: $(D)/bootstrap $(D)/openssl $(D)/lzo $(D)/libgcrypt $(ARCHIVE)/$(VPNC
 #
 # openssh
 #
-OPENSSH_VER = 8.5p1
+OPENSSH_VER = 8.6p1
 OPENSSH_SOURCE = openssh-$(OPENSSH_VER).tar.gz
 
 $(ARCHIVE)/$(OPENSSH_SOURCE):
