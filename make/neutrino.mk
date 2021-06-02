@@ -12,6 +12,7 @@ $(TARGET_DIR)/.version:
 	echo "version=0200`date +%Y%m%d%H%M`" >> $@
 	echo "git=`git log | grep "^commit" | wc -l`" >> $@
 	echo "imagedir=$(BOXTYPE)" >> $@
+	echo "devs=$(MAINTAINER)" >> $@
 
 # -----------------------------------------------------------------------------
 ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
