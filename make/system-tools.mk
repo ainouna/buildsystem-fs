@@ -31,7 +31,6 @@ BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-recursive_action-fix.patch
 ifeq ($(BOXARCH), $(filter $(BOXARCH), sh4 mips))
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-sh4-mips-revert_ifa_flags.patch
 endif
-BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-fix_term_dumb.patch
 $(D)/busybox: $(D)/bootstrap $(PATCHES)/$(BUSYBOX_CONFIG)
 	$(START_BUILD)
 	$(REMOVE)/busybox$(BB_SNAPSHOT)
@@ -451,7 +450,7 @@ UTIL_LINUX_MAJOR = 2.36
 UTIL_LINUX_MINOR = .2
 else
 UTIL_LINUX_MAJOR = 2.37
-UTIL_LINUX_MINOR = -rc2
+UTIL_LINUX_MINOR = 
 endif
 UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR)$(UTIL_LINUX_MINOR)
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VER).tar.xz
