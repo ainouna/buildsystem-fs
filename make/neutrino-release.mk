@@ -481,7 +481,7 @@ ifeq ($(FLAVOUR), $(filter $(FLAVOUR), DDT))
 	install -d $(RELEASE_DIR)/lib/{modules,udev,firmware,tuxbox}
 	install -d $(RELEASE_DIR)/var/{bin,boot,emu,etc,epg,httpd,keys,lib,logos,net,tuxbox,update}
 	install -d $(RELEASE_DIR)/var/net/epg
-	install -d $(RELEASE_DIR)/var/tuxbox/{config,locale,plugins,themes}
+	install -d $(RELEASE_DIR)/var/tuxbox/{config,control,locale,plugins,themes}
 	install -d $(RELEASE_DIR)/var/tuxbox/webtv
 	install -d $(RELEASE_DIR)/var/tuxbox/config/{webtv,zapit}
 else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L FS_TEST))
@@ -783,9 +783,7 @@ endif
 # channellist / tuxtxt / controlscripts
 #
 	cp -aR $(TARGET_DIR)/var/tuxbox/config/* $(RELEASE_DIR)/var/tuxbox/config
-ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L FS_TEST))
 	cp -aR $(TARGET_DIR)/var/tuxbox/control/* $(RELEASE_DIR)/var/tuxbox/control
-endif
 #
 # copy root_neutrino
 #
