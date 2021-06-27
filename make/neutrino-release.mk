@@ -780,7 +780,7 @@ endif
 #		cp $(TARGET_DIR)/usr/local/bin/udpstreampes $(RELEASE_DIR)/usr/local/bin/; \
 #	fi
 #
-# channellist / tuxtxt /control
+# channellist / tuxtxt / controlscripts
 #
 	cp -aR $(TARGET_DIR)/var/tuxbox/config/* $(RELEASE_DIR)/var/tuxbox/config
 ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L FS_TEST))
