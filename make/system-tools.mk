@@ -26,7 +26,7 @@ endif
 
 ifeq ($(BUSYBOX_SNAPSHOT), 1)
 #BUSYBOX_PATCH += busybox-snapshot-tar-fix.patch
-BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-changed_FreeBSD_fix.patch
+#BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-changed_FreeBSD_fix.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-recursive_action-fix.patch
 ifeq ($(BOXARCH), $(filter $(BOXARCH), sh4 mips))
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-sh4-mips-revert_ifa_flags.patch
@@ -151,8 +151,8 @@ $(D)/module_init_tools: $(D)/bootstrap $(D)/lsb $(ARCHIVE)/$(MODULE_INIT_TOOLS_S
 #
 # sysvinit
 #
-SYSVINIT_VER = 2.99
-SYSVINIT_SOURCE = sysvinit-$(SYSVINIT_VER).tar.xz
+SYSVINIT_VER = 3.00
+SYSVINIT_SOURCE = sysvinit-$(SYSVINIT_VER)-beta.tar.xz
 SYSVINIT_PATCH  = sysvinit-$(SYSVINIT_VER)-crypt-lib.patch
 SYSVINIT_PATCH += sysvinit-$(SYSVINIT_VER)-change-INIT_FIFO.patch
 
@@ -725,7 +725,7 @@ $(D)/ntfs_3g: $(D)/bootstrap $(ARCHIVE)/$(NTFS_3G_SOURCE)
 #
 # mc
 #
-MC_VER = 4.8.26
+MC_VER = 4.8.27
 MC_SOURCE = mc-$(MC_VER).tar.xz
 MC_PATCH  = mc-$(MC_VER).patch
 
@@ -1434,7 +1434,7 @@ $(D)/libnfsidmap: $(D)/bootstrap $(ARCHIVE)/$(LIBNFSIDMAP_SOURCE)
 #
 # vsftpd
 #
-VSFTPD_VER = 3.0.3
+VSFTPD_VER = 3.0.5
 VSFTPD_SOURCE = vsftpd-$(VSFTPD_VER).tar.gz
 VSFTPD_PATCH = vsftpd-$(VSFTPD_VER).patch
 VSFTPD_PATCH += vsftpd-$(VSFTPD_VER)-find_libs.patch
