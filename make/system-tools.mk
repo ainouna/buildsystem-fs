@@ -5,7 +5,7 @@ ifeq ($(BUSYBOX_SNAPSHOT), 1)
 BUSYBOX_VER = snapshot
 BB_SNAPSHOT =
 else
-BUSYBOX_VER = 1.32.0
+BUSYBOX_VER = 1.34.0
 BB_SNAPSHOT = -$(BUSYBOX_VER)
 BUSYBOX_SOURCE = busybox-$(BUSYBOX_VER).tar.bz2
 endif
@@ -15,6 +15,10 @@ BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-extra.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-extra2.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-flashcp-small-output.patch
 BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-block-telnet-internet.patch
+BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-recursive_action-fix.patch
+ifeq ($(BOXARCH), $(filter $(BOXARCH), sh4 mips))
+BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-sh4-mips-revert_ifa_flags.patch
+endif
 
 ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 BUSYBOX_CONFIG = busybox-$(BUSYBOX_VER).config_arm
@@ -27,10 +31,6 @@ endif
 ifeq ($(BUSYBOX_SNAPSHOT), 1)
 #BUSYBOX_PATCH += busybox-snapshot-tar-fix.patch
 #BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-changed_FreeBSD_fix.patch
-BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-recursive_action-fix.patch
-ifeq ($(BOXARCH), $(filter $(BOXARCH), sh4 mips))
-BUSYBOX_PATCH += busybox-$(BUSYBOX_VER)-sh4-mips-revert_ifa_flags.patch
-endif
 $(D)/busybox: $(D)/bootstrap $(PATCHES)/$(BUSYBOX_CONFIG)
 	$(START_BUILD)
 	$(REMOVE)/busybox$(BB_SNAPSHOT)
