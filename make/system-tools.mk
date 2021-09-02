@@ -379,7 +379,7 @@ $(D)/portmap: $(D)/bootstrap $(D)/lsb $(ARCHIVE)/$(PORTMAP_SOURCE) $(ARCHIVE)/po
 #
 # e2fsprogs
 #
-E2FSPROGS_VER = 1.46.3
+E2FSPROGS_VER = 1.46.4
 E2FSPROGS_SOURCE = e2fsprogs-$(E2FSPROGS_VER).tar.gz
 E2FSPROGS_PATCH = e2fsprogs-$(E2FSPROGS_VER).patch
 
@@ -452,7 +452,7 @@ UTIL_LINUX_MAJOR = 2.36
 UTIL_LINUX_MINOR = .2
 else
 UTIL_LINUX_MAJOR = 2.37
-UTIL_LINUX_MINOR = .1
+UTIL_LINUX_MINOR = .2
 endif
 UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR)$(UTIL_LINUX_MINOR)
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VER).tar.xz
@@ -1929,7 +1929,7 @@ $(D)/vpnc: $(D)/bootstrap $(D)/openssl $(D)/lzo $(D)/libgcrypt $(ARCHIVE)/$(VPNC
 #
 # openssh
 #
-OPENSSH_VER = 8.6p1
+OPENSSH_VER = 8.7p1
 OPENSSH_SOURCE = openssh-$(OPENSSH_VER).tar.gz
 
 $(ARCHIVE)/$(OPENSSH_SOURCE):
