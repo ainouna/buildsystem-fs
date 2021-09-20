@@ -20,17 +20,10 @@ FFMPEG_SNAP = -$(FFMPEG_VER)
 FFMPEG_PATCH  = $(PATCHES)/ffmpeg/$(FFMPEG_VER)
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VER).tar.xz
 else
-ifeq ($(FFMPEG_OLD), 1)
-FFMPEG_VER = 3.3
-FFMPEG_SNAP = -$(FFMPEG_VER)
-FFMPEG_PATCH  = $(PATCHES)/ffmpeg/$(FFMPEG_VER)
-FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VER).tar.xz
-else
 FFMPEG_VER = 4.3.2
 FFMPEG_SNAP = -$(FFMPEG_VER)
 FFMPEG_PATCH  = $(PATCHES)/ffmpeg/$(FFMPEG_VER)
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VER).tar.xz
-endif
 endif
 endif
 
@@ -49,16 +42,10 @@ FFMPEG_CONF_OPTS  += --enable-libfreetype
 FFMPEG_CONF_OPTS  += --disable-x86asm
 #FFMPEG_CONF_OPTS  += --enable-decoder=pcm_zork
 else
-ifeq ($(FFMPEG_OLD), 1)
-FFMPEG_CONF_OPTS  += --disable-yasm
-FFMPEG_CONF_OPTS  += --disable-ffserver
-FFMPEG_CONF_OPTS  += --enable-decoder=pcm_zork
-else
 FFMPEG_CONF_OPTS  += --enable-libxml2
 FFMPEG_CONF_OPTS  += --enable-libfreetype
 FFMPEG_CONF_OPTS  += --disable-x86asm
 #FFMPEG_CONF_OPTS  += --enable-decoder=pcm_zork
-endif
 endif
 endif
 
