@@ -30,9 +30,10 @@ NEUTRINO_DEPS  = $(D)/bootstrap $(KERNEL) $(D)/system-tools
 NEUTRINO_DEPS += $(D)/ncurses $(LIRC) $(D)/libcurl
 NEUTRINO_DEPS += $(D)/libpng $(D)/libjpeg $(D)/giflib $(D)/freetype
 NEUTRINO_DEPS += $(D)/alsa_utils $(D)/ffmpeg
-NEUTRINO_DEPS += $(D)/libfribidi $(D)/libsigc $(D)/libdvbsi $(D)/libusb
+NEUTRINO_DEPS += $(D)/libsigc $(D)/libdvbsi $(D)/libusb
 NEUTRINO_DEPS += $(D)/pugixml $(D)/libopenthreads
 NEUTRINO_DEPS += $(D)/lua $(D)/luaexpat $(D)/luacurl $(D)/luasocket $(D)/luafeedparser $(D)/luasoap $(D)/luajson
+#NEUTRINO_DEPS += $(D)/libfribidi
 NEUTRINO_DEPS += $(LOCAL_NEUTRINO_DEPS)
 
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), atevio7500 spark spark7162 ufs912 ufs913 ufs910 vuduo dm8000))
