@@ -89,7 +89,6 @@ N_CONFIG_OPTS += --with-boxtype=$(BOXTYPE)
 N_CONFIG_OPTS += --disable-upnp
 #N_CONFIG_OPTS += --enable-dynamicdemux
 #N_CONFIG_OPTS += --enable-freesatepg
-#N_CONFIG_OPTS += --enable-pip
 #N_CONFIG_OPTS += --disable-webif
 #N_CONFIG_OPTS += --enable-fribidi
 
@@ -97,6 +96,8 @@ ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 N_CONFIG_OPTS += --enable-reschange
 #N_CONFIG_OPTS += --disable-arm-acc
 #N_CONFIG_OPTS += --disable-mips-acc
+#N_CONFIG_OPTS += --enable-pip
+#N_CONFIG_OPTS += --enable-quadpip
 endif
 
 ifeq ($(BOXTYPE), dm8000)
