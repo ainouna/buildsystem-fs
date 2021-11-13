@@ -915,6 +915,7 @@ $(D)/curlftpfs: $(D)/bootstrap $(D)/libcurl $(D)/fuse $(D)/libglib2 $(ARCHIVE)/$
 #
 SDPARM_VER = 1.11
 SDPARM_SOURCE = sdparm-$(SDPARM_VER).tgz
+SDPARM_PATCH = sdparm-$(SDPARM_VER).patch
 
 $(ARCHIVE)/$(SDPARM_SOURCE):
 	$(DOWNLOAD) http://sg.danny.cz/sg/p/$(SDPARM_SOURCE)
@@ -924,6 +925,7 @@ $(D)/sdparm: $(D)/bootstrap $(ARCHIVE)/$(SDPARM_SOURCE)
 	$(REMOVE)/sdparm-$(SDPARM_VER)
 	$(UNTAR)/$(SDPARM_SOURCE)
 	$(CHDIR)/sdparm-$(SDPARM_VER); \
+		$(call apply_patches, $(SDPARM_PATCH)); \
 		$(CONFIGURE) \
 			--prefix= \
 			--bindir=/sbin \
@@ -1519,7 +1521,7 @@ $(D)/htop: $(D)/bootstrap $(D)/ncurses $(ARCHIVE)/$(HTOP_SOURCE)
 #
 # ethtool
 #
-ETHTOOL_VER = 5.14
+ETHTOOL_VER = 5.15
 ETHTOOL_SOURCE = ethtool-$(ETHTOOL_VER).tar.xz
 ETHTOOL_PATCH = ethtool-$(ETHTOOL_VER).patch
 
