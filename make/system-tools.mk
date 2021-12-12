@@ -1801,22 +1801,19 @@ $(D)/wpa_supplicant: $(D)/bootstrap $(D)/openssl $(D)/wireless_tools $(ARCHIVE)/
 #
 # dvbsnoop
 #
-DVBSNOOP_VER = d3f134b
-DVBSNOOP_SOURCE = dvbsnoop-git-$(DVBSNOOP_VER).tar.bz2
-DVBSNOOP_URL = https://github.com/Duckbox-Developers/dvbsnoop.git
-
-$(ARCHIVE)/$(DVBSNOOP_SOURCE):
-	$(SCRIPTS_DIR)/get-git-archive.sh $(DVBSNOOP_URL) $(DVBSNOOP_VER) $(notdir $@) $(ARCHIVE)
-
 ifeq ($(BOXARCH), sh4)
 DVBSNOOP_CONF_OPTS = --with-dvbincludes=$(KERNEL_DIR)/include
 endif
 
-$(D)/dvbsnoop: $(D)/bootstrap $(D)/kernel $(ARCHIVE)/$(DVBSNOOP_SOURCE)
+$(D)/dvbsnoop: $(D)/bootstrap $(D)/kernel
 	$(START_BUILD)
-	$(REMOVE)/dvbsnoop-git-$(DVBSNOOP_VER)
-	$(UNTAR)/$(DVBSNOOP_SOURCE)
-	$(CHDIR)/dvbsnoop-git-$(DVBSNOOP_VER); \
+	$(REMOVE)/dvbsnoop
+	set -e; if [ -d $(ARCHIVE)/dvbsnoop.git ]; \
+		then cd $(ARCHIVE)/dvbsnoop.git; git pull; \
+		else cd $(ARCHIVE); git clone git://github.com/Duckbox-Developers/dvbsnoop.git dvbsnoop.git; \
+		fi
+	cp -ra $(ARCHIVE)/dvbsnoop.git $(BUILD_TMP)/dvbsnoop
+	$(CHDIR)/dvbsnoop; \
 		$(CONFIGURE) \
 			--enable-silent-rules \
 			--prefix=/usr \
@@ -1825,7 +1822,7 @@ $(D)/dvbsnoop: $(D)/bootstrap $(D)/kernel $(ARCHIVE)/$(DVBSNOOP_SOURCE)
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
-	$(REMOVE)/dvbsnoop-git-$(DVBSNOOP_VER)
+	$(REMOVE)/dvbsnoop
 	$(TOUCH)
 
 #
@@ -2157,4 +2154,44 @@ $(D)/ofgwrite: $(D)/bootstrap $(ARCHIVE)/$(OFGWRITE_SOURCE)
 	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite_caller $(TARGET_DIR)/usr/bin
 	install -m 755 $(BUILD_TMP)/ofgwrite-fs/ofgwrite $(TARGET_DIR)/usr/bin
 	$(REMOVE)/ofgwrite-fs
+	$(TOUCH)
+
+#
+# iptables
+#
+IPTABLES_VER = 1.8.7
+IPTABLES_SOURCE = iptables-$(IPTABLES_VER).tar.bz2
+
+$(ARCHIVE)/$(IPTABLES_SOURCE):
+	$(DOWNLOAD) https://netfilter.org/pub/iptables/$(IPTABLES_SOURCE)
+
+$(D)/iptables: $(D)/bootstrap $(ARCHIVE)/$(IPTABLES_SOURCE)
+	$(START_BUILD)
+	$(REMOVE)/iptables-$(IPTABLES_VER)
+	$(UNTAR)/$(IPTABLES_SOURCE)
+	$(CHDIR)/iptables-$(IPTABLES_VER); \
+		$(BUILDENV) \
+		autoreconf -fi $(SILENT_OPT); \
+		$(CONFIGURE) \
+			--prefix=/usr \
+			--infodir=/.remove \
+			--localedir=/.remove \
+			--mandir=/.remove \
+			--docdir=/.remove \
+			--htmldir=/.remove \
+			--dvidir=/.remove \
+			--pdfdir=/.remove \
+			--psdir=/.remove \
+			--disable-nftables \
+			--disable-devel \
+			--disable-connlabel \
+			--disable-ipv6 \
+			--enable-shared=no \
+			--without-pkgconfigdir \
+			--without-xtlibdir \
+			--without-xt-lock-name \
+		; \
+		$(MAKE); \
+		$(MAKE) install DESTDIR=$(TARGET_DIR)
+	$(REMOVE)/iptables-$(IPTABLES_VER)
 	$(TOUCH)
