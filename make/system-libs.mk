@@ -706,7 +706,7 @@ endif
 #
 # libjpeg_turbo2
 #
-LIBJPEG_TURBO2_VER = 2.1.2
+LIBJPEG_TURBO2_VER = 2.1.3
 LIBJPEG_TURBO2_SOURCE = libjpeg-turbo-$(LIBJPEG_TURBO2_VER).tar.gz
 LIBJPEG_TURBO2_PATCH = libjpeg-turbo-tiff-ojpeg.patch
 
@@ -905,7 +905,7 @@ $(D)/ca-bundle: $(ARCHIVE)/$(CA-BUNDLE_SOURCE)
 ifeq ($(BOXARCH), sh4)
 LIBCURL_VER = 7.61.1
 else
-LIBCURL_VER = 7.81.0
+LIBCURL_VER = 7.82.0
 endif
 LIBCURL_SOURCE = curl-$(LIBCURL_VER).tar.bz2
 LIBCURL_PATCH = libcurl-$(LIBCURL_VER).patch
@@ -1757,9 +1757,6 @@ $(D)/libdpf: $(D)/bootstrap $(D)/libusb_compat $(ARCHIVE)/$(LIBDPF_SOURCE)
 #
 # lcd4linux
 #
-LCD4LINUX_VER = 98c6d20
-LCD4LINUX_SOURCE = lcd4linux-git-$(LCD4LINUX_VER).tar.bz2
-LCD4LINUX_URL = https://github.com/TangoCash/lcd4linux.git
 LCD4LINUX_PATCH = lcd4linux.patch
 ifeq ($(BOXTYPE), $(filter $(BOXTYPE), vuduo4k vuduo4kse vuuno4kse vuultimo4k vusolo4k))
 LCD4LINUX_DRV = ,VUPLUS4K
@@ -1768,14 +1765,15 @@ endif
 #LCD4LINUX_DRV = ,DM8000
 #endif
 
-$(ARCHIVE)/$(LCD4LINUX_SOURCE):
-	$(SCRIPTS_DIR)/get-git-archive.sh $(LCD4LINUX_URL) $(LCD4LINUX_VER) $(notdir $@) $(ARCHIVE)
-
-$(D)/lcd4linux: $(D)/bootstrap $(D)/libusb_compat $(D)/gd $(D)/libusb $(D)/libdpf $(ARCHIVE)/$(LCD4LINUX_SOURCE)
+$(D)/lcd4linux: $(D)/bootstrap $(D)/libusb_compat $(D)/gd $(D)/libusb $(D)/libdpf
 	$(START_BUILD)
-	$(REMOVE)/lcd4linux-git-$(LCD4LINUX_VER)
-	$(UNTAR)/$(LCD4LINUX_SOURCE)
-	$(CHDIR)/lcd4linux-git-$(LCD4LINUX_VER); \
+	$(REMOVE)/lcd4linux
+	set -e; if [ -d $(ARCHIVE)/lcd4linux.git ]; \
+		then cd $(ARCHIVE)/lcd4linux.git; git pull; \
+		else cd $(ARCHIVE); git clone git://github.com/TangoCash/lcd4linux.git lcd4linux.git; \
+		fi
+	cp -ra $(ARCHIVE)/lcd4linux.git $(BUILD_TMP)/lcd4linux
+	$(CHDIR)/lcd4linux; \
 		$(call apply_patches, $(LCD4LINUX_PATCH)); \
 		$(BUILDENV) ./bootstrap $(SILENT_OPT); \
 		$(BUILDENV) ./configure $(CONFIGURE_OPTS) $(SILENT_OPT) \
@@ -1802,7 +1800,7 @@ else ifeq ($(FLAVOUR), $(filter $(FLAVOUR), FS FS_LCD4L))
 	install -D -m 0600 $(SKEL_ROOT)/etc/lcd4linux_fs.conf $(TARGET_DIR)/etc/lcd4linux.conf
 ##endif
 endif
-	$(REMOVE)/lcd4linux-git-$(LCD4LINUX_VER)
+	$(REMOVE)/lcd4linux
 	$(TOUCH)
 
 #
