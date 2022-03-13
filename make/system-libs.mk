@@ -2485,7 +2485,7 @@ $(D)/gnutls: $(D)/bootstrap $(D)/nettle $(ARCHIVE)/$(GNUTLS_SOURCE)
 #
 # libgpg-error
 #
-LIBGPG_ERROR_VER    = 1.41
+LIBGPG_ERROR_VER    = 1.44
 LIBGPG_ERROR_DIR    = libgpg-error-$(LIBGPG_ERROR_VER)
 LIBGPG_ERROR_SOURCE = libgpg-error-$(LIBGPG_ERROR_VER).tar.bz2
 LIBGPG_ERROR_URL    = https://www.gnupg.org/ftp/gcrypt/libgpg-error
@@ -2514,7 +2514,7 @@ $(D)/libgpg-error: $(D)/bootstrap $(ARCHIVE)/$(LIBGPG_ERROR_SOURCE)
 #
 # libgcrypt
 #
-LIBGCRYPT_VER    = 1.8.8
+LIBGCRYPT_VER    = 1.8.9
 LIBGCRYPT_DIR    = libgcrypt-$(LIBGCRYPT_VER)
 LIBGCRYPT_SOURCE = libgcrypt-$(LIBGCRYPT_VER).tar.bz2
 LIBGCRYPT_URL    = https://gnupg.org/ftp/gcrypt/libgcrypt
