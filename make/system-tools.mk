@@ -86,7 +86,7 @@ $(D)/bash: $(D)/bootstrap $(ARCHIVE)/$(BASH_SOURCE)
 		; \
 		$(MAKE); \
 		$(MAKE) install DESTDIR=$(TARGET_DIR)
-		cd $(TARGET_DIR)/bin && rm bash && ln -sf /usr/bin/bash bash
+		cd $(TARGET_DIR)/bin && rm -f bash && ln -sf /usr/bin/bash bash
 		rm -f $(TARGET_DIR)/usr/bin/bashbug
 		rm -f $(TARGET_LIB_DIR)/bash/{loadables.h,Makefile.inc}
 	$(REMOVE)/bash-$(BASH_VER)
@@ -151,7 +151,7 @@ $(D)/module_init_tools: $(D)/bootstrap $(D)/lsb $(ARCHIVE)/$(MODULE_INIT_TOOLS_S
 #
 # sysvinit
 #
-SYSVINIT_VER = 3.01
+SYSVINIT_VER = 3.02
 SYSVINIT_SOURCE = sysvinit-$(SYSVINIT_VER).tar.xz
 SYSVINIT_PATCH  = sysvinit-$(SYSVINIT_VER)-crypt-lib.patch
 SYSVINIT_PATCH += sysvinit-$(SYSVINIT_VER)-change-INIT_FIFO.patch
@@ -452,8 +452,8 @@ ifeq ($(BOXARCH), sh4)
 UTIL_LINUX_MAJOR = 2.36
 UTIL_LINUX_MINOR = .2
 else
-UTIL_LINUX_MAJOR = 2.37
-UTIL_LINUX_MINOR = .4
+UTIL_LINUX_MAJOR = 2.38
+#UTIL_LINUX_MINOR = .1
 endif
 UTIL_LINUX_VER = $(UTIL_LINUX_MAJOR)$(UTIL_LINUX_MINOR)
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VER).tar.xz
@@ -726,9 +726,12 @@ $(D)/ntfs_3g: $(D)/bootstrap $(ARCHIVE)/$(NTFS_3G_SOURCE)
 #
 # mc
 #
-MC_VER = 4.8.27
+MC_VER = 4.8.28
 MC_SOURCE = mc-$(MC_VER).tar.xz
 MC_PATCH  = mc-$(MC_VER).patch
+ifeq ($(BOXARCH), sh4)
+MC_PATCH += mc-$(MC_VER)_sh4.patch
+endif
 
 $(ARCHIVE)/$(MC_SOURCE):
 	$(DOWNLOAD) ftp.midnight-commander.org/$(MC_SOURCE)
@@ -1853,7 +1856,7 @@ $(D)/udpxy: $(D)/bootstrap $(ARCHIVE)/$(UDPXY_SOURCE)
 #
 # openvpn
 #
-OPENVPN_VER = 2.5.5
+OPENVPN_VER = 2.5.6
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VER).tar.xz
 
 $(ARCHIVE)/$(OPENVPN_SOURCE):
