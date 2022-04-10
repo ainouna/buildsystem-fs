@@ -23,12 +23,7 @@ include make/linux-kernel-env.mk
 
 # default platform...
 MAKEFLAGS            += --no-print-directory
-GIT_PROTOCOL         ?= http
-ifneq ($(GIT_PROTOCOL), http)
-GITHUB               ?= git://github.com
-else
 GITHUB               ?= https://github.com
-endif
 GIT_NAME             ?= fs-basis
 GIT_NAME_DRIVER      ?= fs-basis
 GIT_NAME_TOOLS       ?= fs-basis

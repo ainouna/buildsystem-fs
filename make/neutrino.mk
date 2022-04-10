@@ -29,7 +29,11 @@ AUDIODEC = ffmpeg
 NEUTRINO_DEPS  = $(D)/bootstrap $(KERNEL) $(D)/system-tools
 NEUTRINO_DEPS += $(D)/ncurses $(LIRC) $(D)/libcurl
 NEUTRINO_DEPS += $(D)/libpng $(D)/libjpeg $(D)/giflib $(D)/freetype
+ifeq ($(BOXARCH), sh4)
 NEUTRINO_DEPS += $(D)/alsa_utils $(D)/ffmpeg
+else
+NEUTRINO_DEPS += $(D)/ffmpeg
+endif
 NEUTRINO_DEPS += $(D)/libsigc $(D)/libdvbsi $(D)/libusb
 NEUTRINO_DEPS += $(D)/pugixml $(D)/libopenthreads
 NEUTRINO_DEPS += $(D)/lua $(D)/luaexpat $(D)/luacurl $(D)/luasocket $(D)/luafeedparser $(D)/luasoap $(D)/luajson
@@ -359,6 +363,7 @@ ifeq ($(BOXARCH), $(filter $(BOXARCH), arm mips))
 	make e2-multiboot
 endif
 	touch $(D)/$(notdir $@)
+	$(HOST_DIR)/bin/qrencode -o $(TARGET_DIR)/usr/share/tuxbox/neutrino/icons/qr.png "$(GIT_URL)" -m 1 -s 5
 	make neutrino-release
 	$(TUXBOX_CUSTOMIZE)
 
