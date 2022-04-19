@@ -151,7 +151,7 @@ $(D)/module_init_tools: $(D)/bootstrap $(D)/lsb $(ARCHIVE)/$(MODULE_INIT_TOOLS_S
 #
 # sysvinit
 #
-SYSVINIT_VER = 3.02
+SYSVINIT_VER = 3.03
 SYSVINIT_SOURCE = sysvinit-$(SYSVINIT_VER).tar.xz
 SYSVINIT_PATCH  = sysvinit-$(SYSVINIT_VER)-crypt-lib.patch
 SYSVINIT_PATCH += sysvinit-$(SYSVINIT_VER)-change-INIT_FIFO.patch
@@ -545,7 +545,7 @@ $(D)/util_linux: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/$(UTIL_LINUX_SOURCE)
 #
 # gptfdisk
 #
-GPTFDISK_VER = 1.0.8
+GPTFDISK_VER = 1.0.9
 GPTFDISK_SOURCE = gptfdisk-$(GPTFDISK_VER).tar.gz
 
 $(ARCHIVE)/$(GPTFDISK_SOURCE):
@@ -1059,11 +1059,11 @@ $(D)/sysstat: $(D)/bootstrap $(ARCHIVE)/$(SYSSTAT_SOURCE)
 #
 # libnsl
 #
-LIBNSL_VER    = 1.2.0
+LIBNSL_VER    = 2.0.0
 LIBNSL_SOURCE = libnsl-$(LIBNSL_VER).tar.gz
 
 $(ARCHIVE)/$(LIBNSL_SOURCE):
-	$(DOWNLOAD) https://github.com/thkukuk/libnsl/archive/v1.2.0/$(LIBNSL_SOURCE)
+	$(DOWNLOAD) https://github.com/thkukuk/libnsl/archive/v$(LIBNSL_VER)/$(LIBNSL_SOURCE)
 
 $(D)/libnsl: $(D)/bootstrap $(ARCHIVE)/$(LIBNSL_SOURCE)
 	$(START_BUILD)
@@ -1525,7 +1525,7 @@ $(D)/htop: $(D)/bootstrap $(D)/ncurses $(ARCHIVE)/$(HTOP_SOURCE)
 #
 # ethtool
 #
-ETHTOOL_VER = 5.16
+ETHTOOL_VER = 5.17
 ETHTOOL_SOURCE = ethtool-$(ETHTOOL_VER).tar.xz
 ETHTOOL_PATCH = ethtool-$(ETHTOOL_VER).patch
 
@@ -1932,7 +1932,7 @@ $(D)/vpnc: $(D)/bootstrap $(D)/openssl $(D)/lzo $(D)/libgcrypt $(ARCHIVE)/$(VPNC
 #
 # openssh
 #
-OPENSSH_VER = 8.9p1
+OPENSSH_VER = 9.0p1
 OPENSSH_SOURCE = openssh-$(OPENSSH_VER).tar.gz
 
 $(ARCHIVE)/$(OPENSSH_SOURCE):
@@ -1995,8 +1995,8 @@ $(D)/dropbear: $(D)/bootstrap $(D)/zlib $(ARCHIVE)/$(DROPBEAR_SOURCE)
 #
 # dropbearmulti
 #
-DROPBEARMULTI_VER = 846d38f
-#DROPBEARMULTI_VER = a8d6dac
+DROPBEARMULTI_VER = b8669b0
+#DROPBEARMULTI_VER = 846d38f
 DROPBEARMULTI_SOURCE = dropbearmulti-git-$(DROPBEARMULTI_VER).tar.bz2
 DROPBEARMULTI_URL = https://github.com/mkj/dropbear.git
 
