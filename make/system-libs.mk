@@ -1222,7 +1222,7 @@ $(D)/libvorbisidec: $(D)/bootstrap $(D)/libogg $(ARCHIVE)/$(LIBVORBISIDEC_SOURCE
 #
 # libiconv
 #
-LIBICONV_VER = 1.15
+LIBICONV_VER = 1.17
 LIBICONV_SOURCE = libiconv-$(LIBICONV_VER).tar.gz
 
 $(ARCHIVE)/$(LIBICONV_SOURCE):
@@ -1898,7 +1898,7 @@ $(D)/libusb_compat: $(D)/bootstrap $(D)/libusb $(ARCHIVE)/$(LIBUSB_COMPAT_SOURCE
 #
 # alsa-lib
 #
-ALSA_LIB_VER = 1.2.6.1
+ALSA_LIB_VER = 1.2.7
 ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VER).tar.bz2
 ALSA_LIB_PATCH  = alsa-lib-$(ALSA_LIB_VER).patch
 ALSA_LIB_PATCH += alsa-lib-$(ALSA_LIB_VER)-link_fix.patch
@@ -1945,7 +1945,7 @@ $(D)/alsa_lib: $(D)/bootstrap $(ARCHIVE)/$(ALSA_LIB_SOURCE)
 #
 # alsa-utils
 #
-ALSA_UTILS_VER = 1.2.6
+ALSA_UTILS_VER = 1.2.7
 ALSA_UTILS_SOURCE = alsa-utils-$(ALSA_UTILS_VER).tar.bz2
 ALSA_UTILS_PATCH = alsa-utils-$(ALSA_UTILS_VER).patch
 
@@ -2485,7 +2485,7 @@ $(D)/gnutls: $(D)/bootstrap $(D)/nettle $(ARCHIVE)/$(GNUTLS_SOURCE)
 #
 # libgpg-error
 #
-LIBGPG_ERROR_VER    = 1.44
+LIBGPG_ERROR_VER    = 1.45
 LIBGPG_ERROR_DIR    = libgpg-error-$(LIBGPG_ERROR_VER)
 LIBGPG_ERROR_SOURCE = libgpg-error-$(LIBGPG_ERROR_VER).tar.bz2
 LIBGPG_ERROR_URL    = https://www.gnupg.org/ftp/gcrypt/libgpg-error

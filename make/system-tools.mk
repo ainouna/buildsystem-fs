@@ -5,7 +5,7 @@ ifeq ($(BUSYBOX_SNAPSHOT), 1)
 BUSYBOX_VER = snapshot
 BB_SNAPSHOT =
 else
-BUSYBOX_VER = 1.34.0
+BUSYBOX_VER = 1.35.0
 BB_SNAPSHOT = -$(BUSYBOX_VER)
 BUSYBOX_SOURCE = busybox-$(BUSYBOX_VER).tar.bz2
 endif
@@ -662,8 +662,9 @@ $(D)/jfsutils: $(D)/bootstrap $(D)/e2fsprogs $(ARCHIVE)/$(JFSUTILS_SOURCE)
 # f2fs-tools
 #
 
-F2FS-TOOLS_VER = 1.14.0
+F2FS-TOOLS_VER = 1.15.0
 F2FS-TOOLS_SOURCE = f2fs-tools-$(F2FS-TOOLS_VER).tar.gz
+F2FS-TOOLS_PATCH = f2fs-tools-$(F2FS-TOOLS_VER).patch
 
 $(ARCHIVE)/$(F2FS-TOOLS_SOURCE):
 	$(DOWNLOAD) https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git/snapshot/$(F2FS-TOOLS_SOURCE)
@@ -672,6 +673,7 @@ $(D)/f2fs-tools: $(D)/bootstrap $(D)/util_linux $(ARCHIVE)/$(F2FS-TOOLS_SOURCE)
 	$(REMOVE)/f2fs-tools-$(F2FS-TOOLS_VER)
 	$(UNTAR)/$(F2FS-TOOLS_SOURCE)
 	$(CHDIR)/f2fs-tools-$(F2FS-TOOLS_VER); \
+		$(call apply_patches, $(F2FS-TOOLS_PATCH)); \
 		autoreconf -fi; \
 		ac_cv_file__git=no \
 		$(CONFIGURE) \
@@ -1036,7 +1038,7 @@ $(D)/fbshot: $(D)/bootstrap $(D)/libpng $(ARCHIVE)/$(FBSHOT_SOURCE)
 #
 # sysstat
 #
-SYSSTAT_VER = 12.5.6
+SYSSTAT_VER = 12.6.0
 SYSSTAT_SOURCE = sysstat-$(SYSSTAT_VER).tar.bz2
 
 $(ARCHIVE)/$(SYSSTAT_SOURCE):
@@ -1841,6 +1843,7 @@ UDPXY_SOURCE = udpxy-git-$(UDPXY_VER).tar.bz2
 UDPXY_URL    = https://github.com/pcherenkov/udpxy.git
 UDPXY_PATCH  = udpxy-git-$(UDPXY_VER).patch
 UDPXY_PATCH += udpxy-git-$(UDPXY_VER)-fix-build-with-gcc8.patch
+UDPXY_PATCH += udpxy-git-$(UDPXY_VER)-fix-build-with-gcc9.patch
 
 $(ARCHIVE)/$(UDPXY_SOURCE):
 	$(SCRIPTS_DIR)/get-git-archive.sh $(UDPXY_URL) $(UDPXY_VER) $(notdir $@) $(ARCHIVE)
@@ -1860,7 +1863,7 @@ $(D)/udpxy: $(D)/bootstrap $(ARCHIVE)/$(UDPXY_SOURCE)
 #
 # openvpn
 #
-OPENVPN_VER = 2.5.6
+OPENVPN_VER = 2.5.7
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VER).tar.xz
 
 $(ARCHIVE)/$(OPENVPN_SOURCE):
