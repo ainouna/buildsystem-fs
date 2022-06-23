@@ -2025,7 +2025,7 @@ $(D)/librtmp: $(D)/bootstrap $(D)/zlib $(D)/openssl
 	$(REMOVE)/rtmpdump
 	set -e; if [ -d $(ARCHIVE)/rtmpdump.git ]; \
 		then cd $(ARCHIVE)/rtmpdump.git; git pull; \
-		else cd $(ARCHIVE); git clone https://github.com/Duckbox-Developers/rtmpdump.git rtmpdump.git; \
+		else cd $(ARCHIVE); git clone https://github.com/fs-basis/rtmpdump.git rtmpdump.git; \
 		fi
 	cp -ra $(ARCHIVE)/rtmpdump.git $(BUILD_TMP)/rtmpdump
 	$(CHDIR)/rtmpdump; \
